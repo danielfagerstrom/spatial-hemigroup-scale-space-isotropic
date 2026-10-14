@@ -1,0 +1,120 @@
+% The isotropic paper of Paper VII of the hemigroup programme (repository slug `affine`, module
+% `iso`, tags iso-v0.1, ...; adr/0001): the isotropic theory in R^d, by reduction to the line, with
+% the origin threshold d and the strict dimension filtration. Split on 2026-10-04 (Q-0307) from the
+% single article in paper/, of which it was section 3 and Appendix A; the affine paper (paper/)
+% restates the four statements of this one that it uses. Built on Paper V's model
+% (spatial-hemigroup-scale-space, paper/ and paper-b/): one file per section, every statement shared
+% with the blueprint under a `% shared with blueprint <label>` marker with the paper statement's own
+% \label equal to the blueprint label (article-kit LINKAGE.md rule 4), so that `linkage check`
+% reports it `verbatim`; the proofs of record from the blueprint, shortened where a proof is long;
+% the cited facts stated as numbered theorems in section 2.6, each with the ledger's page anchor
+% (blueprint/AXIOMS.md, never memory); section 1.1 owns the trust base (Table tab:trust-base,
+% in Appendix B since Q-0428, says which statement rests on which cited fact), and the body
+% carries no sentence of that kind before a statement
+% (WRITING.md section 3; the dispatching session's decision of 2026-10-10, Q-0408, which reversed
+% the earlier "printed in the prose before every [A] statement"); one relation-to-the-line
+% remark; the frontier named where it occurs.
+%
+% Structure (adr/0001; notes/PLAN-article-structure.md). The file numbers are the single article's,
+% so that section 3 here is blueprint chapter 3:
+%   1  Introduction (Q-0307; 1.1 owns the trust base)
+%   2  What is used from the line papers (no blueprint nodes; restatements by version; A1-A4)
+%   3  The isotropic theory (blueprint ch. 3, parts/03-isotropic.tex)
+%   4  Conclusion; 4.1 Open problems (the single article's problem on the origin in dimension d;
+%      04-conclusion.tex, a conclusion since Q-0408, the author's review)
+%   Appendix A: the proofs moved out of section 3 (Q-0291).
+%   Appendix B: Verification, the inventory behind section 1.1 (Q-0414).
+%   Back matter: the author's contribution and use of AI (ai-statement.tex) and the declarations
+%   (declarations.tex), Q-0311. The declarations are final (Q-0313, the author's declarations of
+%   2026-10-04) but for the release DOI; the AI statement is rewritten from the session archive by
+%   the archivist (article-kit PROCESS.md § 8, pass 5).
+%
+% References into the released modules of Paper V cite them by their released statement numbers
+% (repo CLAUDE.md): the line paper, \sscite{fagerstrom2026spatial}, tag v0.1, concept DOI
+% 10.5281/zenodo.22761631; the cone paper, \sscite{fagerstrom2026cone}, tag cone-v0.1, concept DOI
+% 10.5281/zenodo.22864169. No internal label reaches the reader (Q-0344, the author's review):
+% shared text writes \prog{V}{Thm.~7.3} and \progpaper{B}, which macros.tex prints as citations,
+% and the paper's own prose names the papers. Module C is not cited (the author, 2026-10-04). The affine paper of this
+% repository and Paper VI are unreleased: prose about further work, never a \ref.
+%
+% Voice and register: article-kit docs/WRITING.md (neutral third person, the restraint budget).
+% Build: cd paper-iso && latexmk -pdf main.tex. Gates before a commit: the build, `linkage check`
+% with every shared statement verbatim, `linkage paper`. LaTeX is written with the file tools,
+% never through shell heredocs.
+
+% Q-0448 (the split into a paper and a supplement; records/affine/split_q0448.py and
+% split_q0448_roots.py). Three roots, one set of sources:
+%   main.tex        the paper (this file);
+%   supplement.tex  the supplement: the trust base in full, the cited facts in full, the
+%                   proofs that Lean checked, the inventory of the formal development;
+%   full.tex        the one document: it defines \isofull and inputs this file, which then
+%                   takes the four parts of the supplement as Appendices C to F.
+% The paper and the supplement refer to each other through xr-hyper, so each is built after
+% the other: python records/affine/build-paper-iso.py builds the three and checks them.
+% The \date line below is the one `linkage release` reads; supplement.tex has a copy of it,
+% and the build script fails when the two differ.
+\documentclass[11pt]{article}
+\ifdefined\isofull\else\newcommand{\isoexternal}{supplement}\fi
+\input{preamble}
+% \suppl names the place of what Lean checked, and \supplnumbers says how its numbers read.
+\ifdefined\isofull
+  \newcommand{\suppl}{the supplementary appendices}
+  \newcommand{\supplnumbers}{The supplementary appendices are
+    Appendices~\ref{supp:trust} to~\ref{supp:verification}.}
+\else
+  \newcommand{\suppl}{the supplement}
+  \newcommand{\supplnumbers}{A statement, a section, an equation or a table whose number
+    begins with an S is one of the supplement.}
+\fi
+
+\title{Spatial scale space from hemigroup axioms:\\
+rotation-invariant self-decomposable kernels in dimension $d$}
+\author{Daniel Fagerstr\"om}
+% Q-0417: the build frozen for external review (article-kit PROCESS.md section 9) names its
+% revision by the tag iso-review-1. "Not yet released" stays in the line, so that `linkage release`
+% still reads it as a draft date. The working-draft line, for the first edit after the review
+% rounds (a change after a freeze is a new freeze, with a new tag):
+% \date{Working draft --- not yet released}
+% Q-0432: the second freeze, after the response to the first external review.
+% Q-0448: the third freeze, after the response to the second external round, the split into a
+% paper and a supplement, and the Lean of the stages (Q-0447).
+% The release iso-v0.1 (records/affine/freeze_iso_release.py): the date, the version and the
+% version DOI, on one line, as in supplement.tex. The draft line, restored at the first edit
+% after the release, is the working-draft line above.
+\date{October 14, 2026 (v0.1)\\[3pt] {\normalsize \href{https://doi.org/10.5281/zenodo.23357468}{doi:10.5281/zenodo.23357468}}}
+
+\begin{document}
+\maketitle
+
+\input{abstract}
+
+\input{01-introduction}
+\input{02-line-papers}
+\input{03-isotropic}
+\input{04-conclusion}
+
+% Appendix A (Q-0291): the proofs moved out of section 3, in its order; the main text names each
+% and points here. Appendix B (Q-0414): the inventory of the formal verification that section 1.1
+% names (WRITING.md section 4), under its own "trust base" markers.
+\appendix
+\input{appendix-isotropic}
+\input{appendix-verification}
+% Q-0448: in the full document the four parts of the supplement are Appendices C to F.
+\ifdefined\isofull
+  \input{supp-trust}
+  \input{supp-cited-facts}
+  \input{supp-proofs}
+  \input{supp-verification}
+\fi
+
+% Back matter (Q-0311, review flag 4; article-kit PUBLICATION-TEMPLATE.md § A and § B.10, WRITING.md
+% § 6): the author's contribution and use of AI, on Paper V's model, then the other three
+% declarations. The declarations are final (Q-0313); the AI statement awaits pass 5 (its header).
+\input{ai-statement}
+\input{declarations}
+
+\bibliographystyle{plainurl}
+\bibliography{references}   % the subset of the librarian's export (`library bib export`) for the
+                            % citekeys this paper cites
+
+\end{document}

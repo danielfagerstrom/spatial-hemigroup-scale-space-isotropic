@@ -1,0 +1,494 @@
+% §2 What is used from the line papers --- the recap of the two released modules of Paper V this
+% paper rests on, and the six cited facts. Written from the draft's §2 (Q-0285, 2026-10-04), on
+% Paper V's model (paper-b/02-line-paper.tex, paper-c/02-earlier-modules.tex): the paper is read
+% on its own, so what the later sections read is RESTATED here, cited by released version.
+%
+% No blueprint node: this repository's blueprint has no node for a statement of [V] or [B] (repo
+% CLAUDE.md: no \uses edge crosses into another repository's blueprint), so every restatement below
+% carries a `% no blueprint node:` opt-out naming what it restates (article-kit LINKAGE.md rule 12).
+% The cited facts C1-C5 are shared with their blueprint interface nodes thm:cited-A<N> (the
+% author's decision of 2026-10-06), verbatim or pinned.
+% Each restatement was checked against the released source at its tag (v0.1: paper/02, 04, 06,
+% 07; cone-v0.1: paper-b/03, 04), not against the draft. Departures from the draft's §2:
+%   - Theorem 2.2 is [V, Thm. 7.3] as released (with its uniqueness clause); the draft's last
+%     sentence ("the admissible exponents are exactly the exponents of the symmetric
+%     self-decomposable laws") is [V, Prop. 2.13], and is prose after the theorem;
+%   - the delay datum of [B, Def. 4.11] has a measurable profile; monotonicity is what makes it
+%     causally admissible ([B, Def. 4.1]); the draft ran the two together;
+%   - Proposition 2.6 keeps the clauses of [B, Prop. 4.9] that the paper reads, (1), (2) and (4);
+%   - after the blind review (Q-0286): the section restates what later STATEMENTS use and what more
+%     than one proof uses; a fact of [V] or [B] used once inside a proof is restated in that proof
+%     (review flag 4: [B, Lem. 4.12(1)], [B, App. A], [B, Prop. 5.10(2)] are restated in the proofs
+%     of section 3). Proposition 2.5 restates [B, Lem. 4.2] only; [B, Prop. 4.5]'s family clause,
+%     which no proof used, is a sentence (flag 36). The Cin rays follow [B]'s convention: a ray is
+%     the set of positive multiples, its unit member has profile 1_(0,tau) (flag 3);
+%   - the cited facts (2.6) are the ledger's "statement as used" (blueprint/AXIOMS.md), which was
+%     read at the page; the page anchors are the ledger's.
+% The draft's ⟨author⟩ note on ξ versus ω is answered by the blueprint's convention (ξ in §3, ω
+% from §4 on), stated in §2.1. Module C is not cited (the author, 2026-10-04).
+%
+% Q-0307 (the split at §3 | §4, adr/0001): this is the isotropic paper's copy of the section,
+% restricted to what §3 and Appendix A use: [V], [B] and the cited facts A1-A4. A5 and A6, and the
+% sentences pointing at the axiom scheme, went with the affine paper (paper/02-line-papers.tex). The
+% cited facts keep their ledger names, so the two papers name a fact alike.
+%
+% Q-0310 (the whole-paper review's notation flags for this paper; records/affine/
+% REVIEW-paper-whole-fixes-paper-iso.md): the contraction ratio of self-decomposability is lambda,
+% not c, so that c is the profile at the origin wherever this paper can choose (the gauge constant
+% of thm:isotropic-classification's uniqueness clause is a shared statement, owed at the blueprint,
+% records/affine/GATE-paper-iso.md); every "profile" is qualified (folded, polar, delay); the
+% section ends with a notation table (2.7), which names the clashes left in shared statements.
+%
+% Q-0311 (the blind review records/affine/REVIEW-paper-iso.md; REVIEW-paper-iso-fixes.md): the
+% affine notation of 2.1 (GL(d), D_A, Sym, PSD/PD, the Loewner order), which this paper never uses,
+% is dropped and the image measure defined for a measurable map (flag 14); "restated here" (flag
+% 21); the extreme rays "have an explicit form" (flag 34); one sentence maps the programme's terms
+% to the probabilist's (subordinator, Bochner subordination, time change, polar decomposition)
+% (flag 29); kernels "from scale zero" (flag 24); the cited facts are printed C1-C4, the ledger's
+% A1-A4 (blueprint/AXIOMS.md), renamed by records/affine/rename-cited-facts-q0311.py (flag 25);
+% the notation table names the second roles of lambda, t and a (flag 26, paper half).
+%
+% Q-0316 (pass 2, the blind register review REVIEW-register-paper-iso.md, section 2 flags; answered
+% in REVIEW-register-paper-iso-fixes.md): the probabilist's dictionary opens the section (flag 8);
+% the restatement rule says where a fact used once is restated (flag 3); the exponent convention
+% and self-decomposability fixed before use (flag 11); the gauge's role and the classical class
+% named (flags 10, 16); the cone module's scope narrowed (flag 1); Bernstein functions in one form
+% (flags 14, 15); the superposition written out (flag 12); the line's threshold with its hypothesis
+% and its own letters (flags 2, 5, 9, 17, 18); Levy's continuity theorem as classical (flag 13); the
+% cited fact C5, Wolfe's theorem with Kanter's definition (ledger A8; brief item 1); the notation
+% table gains x and C5's letters (flag 4).
+%
+% Q-0344 (the author's review of section 1, records/affine/REVIEW-author-paper-iso.md, comment 1):
+% the internal labels [V] and [B] are gone from what a reader sees. The two papers are named once
+% here as a reader would, "the line paper" and "the cone paper", with their citations; a numbered
+% place in them is \prog{V}{...} or \prog{B}{...} (macros.tex), printed as a located citation.
+%
+% Q-0414, round 2 (the register review of 2026-10-11, REVIEW-register-paper-iso-s2s3-2026-10-11.jsonl,
+% answered in REVIEW-register-paper-iso-2026-10-11-fixes.md; the citation audit, shard 2 and shard
+% 4, answered in CITATION-AUDIT-paper-iso-fixes.md). The probabilist's dictionary that opened the
+% section is gone from there: the subordinator stands at Definition def:line-causal, where its
+% exponent is defined, and the polar profile was already tied to C2 after Definition
+% def:isotropic-origin-datum. 2.3 opens on why subordination matters here (section 1 has the
+% picture), defines "time-causal family" in one sentence and says that its kernels are a
+% hypothesis where they are needed, gives the Poisson example in the normalization of Proposition
+% prop:isotropic-bridge(3), leads into the bridge by the transform of a Gaussian, and says what
+% each notion after Definition def:line-causal is restated for. b_0 >= 0 is in the delay datum;
+% the Laplace-transform form is "as in the proof of" the cone paper's Prop. 4.5; Pauwels et al.
+% are cited at (A6); negative definiteness is Def. 4.3, p. 36, in the form (4.8), pp. 45-46
+% (READING-schilling2012bernstein-schoenberg.md).
+
+\section{What is used from the line papers}\label{sec:line}
+
+% Q-0424 (records/affine/reviews/VERIFY-round1-claims-and-trust-base.md, item 5): "is written to
+% be read on its own" claimed more than the printed text gives, since Theorem
+% thm:line-classification is restated without proof and the necessity half of Theorem
+% thm:isotropic-classification cites it. The statements can be read without the two papers; the
+% printed proofs cannot.
+% Q-0448, the blind draft review (flags 36 and 40): the two papers are introduced in section 1,
+% and the count of the cited facts is section 2.6's; the opening says what the section does.
+This section restates, without proof, the statements of the line paper
+\sscite{fagerstrom2026spatial} and of the cone paper \sscite{fagerstrom2026cone} that the later
+sections use, and names the facts of the literature that the proofs use and do not prove. The
+two papers work on the real line $\RR$, with signals of one variable, and are cited in their
+released version~0.1, by the statement numbers of that version. With the restatements the
+statements of this paper can be
+read without the two papers, and its proofs rest on theirs: the classification rests on that of
+the line paper (Theorem~\ref{thm:line-classification}). A restated statement carries its released
+number in its title, and its proof is at that number.
+
+\subsection{Notation}\label{sec:notation}
+
+For a probability measure $\mu$ on $\RR^d$ the characteristic function is
+$\widehat\mu(\xi) = \int e^{i\langle\xi,x\rangle}\,\mu(dx)$. When $\widehat\mu = e^{-F}$ for a
+real function $F$, $F$ is the \emph{exponent} of $\mu$. For a measurable map $T$, $T_*\mu := \mu \circ T^{-1}$ is the image measure. On the
+line the dilation by $\lambda > 0$ is $D_\lambda f = \lambda^{-1}f(\cdot/\lambda)$, the translation
+by $a$ is $\tau_af = f(\cdot - a)$ and the reflection is $Rf = f(-\,\cdot)$. $\Orth(d)$ is the
+orthogonal group, $S^{d-1}$ the unit sphere, $\sigma_{d-1}$ its surface measure and
+$|S^{d-1}| = \sigma_{d-1}(S^{d-1})$ its surface area. In
+\S\ref{sec:isotropic} the frequency on $\RR^d$ is written $\xi$ and the frequency on the line
+$\omega$. Table~\ref{tab:notation}, at the head of Appendix~\ref{app:isotropic-proofs}, lists
+the symbols that recur, each with its role, and names the letters that keep a second role.
+Inside a cited fact the letters are its source's.
+% Q-0417: the exception for Lemma lem:operators-to-kernels(2), which wrote omega for a frequency
+% on R^d, is gone: the paper's copy of the lemma and its proof in Appendix A now write xi.
+
+\subsection{The axioms and the classification on the line}\label{sec:line-axioms}
+
+The line paper's object is a family of operators on $L^1(\RR)$ indexed by pairs of scales
+$s \le t$. The operator $\Phi_{s,t}$ takes the record of a signal at scale $s$ to its record at the
+coarser scale $t$. The axioms are these.
+
+% no blueprint node: restates Definition 3.1 of [V] (fagerstrom2026spatial, v0.1)
+\begin{definition}[symmetric cascade measurement family, {\prog{V}{Def.~3.1}}]\label{def:line-family}
+A family $(\Phi_{s,t})_{0 \le s \le t}$ of linear operators on $L^1(\RR)$ is a \emph{symmetric
+cascade measurement family} if:
+\begin{enumerate}
+\item[(A1)] each $\Phi_{s,t}$ is a bounded operator on $L^1(\RR)$;
+\item[(A2)] $\Phi_{s,t}\tau_a = \tau_a\Phi_{s,t}$ for every $a \in \RR$;
+\item[(A3)] $\Phi_{s,t}R = R\,\Phi_{s,t}$;
+\item[(A4)] $\Phi_{s,t}$ maps nonnegative functions to nonnegative functions;
+\item[(A5)] $\int\Phi_{s,t}f = \int f$ for every nonnegative $f \in L^1(\RR)$;
+\item[(A6)] $\Phi_{t,t} = \mathrm{Id}$, and $\Phi_{s,t}\Phi_{r,s} = \Phi_{r,t}$ whenever
+$r \le s \le t$;
+\item[(A7)] for every $f \in L^1(\RR)$ the map $(s,t) \mapsto \Phi_{s,t}f$ is continuous from
+$\{0 \le s \le t\}$ to $L^1(\RR)$;
+\item[(A8)] there is a family $(S_\lambda)_{\lambda > 0}$ of increasing bijections of
+$[0,\infty)$ with $D_\lambda\Phi_{s,t} = \Phi_{S_\lambda s,\,S_\lambda t}D_\lambda$ for all
+$0 \le s \le t$ and all $\lambda > 0$;
+\item[(ND)] $\Phi_{s,t} \ne \mathrm{Id}$ whenever $s < t$.
+\end{enumerate}
+\end{definition}
+
+% Q-0448, the blind draft review (flag 11): the comparison of (A6) with the semigroup axioms of
+% Pauwels et al. and its attribution to Alvarez et al. are in section 1, once.
+Axiom (A6), the \emph{cascade}, requires
+that the stages compose, and leaves free how the stage from $s$ to $t$ depends on the two scales:
+the family need not be a semigroup in any scale parameter. Axiom (A8) is the scale invariance of
+the theory. Dilating the signal changes which scale a stage belongs to, and (A8) requires only that it
+relabel the scales by an increasing bijection $S_\lambda$, without fixing in advance how. Axiom (ND)
+excludes stages that do nothing. The first consequence of the axioms is that every stage is a
+convolution.
+
+% no blueprint node: restates Lemma 4.1 of [V] (fagerstrom2026spatial, v0.1)
+\begin{lemma}[from operators to kernels on the line, {\prog{V}{Lem.~4.1}}]\label{lem:line-representation}
+Under (A1), (A2), (A4) and (A5), for each pair $0 \le s \le t$ there is a unique probability
+measure $\nu_{s,t}$ on $\RR$ with $\Phi_{s,t}f = \nu_{s,t} * f$ for every $f \in L^1(\RR)$; under
+(A3) it is symmetric. Conversely every symmetric probability measure on $\RR$ defines an operator
+satisfying (A1)--(A5).
+\end{lemma}
+
+% Q-0406: section 3 states the axioms on operators first (Definition def:isotropic-operator-family)
+% and proves this lemma in dimension d (Lemma lem:operators-to-kernels of the paper).
+
+% Q-0448, the blind draft review (flag 35): how the bijections S_lambda of (A8) and the gauge
+% are related, read from the transforms of Theorem thm:line-classification: the kernel of
+% D_lambda Phi_{s,t} D_lambda^{-1} has the transform nu-hat_{s,t}(lambda omega), which is that
+% of nu_{S s, S t} when chi(S t) = lambda chi(t). The proof of the sufficiency half of Theorem
+% thm:isotropic-classification (section A.2) verifies (I4) with the same S_lambda. Flag 34:
+% what the subscripts V and I mark.
+A \emph{gauge} is an increasing bijection $\chi$ of $[0,\infty)$, hence continuous, with
+$\chi(0) = 0$. It labels the scales: the classification below determines a family up to its
+gauge, and in a family with gauge $\chi$ axiom (A8) holds with
+$S_\lambda = \chi^{-1}(\lambda\,\chi(\cdot))$, so that a dilation by $\lambda$ multiplies
+$\chi$ by $\lambda$. A
+function
+$F : [0,\infty) \to [0,\infty)$ is \emph{admissible} if it has the form \prog{V}{(2.3)}
+\begin{equation}\label{eq:admissible-line}
+  F(r) = a_{\mathrm V}\,r^2 + \int_0^\infty \bigl(1 - \cos rx\bigr)\,k(x)\,\frac{dx}{x},
+\end{equation}
+with $a_{\mathrm V} \ge 0$ and $k : (0,\infty) \to [0,\infty)$ nonincreasing,
+$\int_0^1 x\,k(x)\,dx < \infty$ and $\int_1^\infty k(x)\,x^{-1}dx < \infty$. The number
+$a_{\mathrm V}$ is the \emph{Gaussian coefficient} and $k$ the \emph{folded profile}. A
+subscript $\mathrm V$ marks an object of the line, and a subscript $\mathrm I$, from
+\S\ref{sec:line-bridge} on, one of the time-causal theory. An admissible
+$F$ is the exponent of a symmetric \emph{infinitely divisible} law, one that is for every $n$ the
+$n$-fold convolution of a law with itself, and the measure $k(x)\,dx/x$ on $(0,\infty)$ is that
+law's \emph{\Levy{} measure} folded onto the half-line: displacements of size about $x$ arrive at
+rate $k(x)\,dx/x$, the two directions counted together. The two integrability conditions are
+those of \prog{V}{Lem.~2.15}.
+
+% no blueprint node: restates Theorem 7.3 of [V] (fagerstrom2026spatial, v0.1)
+\begin{theorem}[the classification on the line, {\prog{V}{Thm.~7.3}}]\label{thm:line-classification}
+A family $(\Phi_{s,t})_{0 \le s \le t}$ of operators on $L^1(\RR)$ satisfies (A1)--(A8) and (ND)
+if and only if there are a gauge $\chi$ and an admissible $F \not\equiv 0$ such that
+$\Phi_{s,t}f = \nu_{s,t} * f$ with symmetric probability measures $\nu_{s,t}$ on $\RR$,
+\[
+  \widehat\nu_{s,t}(\omega) = \exp\bigl[-\bigl(F(\chi(t)\,\omega) - F(\chi(s)\,\omega)\bigr)\bigr] .
+\]
+The pair $(\chi, F)$ is unique up to the normalization $\chi(1) = 1$.
+\end{theorem}
+
+In the \emph{canonical gauge}, $\chi$ the identity, the kernel from scale zero to scale $t$ has
+transform $e^{-F(t\omega)}$: it is the dilation by $t$ of one law. In a formula, a law $\mu$ on
+$\RR^d$ is self-decomposable (\S\ref{sec:introduction}) if for every $\lambda \in (0,1)$ there
+is a law $\rho_\lambda$, the \emph{residual}, with
+\begin{equation}\label{eq:self-decomposable}
+  \widehat\mu(\xi) = \widehat\mu(\lambda\xi)\,\widehat\rho_\lambda(\xi), \qquad \xi \in \RR^d
+\end{equation}
+(on the line \prog{V}{Def.~2.12}). The residuals are the stages of a cascade. The
+admissible functions are exactly the exponents of the symmetric self-decomposable laws on the line
+\prog{V}{Prop.~2.13}.
+
+% Q-0428 (the presentation review, item 15): the heading says "subordination", the word of
+% article-kit WRITING.md section 0 and of the author's review; the label is unchanged.
+\subsection{Subordination and the dimension filtration}\label{sec:line-bridge}
+
+% Q-0344 (the author's review of section 2): subordination introduced in plain words first, for a
+% computer-vision reader; the example is the Poisson kernel (Duits et al. p. 267,
+% READING-duits2004axioms.md) as clause (3) of prop:isotropic-bridge at alpha = 1/2.
+\emph{Subordination} builds new smoothing kernels from the Gaussian. Blur the signal with a
+Gaussian whose variance is not fixed but drawn at random, and average over the draws. The result
+is a \emph{Gaussian variance mixture}, the law of a Brownian motion at a random time (Bochner's
+subordination, \sscite{sato1999levy}, \S30, p.~197). A familiar example is the kernel of the
+Poisson scale space of Felsberg and Sommer (\sscite{felsberg2004monogenic}, Thm.~1, p.~7), the
+$\alpha = \tfrac12$ member of the $\alpha$-scale spaces (\sscite{duits2004axioms}, p.~267). With
+transform $e^{-t|\omega|/\sqrt2}$ it is the Gaussian
+blurred at a variance drawn from the one-sided stable law of index $\tfrac12$ with Laplace
+transform $e^{-t\sqrt\sigma}$ (Proposition~\ref{prop:isotropic-bridge}(3) with
+$\alpha = \tfrac12$).
+
+% Q-0414, round 3 (register flags 19, 20 and 30 of the review of sections 2 and 3): what a
+% time-causal kernel is, what the classification of the time-causal paper gives in the terms of
+% Definition def:line-causal, and why the kernels are a hypothesis here. Read in the text of the
+% time-causal paper, version 1.1.0: Theorem 7.3 (a family satisfies its axioms if and only if
+% there are a gauge and an exponent of its form (7.1), not identically 0; the kernels in the
+% canonical gauge), Propositions 8.5 and 8.8 (the stable exponent s^alpha, 0 < alpha < 1, and the
+% gamma exponent gamma log(1 + s), with k(t) = gamma e^{-t}, are of that form) and Proposition
+% 8.17 (the scaled inverse-gamma law: self-decomposable by a cited theorem of Halgreen).
+% Q-0431 (the author's section review of 2026-10-12: a statement that rests on a cited result is
+% not presented as a hypothesis): "The proofs of this paper do not use that classification, so
+% a statement that needs the kernels of a time-causal family takes them as a hypothesis" is now
+% the sentence on how such a statement is stated. That the formal proofs take the family as
+% given is said once, in section 1.1.
+% Q-0448, the blind draft review (flags 21 and 33): the sentence on the time-causal literature
+% with its four citations stood in the third answer of section 1 and is here, where the
+% time-causal theory is introduced. The sentence "A statement of this paper about a
+% time-causal family is stated for its kernels, in the form given below" is gone: it said how
+% a statement is stated, and the proposition says it.
+Subordination matters here because it is how the time-causal theory meets the spatial one. A
+time-causal scale space measures a signal in time from its past alone
+(\sscite{koenderink1988scale}; \sscite{lindeberg1996scalespace};
+\sscite{fagerstrom2005temporal}; \sscite{lindeberg2016time}). In
+the time-causal theory of the same axioms \sscite{fagerstrom2026hemigroup} a kernel is a law on
+the half-line $[0,\infty)$ of delays: the record at
+a time uses the signal at earlier times only, and the delay is how far back it reaches. A
+\emph{time-causal family} is a cascade of such laws that satisfies the axioms of the time-causal
+paper. That paper classifies these families: in its canonical gauge a family is given by an
+exponent of the form of Definition~\ref{def:line-causal} below, and every such exponent other
+than $0$ occurs (\sscite{fagerstrom2026hemigroup}, version~1.1.0, Thm.~7.3). Using the delay as
+the variance turns a time-causal
+family into a family on the line (Proposition~\ref{prop:line-bridge} below, for the exponents),
+and into an isotropic family in every $\RR^d$, and no other exponents give an isotropic family in
+every dimension (Proposition~\ref{prop:line-filtration}(3) below).
+
+% no blueprint node: restates Definition 4.1 of [B] (fagerstrom2026cone, cone-v0.1), with the delay datum of its Definition 4.11 and the delay law of its Remark 4.3
+\begin{definition}[causally admissible exponents, {\prog{B}{Def.~4.1}}]\label{def:line-causal}
+A function $F_{\mathrm I} : [0,\infty) \to [0,\infty)$ is \emph{causally admissible} if
+\[
+  F_{\mathrm I}(\sigma) = b_0\,\sigma
+   + \int_0^\infty \bigl(1 - e^{-\sigma u}\bigr)\,k_{\mathrm I}(u)\,\frac{du}{u},
+\]
+with $b_0 \ge 0$ and $k_{\mathrm I} : (0,\infty) \to [0,\infty)$ nonincreasing,
+$\int_0^1 k_{\mathrm I}(u)\,du < \infty$ and $\int_1^\infty k_{\mathrm I}(u)\,u^{-1}du < \infty$.
+\end{definition}
+
+The law on $[0,\infty)$ with Laplace transform $e^{-F_{\mathrm I}}$ is the \emph{delay law} of
+$F_{\mathrm I}$ \prog{B}{Rem.~4.3}. In probability $F_{\mathrm I}$ is the Laplace exponent of a
+subordinator, an increasing \emph{\Levy{} process}, that is, a process with stationary
+independent increments (\sscite{sato1999levy}, Def.~21.4, p.~137), with the
+further condition that $k_{\mathrm I}$ is nonincreasing. The process advances at the constant
+rate $b_0$ and by jumps of size about $u$ at rate $k_{\mathrm I}(u)\,du/u$, and the delay law is
+its law at time $1$. In its canonical gauge the kernel of a
+time-causal family with exponent $F_{\mathrm I}$, from scale $x$ to scale $y \ge x$, is a law
+$\mu^{\mathrm I}_{x,y}$ on $[0,\infty)$ with Laplace transform
+$\exp[-(F_{\mathrm I}(y\sigma) - F_{\mathrm I}(x\sigma))]$, $\sigma \ge 0$, as in the proof of
+\prog{B}{Prop.~4.5}, and $\mu^{\mathrm I}_{0,1}$ is the delay law.
+
+Two further notions are restated for later use. A pair $(b_0, k_{\mathrm I})$ with $b_0 \ge 0$,
+the two integrability conditions and a measurable $k_{\mathrm I}$, monotone or not, is a
+\emph{delay datum} \prog{B}{Def.~4.11}, with \emph{delay profile} $k_{\mathrm I}$ and the
+exponent $F_{\mathrm I}$ of the formula of Definition~\ref{def:line-causal}.
+Definition~\ref{def:isotropic-origin-datum} and Theorem~\ref{thm:origin-boundedness-d}(3) use it
+with a nonincreasing profile, and \S\ref{sec:isotropic-filtration} without, because the delay
+profiles of the family followed there are not monotone. The cited fact C6 of \S\ref{sec:cited-facts} is
+about \emph{Bernstein functions}: nonnegative smooth functions on $(0,\infty)$ whose derivative
+is completely monotone, $(-1)^n (f')^{(n)} \ge 0$ for every $n \ge 0$. A causally admissible
+exponent is a Bernstein function, and it vanishes at the origin (\prog{B}{\S 4.1}).
+
+The bridge to the line is the substitution $\sigma = \omega^2/2$. A centred Gaussian of variance
+$u$ has the transform $e^{-u\omega^2/2}$, so its mixture against the delay law has the transform
+$e^{-F_{\mathrm I}(\omega^2/2)}$.
+
+% no blueprint node: restates Lemma 4.2 of [B] (fagerstrom2026cone, cone-v0.1)
+\begin{proposition}[the bridge on exponents, {\prog{B}{Lem.~4.2}}]\label{prop:line-bridge}
+Let $F_{\mathrm I}$ be causally admissible with data $(b_0, k_{\mathrm I})$. Then
+$F(\omega) := F_{\mathrm I}(\omega^2/2)$ is admissible, with Gaussian coefficient
+$a_{\mathrm V} = \tfrac12 b_0$.
+\end{proposition}
+
+The cone paper lifts this to families \prog{B}{Prop.~4.5}: mixing the centred Gaussian laws of
+variance $u$ against the kernels $\mu^{\mathrm I}_{s^2,t^2}$ gives the kernels of a family on the
+line that satisfies the axioms, with exponent $F$ in its canonical gauge. The scales enter squared
+because the variance of a Gaussian is the square of its width.
+Proposition~\ref{prop:isotropic-bridge} is the same construction in $\RR^d$. The
+\emph{subordinated slice} $\mathcal{S}$ is the set of the exponents $F_{\mathrm I}(\cdot^2/2)$,
+$F_{\mathrm I}$ causally admissible \prog{B}{Prop.~4.6}. The admissible exponents form a convex
+cone, and the next proposition is about the part of it that each dimension admits.
+
+% no blueprint node: restates Proposition 4.9 of [B] (fagerstrom2026cone, cone-v0.1), at its clauses (1), (2) and (4)
+\begin{proposition}[the dimension filtration, {\prog{B}{Prop.~4.9(1), (2) and~(4)}}]\label{prop:line-filtration}
+For an integer $d \ge 1$ let $\mathcal{A}_d$ be the set of admissible $F$ for which
+$\xi \mapsto F(|\xi|)$, $\xi \in \RR^d$, is the exponent of a self-decomposable law on $\RR^d$, and
+let $\mathcal{A}_\infty$ be the intersection of all the $\mathcal{A}_d$.
+\begin{enumerate}
+\item $\mathcal{A}_1$ is the whole admissible cone, and $\mathcal{A}_{d+1} \subseteq \mathcal{A}_d$
+for every $d \ge 1$.
+\item $\mathcal{S} \subseteq \mathcal{A}_d$ for every $d \ge 1$.
+\item $\mathcal{A}_\infty = \mathcal{S}$.
+\end{enumerate}
+So $\mathcal{S} = \mathcal{A}_\infty \subseteq \dots \subseteq \mathcal{A}_2 \subseteq
+\mathcal{A}_1$.
+\end{proposition}
+
+% Q-0414 (the citation audit of 2026-10-11, shard 4, finding 1): the cone paper proves the
+% strictness of the first two inclusions (its Lemma 4.12(3), read at the page image of p. 39).
+% Q-0448, the blind draft review (flag 32): the two sentences on which clauses of the source
+% are not restated are gone; the title of the proposition names the clauses restated.
+Membership in $\mathcal{A}_d$ is what an isotropic family in $\RR^d$ requires of its exponent
+(Theorem~\ref{thm:isotropic-classification}).
+The cone paper proves that the first two inclusions of the chain are strict
+\prog{B}{Lem.~4.12(3)}, and reports numerical evidence for the later ones \prog{B}{Rem.~4.10}.
+That every inclusion is strict is Proposition~\ref{prop:profile-one-dimension-down}(2) here.
+
+The extreme rays of the cone of admissible exponents have an explicit form.
+
+% no blueprint node: restates Proposition 3.3 of [B] with the rays of its Lemma 3.1 (fagerstrom2026cone, cone-v0.1)
+\begin{proposition}[the extreme rays, {\prog{B}{Prop.~3.3, Lem.~3.1}}]\label{prop:line-extreme-rays}
+Write $\Cin(z) := \int_0^z (1 - \cos v)\,v^{-1}dv$. The extreme rays of the cone of admissible
+exponents are the Gaussian ray, through $\omega \mapsto \omega^2$, and the $\Cin$ rays, through
+the functions $\omega \mapsto \Cin(\tau|\omega|)$, $\tau > 0$, whose folded profile is the unit
+step $\mathbf{1}_{(0,\tau)}$. Every admissible exponent is a unique superposition of $\Cin$ rays and
+a Gaussian term:
+\[
+  F(\omega) = a_{\mathrm V}\,\omega^2 + \int_{(0,\infty)}\Cin(\tau|\omega|)\,\varpi(d\tau) ,
+\]
+with $\varpi = -dk$ the measure on $(0,\infty)$ given by the folded profile,
+$\varpi((x,\infty)) = k(x)$ for almost every $x > 0$.
+% Q-0424 (records/affine/reviews/VERIFY-round1-mathematics.md, item 7): "for almost every x",
+% as the cone paper prints it (Lemma 3.1(2), p. 13: "any positive measure on (0, infinity) with
+% varpi((x, infinity)) = k(x) for almost every x > 0", read through the librarian for this item).
+% The restatement had dropped the qualifier, and the identity fails at a jump of a profile that
+% is not right-continuous.
+\end{proposition}
+
+A member of the $\Cin$ ray through $\Cin(\tau|\omega|)$ is $F(\omega) = b\,\Cin(\tau|\omega|)$ with
+$b > 0$, with folded profile $b\,\mathbf{1}_{(0,\tau)}$; the function $\Cin(\tau|\omega|)$ itself is
+the ray's \emph{unit member}.
+
+% Q-0428 (the presentation review, item 12): "centre" in the heading, as in the prose; the
+% label is unchanged.
+\subsection{The kernel at its centre, on the line}\label{sec:line-origin}
+
+% Q-0414, round 3 (register flags 10, 22, 23 and 24 of the review of sections 2 and 3; the
+% dispatching session's decision G): the order rule (lead, the corollary, then who showed what),
+% and this subsection as the one account of the line: continuity, boundedness and the rate. Sato
+% p. 191 writes the threshold with c = k(0+) + k(0-), the two half-lines counted together
+% (READING-sato1999levy-prior-art.md, section 2; the citation audit, section 1 and rows 4, 20-24).
+On the line, whether a kernel from scale zero with no Gaussian part is bounded at its own centre
+is decided by one number, the folded profile at the origin, $c := k(0{+})$. The next corollary
+says so when $c$ is finite and positive: the kernel is bounded at its centre exactly when
+$c > 1$. In it $\phi_1$ is the density of the kernel from scale zero to scale $1$, in the
+canonical gauge. Besides the $\Cin$ rays, the corollary names the \Matern{} family. Its member of
+index $\gamma > 0$ and range $\theta > 0$ is $F(\omega) = \gamma\log(1 + \theta^2\omega^2)$, the
+admissible exponent with Gaussian coefficient $0$ and folded profile $2\gamma e^{-x/\theta}$
+(\prog{B}{\S 5.2}).
+
+% no blueprint node: restates Corollary 3.9 of [B] (fagerstrom2026cone, cone-v0.1)
+\begin{corollary}[the boundedness threshold on the line, {\prog{B}{Cor.~3.9}}]\label{cor:line-threshold}
+Let $F$ be admissible with Gaussian coefficient $0$ and folded profile $k$, let $\phi_1$ be its
+kernel at canonical scale $1$, and suppose $c := k(0{+})$ is finite and positive.
+\begin{enumerate}
+\item If $c > 1$, then $\phi_1$ has a representative continuous on the whole line. If $c \le 1$,
+no representative of $\phi_1$ is bounded near the origin.
+\item The unit member of every $\Cin$ ray has $c = 1$ and sits at the threshold. The \Matern{}
+member of index $\gamma$ and range $\theta$ has $c = 2\gamma$, so its kernel is bounded at the
+origin exactly for $\gamma > \tfrac12$.
+\end{enumerate}
+\end{corollary}
+
+The threshold is classical. A symmetric self-decomposable law on the line with no Gaussian part
+has a continuous density exactly when $c > 1$ (\sscite{sato1999levy}, Thm.~28.4, p.~191, where
+the two half-lines are counted together in $c$, as in the folded profile). Sato's Remark~28.6
+(p.~193) credits this to Zolotarev and to Wolfe: \sscite{zolotarev1963structure}, Thm.~3, p.~131,
+is on the derivatives of the density for $c > 1$, and \sscite{wolfe1971continuity}, Thm.~4,
+pp.~2069--2070, the condition in both directions. That for $c \le 1$ the density is unbounded,
+and not only discontinuous, is a theorem of Sato and Yamazato (\sscite{sato1978distribution},
+Thm.~1.5, p.~276). They also give the rate at which an unbounded density grows at the centre,
+with its constant (\sscite{sato1978distribution}, Thm.~1.7, p.~277; \sscite{sato1999levy},
+Thm.~53.8, pp.~410--411). The form of the corollary in $\RR^d$ is
+Theorem~\ref{thm:origin-boundedness-d}, where the threshold is $d$, and the rate is
+Proposition~\ref{prop:origin-rate-profile-d}.
+
+\subsection{Two facts of the line used in proofs}\label{sec:line-facts}
+
+Two released statements of the line paper are used inside proofs of \S\ref{sec:isotropic}, and are restated
+here. \Levy's classical continuity theorem on the line, which \prog{V}{Prop.~2.8} restates, is used
+in Lemma~\ref{lem:isotropic-marginal-family}: if the transforms of laws on $\RR$ converge at every
+point to the transform of a law, the laws converge weakly to it. A function $h$ continuous at $0$ with
+$h(0) = 0$ and $h(\omega) = h(\varkappa\omega)$ for every $\omega$ and one fixed $\varkappa > 0$
+with $\varkappa \ne 1$ vanishes identically \prog{V}{Lem.~6.3}. It is used in
+Theorem~\ref{thm:isotropic-classification}.
+
+\subsection{The cited facts}\label{sec:cited-facts}
+
+% Q-0448 (the split, specification 3(b)): the subsection names the seven cited facts, each with
+% its source and page, in the words of their statements. The statements in full, as the formal
+% development assumes them and with the departures from the sources, are section S2 of the
+% supplement (supp-cited-facts.tex), where the markers of the shared statements thm:cited-A1,
+% ..., thm:cited-A11 are; the text there is cut from this subsection whole
+% (records/affine/split_q0448_roots.py). Each item below was compared with its statement.
+Seven theorems of the literature are used and not proved. They are named C1 to C7, C for cited,
+to keep them apart from the axioms (A1)--(A8) of the line. \suppl{} states each as it is used
+(\S\ref{supp:cited-facts}), and Table~\ref{tab:trust-base} says which of them each statement
+rests on. Three depart from the letter of their source, and \S\ref{supp:cited-facts} has the
+account. C5 is Wolfe's statement. His printed proof covers the laws with no Gaussian part, and
+two results of Kanter's paper \sscite{kanter1977unimodality} cover the others. C6 composes two
+theorems of
+one book and leaves out the uniqueness that the book states. C7 is one direction of an
+equivalence, under narrower hypotheses.
+% Q-0448, the blind draft review of the split (flag 17): the three departures are named here,
+% one sentence each, from the paragraphs after C5, C6 and C7 in supp-cited-facts.tex (the split
+% had left "three of them depart" in the paper and which three in the supplement).
+\begin{itemize}
+\setlength{\itemsep}{1pt}
+\item[C1] \emph{Fourier integrability.} A probability measure $\mu$ on $\RR^d$ with
+$\int|\widehat\mu(z)|\,|z|^n\,dz < \infty$ has a density of class $C^n$, whose partial
+derivatives of orders up to $n$ tend to $0$ at infinity (\sscite{sato1999levy}, Prop.~28.1,
+p.~190).
+\item[C2] \emph{The polar criterion.} An infinitely divisible law on $\RR^d$ is
+self-decomposable exactly when its \Levy{} measure is, in polar coordinates,
+$\lambda(d\eta)\,k_\eta(r)\,dr/r$ with $\lambda$ a finite measure on the sphere and $k_\eta(r)$
+nonincreasing in $r$ (\sscite{sato1999levy}, Thm.~15.10, p.~95).
+\item[C3] \emph{The \Levy--Khintchine representation.} (i) An infinitely divisible law on
+$\RR^d$ has a \emph{generating triplet}: a Gaussian covariance matrix, a \Levy{} measure and a
+drift. (ii) The triplet is unique. (iii) Every such triplet is that of an infinitely divisible
+law (\sscite{sato1999levy}, Thm.~8.1, pp.~37--38).
+\item[C4] A self-decomposable law on $\RR^d$ is infinitely divisible (\sscite{sato1999levy},
+Prop.~15.5, p.~93).
+\item[C5] \emph{Wolfe's unimodality theorem.} A symmetric self-decomposable law on $\RR^d$ is a
+mixture of uniform laws on compact convex symmetric sets (\sscite{wolfe1978unimodality},
+Thm.~2, p.~144, with the definitions of \sscite{kanter1977unimodality}, pp.~66 and~70).
+\item[C6] \emph{Schoenberg's radial theorem, with the representation of a Bernstein function.}
+A real function $\psi$ on $\RR^d$ is \emph{negative definite} when
+$\sum_{j,k=1}^n\bigl(\psi(\xi_j) + \psi(\xi_k) - \psi(\xi_j - \xi_k)\bigr)c_j\overline{c_k} \ge 0$
+for every $n$, all points $\xi_1, \dots, \xi_n$ of $\RR^d$ and all complex numbers
+$c_1, \dots, c_n$.
+A function $f \ge 0$ for which $\xi \mapsto f(|\xi|^2)$ is continuous and negative definite on
+$\RR^d$ for every $d$ is $f(\sigma) = a + b\sigma + \int_{(0,\infty)}(1 - e^{-\sigma t})\,m(dt)$
+for $\sigma > 0$, with $a, b \ge 0$ and $\int(1 \wedge t)\,m(dt) < \infty$
+(\sscite{schilling2012bernstein}, Thm.~13.14, p.~212, and Thm.~3.2, p.~21; the definition is
+its Def.~4.3, p.~36, in the form (4.8), pp.~45--46).
+% Q-0448, the blind draft review (flag 18): the definition of a negative definite function, in
+% the form of the display of C6 in the supplement (the book's Definition 4.3, p. 36, in its
+% form (4.8) on R^d, pp. 45-46; READING-schilling2012bernstein-schoenberg.md), for a real
+% function, which is the case that C6 uses.
+\item[C7] \emph{Karamata's Tauberian theorem at the origin.} If the Laplace transform of a
+finite measure on $[0,\infty)$ is asymptotic at infinity to $c\,s^{-\rho}\ell(s)$, with
+$c, \rho > 0$ and $\ell$ slowly varying, then the mass that the measure gives to $[0,x]$ is
+asymptotic to $c\,x^{\rho}\ell(1/x)/\Gamma(1+\rho)$ as $x \downarrow 0$
+(\sscite{bingham1987regular}, Thm.~1.7.1$'$, p.~38).
+\end{itemize}
+% Q-0449 (the author's final reading, 2026-10-13): moved here from section 1.1, where it was a
+% forward reference to this list.
+Each enters with one statement. C3 enters with the classification
+(Theorem~\ref{thm:isotropic-classification}), C2 and C4 with the description of the classes
+(Proposition~\ref{prop:isotropic-polar-reading}), C1 with the threshold
+(Theorem~\ref{thm:origin-boundedness-d}), C5 with the shape of the density
+(Proposition~\ref{prop:isotropic-radial-monotone}), C7 with the rate
+(Proposition~\ref{prop:origin-rate-profile-d}) and C6 with the top of the dimension
+filtration, $\mathcal{A}_\infty = \mathcal{S}$ (Lemma~\ref{lem:filtration-top} of \suppl).
+
+% Q-0448, the blind draft review (flag 29, in part): the subsection "Notation table", which
+% only pointed to the table and counted the letters with a second role, is folded into section
+% 2.1 (one sentence there). No letter of a shared statement is renamed (the dispositions).
+

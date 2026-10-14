@@ -1,0 +1,7 @@
+% Q-0448: the one full document of the isotropic paper, the paper with the four parts of its
+% supplement as Appendices C to F. It is main.tex read with \isofull defined: main.tex then names
+% no external document and inputs supp-trust.tex, supp-cited-facts.tex, supp-proofs.tex and
+% supp-verification.tex after its own appendices. Build: latexmk -pdf full.tex, or
+% python records/affine/build-paper-iso.py for the three roots.
+\newcommand{\isofull}{}
+\input{main}

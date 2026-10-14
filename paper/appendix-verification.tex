@@ -1,0 +1,203 @@
+% Appendix B --- Verification: the inventory behind section 1.1 (Q-0414, round 1; the author's
+% decision (c) of 2026-10-11; article-kit WRITING.md section 4 and PUBLICATION-TEMPLATE.md B.4).
+% Section 1.1 states the trust base: what is machine-checked, what is assumed, what is neither.
+% This appendix adds detail to that statement and holds no caveat, gap or assumption that 1.1
+% does not state: where the formal development is, the versions, the two commands, the Lean names
+% of the seven cited facts, and the table of the cited facts per statement. The statements
+% covered and Lean's own `#print axioms` output are section S4 of the supplement
+% (supp-verification.tex) since the split of Q-0448.
+%
+% Moved here from 01-introduction.tex by records/affine/edits_q0414_verification_appendix.py,
+% which copies the table of identifiers and the stamped block byte for byte and checks that they
+% are identical to the blocks removed from section 1.1. The stamped block's content is untouched:
+% no build is available in the worktree of this item, so `linkage check --fresh-axioms` was not
+% run, and no line was added (the block has no line for the rate's declarations; adding one needs
+% a build and a new stamp).
+%
+% The region between the two "trust base" comment lines is read by `linkage check` (LINKAGE.md
+% rule 13), as the region of section 1.1 is: a paper may have several regions, in one file or
+% several. The sentence that lists the statements by \ref is what the status comparison reads;
+% the names of the cited facts are what the ledger comparison reads, against the axioms that the
+% listed statements' declarations print; the block is compared with the #guard_msgs pins of
+% Formalization/CIAxiomGuard.lean.
+
+\section{Verification}\label{app:verification}
+% trust base: begin
+
+% Q-0428 (the presentation review of round 1, item 19): the entry in plain words, with the three
+% counts together. That no declaration of the list depends on the three other axioms is said
+% under "The report for every declaration", from the report of the 141 declarations.
+% Q-0431 (the author's section review of 2026-10-12, records/affine/REVIEW-author-paper-iso.md:
+% "we focus on what is not what isn't"): the appendix read once against that principle. Four
+% sentences whose content was what is not the case are turned or removed: "It adds no
+% assumption to what that subsection states" (every assumption is stated there); "The four
+% statements of its second list have no item" (the paragraph already says which statements the
+% list covers); "it has no request for a definition. So it does not print the report of the
+% last paragraph" (of the guard: the file of the report is named in the paragraph before); "It
+% has no declaration for 4 <= w_2" (that inequality is the computed one). Kept, because a
+% reader needs them to know what is checked: "no file of this development uses it" (the
+% earlier papers' development in the build configuration), "none depends on any other axiom",
+% "on which no declaration of this paper depends", and that the repository is private.
+This appendix says where the formal development behind \S\ref{sec:trust-base} is, in which
+versions, under which names it holds the cited facts, and which cited facts each statement
+rests on. \suppl{} has the declarations statement by statement, with Lean's report
+(\S\ref{supp:verification}).
+A \emph{declaration} is a named definition or proved statement of the formal
+development. An \emph{axiom}, in Lean's report, is a declaration taken without proof, and the
+report on a declaration lists every axiom that its proof uses. The seven cited facts of this
+paper are nine such axioms, C3 being three. The guard of the repository admits twelve, because
+the formal development also states the three cited facts of the companion paper.
+% Q-0452: "because it also serves the companion paper, which has three cited facts of its own"
+% until the isotropic paper's Lean was separated from the affine paper's: the guard of the public
+% repository lists no declaration of the companion paper, and admits twelve axioms because
+% Formalization/AffineHemigroup/Interfaces.lean states all the cited facts of chapter 2 and
+% blueprint/trust-boundary.txt lists them. True of the development repository as well.
+
+% Q-0414, round 3 (the register review of 2026-10-11b, flags 13-15, 25, 26, 36, 37; the scope
+% audit's findings 11 and 12): the list of statements is a table with the Lean declarations,
+% generated from the blueprint's \lean tags by records/affine/gen-verification-table.py (`check`
+% compares); the pass criterion is one sentence; the paths are from the repository root; nine
+% axioms for seven cited facts; the formal examples are named; the build configuration is said as
+% Formalization/lakefile.toml has it (the public export of the cone paper, tag v0.1, which
+% contains the line paper's development).
+\paragraph{Where the formal development is.} The formal development, its ledger of the cited
+facts with the page-verified citation of each, and the blueprint, the sources in which the
+statements and their proofs were developed, are in the repository accompanying this paper (see
+the code availability statement at the end). They are the directories \texttt{Formalization/}
+and \texttt{blueprint/} of that repository. The repository is
+\url{https://github.com/danielfagerstrom/spatial-hemigroup-scale-space-isotropic},
+and this version of the paper is its tag \texttt{v0.1}. It is a public verification export: it is
+taken from the development repository, which is private, and it is
+deposited with this version of the paper under the DOI printed on its first page. It holds
+the formal development, the ledger, the blueprint sources of the two chapters behind this
+paper, and the scripts of the figures and of Table~\ref{tab:matern}, each at the path that this
+paper or the supplement prints.
+% The release iso-v0.1 (records/affine/freeze_iso_release.py); the draft form is in git, and its
+% sentences are quoted in the comment of the code availability statement (declarations.tex).
+% Q-0417 (the freeze for external review, article-kit PROCESS.md section 9): the repository and
+% the revision, named by a tag because a commit cannot print its own hash; the dispatching
+% session puts the tag iso-review-1 on the merge commit of this item. The repository is private,
+% so its name is printed as a name, not as a URL (the scope audit's row D3 and the register
+% review's flag 15 asked that a reviewer of the frozen text can tell what this appendix points
+% to). The same three facts are in the code availability statement.
+% TODO(release): the URL and tag of the public verification export, as Paper V names its export
+% (the repository itself is private), and the review-build sentences above replaced by them.
+
+
+\paragraph{Versions and commands.} The versions are fixed in the repository: Lean~4
+\texttt{v4.31.0}, Mathlib \texttt{v4.31.0}, and the shared library \texttt{ScaleSpaceCore} at its
+tag \texttt{v0.4.0}. The build configuration also names the formal development of the two earlier
+papers, from the public export of the cone paper at its tag \texttt{v0.1}, and no file of this
+development uses it. \texttt{lake build} in \texttt{Formalization/} reproduces the verification:
+it checks every proof. On request Lean reports, for a declaration, the assumptions it depends on,
+which it calls its axioms. The criterion for this paper is that every axiom reported for a
+declaration of the list of \S\ref{supp:verification} is one of Lean's three logical axioms,
+\texttt{propext},
+\texttt{Classical.choice} and \texttt{Quot.sound}, or one of the nine names below.
+% Q-0424 (the external review, round 1; records/affine/reviews/
+% VERIFY-round1-claims-and-trust-base.md, item 6(b)). Until now the criterion printed here was
+% the repository guard's, which admits twelve axioms, three of them the companion paper's, and
+% the text said that `lake env lean CIAxiomGuard.lean` prints the report for every named
+% declaration. It does not: of the 141 declarations the guard file has a line for 99, pins 31 of
+% those under #guard_msgs, which prints nothing when the pin holds, and has no line for the 42
+% definitions; the eight of the printed block are among the pinned. The paragraphs below state
+% the criterion of this paper (nine names), name the file that holds Lean's report for all 141
+% declarations and the script that makes and checks it, and say what the guard is. A guard of
+% this paper alone, in CI, is another item of the response plan (R2).
+
+\paragraph{The names of the cited facts.} The nine names are the seven cited facts of this
+paper, C3 being three. Table~\ref{tab:trust-base} says which of them each statement rests on.
+They are in the namespace \texttt{AffineHemigroup}:
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{\qquad}ll@{}}
+C1 & \texttt{density\_of\_integrable\_charFun} & C3(iii) & \texttt{levy\_khintchine\_converse} \\
+C2 & \texttt{sato\_polar\_criterion} & C4 & \texttt{selfDecomposable\_infinitelyDivisible} \\
+C3(i) & \texttt{levy\_khintchine\_exists} & C5 & \texttt{wolfe\_symmetric\_unimodal} \\
+C3(ii) & \texttt{levy\_khintchine\_unique} & C6 & \texttt{schoenberg\_radial\_bernstein} \\
+ & & C7 & \texttt{karamata\_tauberian\_zero}
+\end{tabular}
+\end{center}
+
+% Q-0428: Table tab:trust-base, moved here from section 1.1 with the statements of Q-0425 and
+% Q-0429 added. The status of each statement is in section 1.1 and is not repeated in the rows.
+% At the merge of the Lean of Q-0429 the rows of the six statements formalized since the first
+% review build were compared with Lean's report
+% (records/affine/axioms-iso-all-declarations.py, `TABLE1`, which the generated guard
+% Formalization/AffineHemigroup/IsoAxiomGuard.lean enforces at every build): C2, C3(iii), C5 and
+% C7 for the rate through the profile; C2, C3(i) to (iii) and C4 for
+% prop:profile-one-dimension-down and for thm:separating-family-critical-values; none for
+% prop:isotropic-exponent-profile, lem:threshold-asymptotic and lem:shadow-polar-profile, which
+% are under "every other statement". No row changed. The row of the dictionary holds one
+% statement with a formal counterpart, prop:profile-one-dimension-down, beside two without; the
+% cited facts of those two are the ones their printed proofs use, as the caption says.
+% Q-0448, the joining step (the Lean of Q-0447 merged): the row of the stages compared with
+% Lean's report, declaration by declaration. The twelve declarations of clause (1) and the six
+% of clause (2) name no cited fact; of clause (3), isotropic_stage_triplet,
+% isotropic_stage_absolutelyContinuous and isotropic_stage_no_point_mass name C3(iii) (items
+% (a) and (b)), isotropic_stage_smooth_density names C1 (item (c)), and
+% isotropic_stage_dichotomy, the closing sentence, names both. The row stands as it was written
+% from the printed proof; its entry in `TABLE1` is C1 and C3(iii).
+\begin{table}[!htb]
+\centering
+\small
+\begin{tabular}{@{}p{0.46\textwidth}p{0.5\textwidth}@{}}
+\toprule
+statement & cited facts its proof rests on \\
+\midrule
+Thm.~\ref{thm:isotropic-classification} and Cor.~\ref{cor:isotropic-classification-operators},
+  the classification & C3(ii) and (iii), on the line \\
+Cor.~\ref{cor:isotropic-scale-zero-kernels}, the main result as one statement & C2, C3, C4 \\
+Prop.~\ref{prop:isotropic-polar-reading}, the polar form of $\mathcal{A}_d$ & C2, C3, C4 \\
+Thm.~\ref{thm:origin-boundedness-d}, the threshold & C1, in clauses (2) and (5) \\
+Prop.~\ref{prop:isotropic-radial-monotone}, the radially nonincreasing density & C5; C3(ii) and
+  (iii) in clause (1); C2 and C3(iii) in clause (2) \\
+Prop.~\ref{prop:origin-lower-bound-d}, the lower bound & C3(iii) \\
+Prop.~\ref{prop:origin-upper-bound-d}, the upper bound & none for the bounds of clauses (1)
+  and (2); C3(iii) for clause (3); C2, C3(iii) and C5 for the existence of the density \\
+Lemma~\ref{prop:origin-rate-d} of \suppl, the rate through the transform & C7 for the limits; C2,
+  C3(iii) and C5 for the existence of the density \\
+Prop.~\ref{prop:origin-rate-profile-d}, the rate through the profile & C7 for the limits; C2,
+  C3(iii) and C5 for the existence of the density \\
+Prop.~\ref{prop:isotropic-stages}, the stages & C3(iii) in clause (3), items (a) and (b); C1
+  in its item (c); none in clauses (1) and (2) \\
+Prop.~\ref{prop:radial-dictionary}, the dictionary, Prop.~\ref{prop:profile-one-dimension-down},
+  Cor.~\ref{cor:dictionary-filtration} and Prop.~\ref{prop:step-exponent-dimensions} & C2, C3,
+  C4 \\
+Thm.~\ref{thm:separating-family-critical-values}, the separating family & C2, C3, C4, in
+  clauses (1) and (4) \\
+Prop.~\ref{prop:separating-family-mixtures}, the separating family as laws & C2, C3, C4, in
+  clause (3) \\
+Lemma~\ref{lem:filtration-top} of \suppl, the top of the filtration,
+  $\mathcal{A}_\infty = \mathcal{S}$ & C2, C3, C4, C6 \\
+every other statement & none \\
+\bottomrule
+\end{tabular}
+\caption{The statements of the paper and of the supplement and the cited facts that their
+proofs rest on. For a statement with a formal counterpart these are
+the assumptions that Lean reports for its declarations, and for the statements of the second
+list of \S\ref{sec:trust-base} the cited facts that the printed proof uses. ``None'' means none of C1
+to C7: the statement follows from the definitions and the logical foundations of the proof
+assistant alone, or, where there is no formal counterpart, its printed proof cites no fact.}
+\label{tab:trust-base}
+\end{table}
+
+
+% Q-0428, the fixes round: the account statement by statement, moved here from section 1.1,
+% which keeps the caveat in two sentences (the register review of the front, flag 28;
+% article-kit WRITING.md section 4: the appendix adds detail to what 1.1 says).
+\paragraph{The statements restated from the two earlier papers.} The printed proofs cite the
+statements restated in \S\ref{sec:line}, and the formal proofs assume none of them. So in two
+places the formal proof derives from the cited facts what the printed proof cites from an
+earlier paper: the uniqueness of the \Levy{} measure in the classification on the line, from
+C3, and the identification $\mathcal{A}_\infty = \mathcal{S}$, from C6 with C2, C3 and C4. In
+their own papers the restated statements stand as follows. Of those of the line paper, the
+passage from operators to kernels, the classification and the two facts used in proofs are
+verified formally there, the classification on two cited facts, and that the admissible
+exponents are those of the symmetric self-decomposable laws is cited from the literature
+(\sscite{fagerstrom2026spatial}, \S1.1). Of those of the cone paper, the bridge on exponents,
+the extreme rays and the threshold on the line are verified formally there, on cited facts that
+it lists, and the dimension filtration is proved in its text (\sscite{fagerstrom2026cone},
+\S1.1).
+
+% trust base: end

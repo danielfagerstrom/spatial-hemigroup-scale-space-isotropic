@@ -1,0 +1,129 @@
+% Q-0448: section S1 of the supplement and Appendix C of the full document. The paragraphs
+% below stood in section 1.1 of the paper (01-introduction.tex) until the split, and are cut
+% from it whole (records/affine/split_q0448_roots.py); their history is in the comments of that
+% file and below. Section 1.1 keeps the statement of the trust base: what is machine-checked,
+% the list of what is proved in print only, what is assumed. This section has no "trust base"
+% markers and is not read by `linkage check` (LINKAGE.md rule 13): it gives no statement a
+% status and names no cited fact as an entry. The status rows that the check reads are the
+% two lists of section 1.1 and the list of section S4 (supp-verification.tex).
+\section{The trust base in full}\label{supp:trust}
+% Q-0448, the blind draft review of the split (flag 1): the sentences on Proposition
+% prop:isotropic-bridge and the time-causal families are in section 1.1 again, where they stood
+% before the split, and are not repeated here. Section 1.1 also says in a sentence each what
+% the two paragraphs "The statements of section 2" and "Outside the formal verification" give
+% in detail.
+\S\ref{sec:trust-base} of the paper says what is machine-checked, lists the statements that are
+proved in print only, names the seven cited facts, and says in a sentence each how the
+statements restated from the earlier papers stand, what the formal statement on the
+time-causal families takes as given, and what is computed. This section adds the detail: the
+status of the definitions and of the remark, the statements restated from the earlier papers,
+the form of five formal statements, what is outside the formal verification, and how the formal
+statements were reviewed.
+
+A definition counts as
+machine-checked when it is formalised in Lean, that is, when it has a formal counterpart that
+the formal statements use.
+Remark~\ref{rem:isotropic-line} is commentary and has no formal counterpart.
+
+\paragraph{The statements of \S\ref{sec:line}.} The formal development proves what it needs of
+the statements restated in \S\ref{sec:line}, from the seven cited facts, so the formal proofs of
+this paper rest on none of them. In their own papers part of them is established in print. Of
+the line paper, that the admissible exponents are those of the symmetric self-decomposable laws
+is cited from the literature, and of the cone paper the dimension filtration is proved in prose
+(\sscite{fagerstrom2026spatial}, \S1.1; \sscite{fagerstrom2026cone}, \S1.1).
+Appendix~\ref{app:verification} has the account statement by statement.
+
+\paragraph{The form of five formal statements.} Theorem~\ref{thm:origin-boundedness-d},
+Propositions~\ref{prop:origin-lower-bound-d}, \ref{prop:origin-upper-bound-d}
+and~\ref{prop:origin-rate-profile-d} and Lemma~\ref{prop:origin-rate-d} are printed for the law
+with a
+given \Levy{} measure. Their formal statements are about every law with the corresponding
+transform, and need no such law to exist. That there is one, which the printed ``let $\mu$ be
+its law'' supposes, is C3(iii). The upper bound and the two forms of the rate are likewise
+verified for every radially nonincreasing density of the law, and that there is one is
+Proposition~\ref{prop:isotropic-radial-monotone}.
+
+% The heading is kept for the author to decide (the presentation review, item 4; the register
+% review of the front, flag 33): "Outside the formal verification", or "What is proved in print
+% only, or computed". The fourth thing of the earlier list, the agreement of the formal
+% statements with the printed ones, qualifies the machine-checked statements and not the
+% others: it is said in the opening of the subsection, and its account is the next paragraph.
+\paragraph{Outside the formal verification.} Three things in the paper are proved in print or
+computed. The first is the statements of the second list of \S\ref{sec:trust-base}. Among them
+is the closed form of a
+constant. So the constants $Q$ and $B$ of the rate through the profile are verified in the form
+in which Proposition~\ref{prop:origin-rate-profile-d} states them, and their closed forms,
+clause (4) of Lemma~\ref{lem:exponent-profile-constant}, are proved in print. The second is what the text computes from the statements. That a
+kernel with a Gaussian part has a bounded smooth density is shown before
+Theorem~\ref{thm:origin-boundedness-d}. Example~\ref{ex:matern} applies the statements to the
+gamma delay and quotes the closed form of the density and its behaviour at the centre, which
+are cited. The list of $c$ for the familiar
+kernels, the profile with an unbounded factor, the dependence of the spike on the scale and the
+stage of the \Matern{} kernel of index $1$ in
+\S\ref{sec:isotropic-origin}, the \Matern{} exponent in the dictionary and the shadow of a step
+in \S\ref{sec:isotropic-filtration}, and the closed form of the constant $A_\beta$ after
+Proposition~\ref{prop:origin-upper-bound-d} are computed in the text. The third is the two
+figures and the numerical values in the text, which are produced by scripts
+(Figures~\ref{fig:matern-centre} and~\ref{fig:thresholds}). Among them are the critical values
+of the separating family, and the example $w = 4$ of \S\ref{sec:isotropic-filtration} is read
+from them. Of that example Lean has $w_3 < 4$, so that $F^{(4)}$ is admitted in no dimension
+$D \ge 3$. That it is admitted on the line and in the plane, which is $4 \le w_2$, is proved in
+print in the cone paper (\prog{B}{Lem.~4.12(2) and~(3)}), and the value $w_2 \approx 5.24$ is
+computed. The statements are independent of the computed values.
+% Q-0428, at the merge of the Lean of Q-0429: what is and is not in Lean of the example w = 4.
+% `threshold_three_lt : threshold 3 < 4` and `probe_witness_four` (for D >= 3, F^(4) is not in
+% A_D) are in Formalization/AffineHemigroup/Probes.lean. The other half, 4 <= w_2, needs an
+% upper bound of M_2, which the development does not have (the annotation of
+% thm:separating-family-critical-values, "Formalization"; fidelity card T1.21, finding F-A1 of
+% records/formalization/blind-check-q0429-report.md). Appendix B names the two declarations.
+
+% The author's answer of 2026-10-11 (records/affine/REVIEW-author-paper-iso.md): "I have not
+% reviewed the Lean statements myself". The six statements added to the paper after the first
+% review build and formalized in Q-0427 and Q-0429 have a fidelity card each by the session that
+% wrote the Lean (cards T1.18 to T1.23 of blueprint/REVIEW-fidelity.md) and a blind check of
+% statement against type by a fresh agent (records/formalization/blind-check-q0427-report.md and
+% blind-check-q0429-report.md): two faithful (lem:threshold-asymptotic,
+% thm:separating-family-critical-values), four faithful with notes; no clause weaker in Lean,
+% different or vacuous. The end of the paragraph says so, with the notes a
+% reader needs: (a) the limits about the law are for every law of the datum, and its existence
+% is C3(iii) (the report of Q-0427, N3.1; said in "The form of five formal statements" above,
+% which names the proposition, and pointed to here); (b) the statements for an unbounded K are
+% proved and no such datum is constructed in Lean (N2.4); (c) clause (1) of
+% prop:profile-one-dimension-down is two declarations that are the clause together (the report
+% of Q-0429, F-A5); (d) the sentence "is a mean" of lem:shadow-polar-profile(1) has no
+% declaration (F-A4). The notes on which the Lean says more than the print (c > 0 and q >= 0
+% not assumed, the identity of integrals for every nonnegative Borel g) are in the cards.
+% Written at the merge of the Lean of Q-0429; the TODO(freeze) that stood here is done.
+\paragraph{The review of the formal statements.} The agreement between each formal statement
+and the statement printed here was reviewed by AI agents, and the review is a reading, not a
+machine check. One pass compared each formal statement with the printed one. In further passes,
+agents with no part in the writing restated the main statements from the printed text alone,
+for comparison with the formal ones, and searched the formal ones for hypotheses that cannot be
+met. The review found no formal statement weaker than the printed one, none that holds
+vacuously and none that is true only by a convention of the proof assistant, such as the value
+it gives to a division by zero, and no cited fact that states more than the page of its source
+supports. Propositions~\ref{prop:isotropic-exponent-profile},
+\ref{prop:origin-rate-profile-d} and~\ref{prop:profile-one-dimension-down},
+Lemmas~\ref{lem:threshold-asymptotic} and~\ref{lem:shadow-polar-profile} and
+Theorem~\ref{thm:separating-family-critical-values} were added after that review. Agents with
+no part in writing them compared each with its formal statement, clause by clause. They found
+that each printed clause says what its formal counterpart says, or less, with three notes
+beside the one on the law above. The cases with an unbounded factor $K$ are proved, and the
+profile with such a factor in \S\ref{sec:isotropic-origin} is computed in the text. Clause (1)
+of Proposition~\ref{prop:profile-one-dimension-down} is two formal statements, which are the
+clause only together. In Lemma~\ref{lem:shadow-polar-profile}(1), that $\bar k(r)$ is a mean
+has no formal counterpart: it is the definition read with the normalisation.
+Corollary~\ref{cor:isotropic-scale-zero-kernels} and Proposition~\ref{prop:isotropic-stages}
+were added later still and compared in the same way. Where the comparison found a printed
+sentence with no formal counterpart, one was written and proved: the relabelling of the scales,
+which is clause (4) of the corollary, and in the proposition the density $p_{s,t}$ of clause
+(2), item (c), and that a stage which is absolutely continuous has no point mass (clause (3),
+item (b)).
+% Q-0448, the joining step: the two statements of Q-0434 that are machine-checked, the
+% corollary since Q-0434 and the proposition on the stages since Q-0447, are named here, the
+% paragraph listing the statements added after the first review. Their blind checks:
+% records/formalization/blind-check-q0434-report-B.md (the corollary; one gap, F-B2, closed by
+% clause (4) and scale_zero_relabelling; a third pass on clause (4), faithful) and
+% blind-check-q0447-report.md (the stages; no error, two gaps, F-1 and F-2, closed by
+% isotropic_stage_no_point_mass and isotropic_stage_operator); cards T1.24 to T1.27 of
+% blueprint/REVIEW-fidelity.md.

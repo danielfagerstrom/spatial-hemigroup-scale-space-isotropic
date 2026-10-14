@@ -1,0 +1,84 @@
+% §4 Conclusion, with the open problems as its subsection 4.1 (Q-0408; the file was
+% 04-open-problems.tex and the section "Open problems") --- paper-only. Q-0307 (the split at §3 | §4, adr/0001): the single article's
+% section 6 (paper/06-open-problems.tex), problem 4, "The origin in dimension d >= 2", moved here
+% verbatim but for its \ref to the affine paper's section; its other problems are about the affine
+% theory and stayed there. Stated as open, never promised (hub RELEASES.md rule 1); no statement of
+% the paper depends on an answer.
+%
+% Q-0428 (the rewrite after the external review, round 1; records/affine/
+% REPOSITIONING-paper-iso-round2.md). The conclusion is on the footing of section 1: what the
+% hemigroup axioms give in dimension d, in the order of the three questions, and what follows for
+% a family taken from the line to the plane or to space. The paragraph that listed what is new
+% and what was not found stated is gone (the direction of the author of 2026-10-12). Each sentence
+% restates a statement of section 3, compared with it (WRITING.md section 5): "from scale zero"
+% and "no Gaussian part" for the threshold; c < d and c = d apart for the rate; the dictionary
+% for the exponents of logarithmic growth, with its two conditions on the law; the jump test as
+% Corollary cor:dictionary-filtration(1) states it. 4.1: the two questions that Q-0425 answered
+% (the slowly varying factor through the polar profile; the limit of sqrt(d) w_d) are removed
+% with their TODO(Q-0425). What remains: the derivatives at the centre for c > d, and the stages
+% from a positive scale. (Whether a step witness stays infinitely divisible one dimension up was
+% the third until Q-0448: Proposition prop:step-exponent-dimensions answers it.) No sentence says
+% what a search of the literature found.
+% Q-0428, the fixes round (records/affine/REPOSITIONING-paper-iso-round2-fixes.md): the practice paragraph
+% reduced to what a user takes away, the limitations in section 4 proper, the open problems each
+% specific.
+% Q-0431 (the author's section review of 2026-10-12, records/affine/REVIEW-author-paper-iso.md).
+% The opening leads with the main result in the terms of the contributions paragraph of section
+% 1 (the kernels of the isotropic scale spaces are the rotation-invariant self-decomposable
+% laws), and "The axioms of the line ... name no dimension" is gone: the author removed the same
+% phrase from the abstract ("it is said that it is on the line"). The last sentence of the third
+% paragraph says "taken alone" of a Cin ray, as section 3.4 now does: the exponents admitted in
+% the plane are still superpositions of the rays and a Gaussian term.
+\section{Conclusion}\label{sec:conclusion}
+
+% Q-0448 (the author's decision of 2026-10-13: what is said twice goes; exposition item 4 of
+% records/affine/reviews/VERIFY-round2-length-and-exposition.md). The answers are given once,
+% in section 1. This section keeps the limitations and the open problems. The sentence on the
+% main result says "from scale zero" (review B, R4: the stages are kernels of the family and
+% are not self-decomposable in general).
+The hemigroup axioms define, in every dimension, the scale spaces whose kernels from scale zero
+are the dilations of a rotation-invariant self-decomposable law, and every such law other than
+the point mass at the origin is such a kernel
+(Corollary~\ref{cor:isotropic-scale-zero-kernels}). \S\ref{sec:introduction} says what follows for
+the kernel at its centre and for the dimension.
+
+% The limitations, in section 4 proper (the register review, flag 9). The generator on the line
+% is the cone paper's Prop. 6.2.
+% Q-0448, the blind draft review (flag 7): the limitations are listed here and nowhere else
+% (the first paragraph of section 1 and its "Scope" had three of them). Of a stage the
+% sentence says what Proposition prop:isotropic-stages gives, the point mass with its size, and
+% what it leaves, the smoothing part at its centre, which is the open problem "The stages".
+The paper has four limitations. It gives no generator of
+the scale evolution: the evolution equation that the cone paper has on the line
+\prog{B}{Prop.~6.2} is not carried to $\RR^d$. It proves nothing in $\RR^d$ on locality or on
+the extrema of the smoothed signal. Its statements on the centre are about the kernels from
+scale zero: of a stage $\mu_{s,t}$ with $s > 0$ and no Gaussian part it gives the point mass
+and its size
+(Proposition~\ref{prop:isotropic-stages}), and it does not examine the smoothing part at its
+centre. And the dictionary covers the
+exponents of logarithmic growth only: for the kernels
+with a Gaussian part or with $c = \infty$ the paper matches no law on $\RR^d$ with the exponent.
+
+\subsection{Open problems}\label{sec:open-problems}
+
+% Each question names the regime and the quantity (the register review, flags 36 and 37); no
+% count is announced (flag 38). What is not treated is in section 4, as limitations.
+\paragraph{The derivatives.} Let $d + N - 1 < c < d + N$ with an integer $N \ge 1$. The density
+then has $N - 1$ continuous derivatives (Theorem~\ref{thm:origin-boundedness-d}(2)), and the
+theorem says nothing of the next one. Is the radial derivative of order $N$ of the density
+asymptotic at the centre to a constant times $|x|^{c-d-N}$ times the slowly varying factor $K$
+of Proposition~\ref{prop:origin-rate-profile-d}, as the density itself is for $c < d$? And what
+takes the place of the logarithm at $c = d + N$? On the line both are answered by Sato and
+Yamazato, for every finite $c$ (\sscite{sato1978distribution}, Thms.~1.6 and~1.7).
+
+% Q-0448 (the second external round, review D, R1 and R2; VERIFY-round2-mathematics.md, items
+% 12 and 13): the question which stages have a density and which a point mass is answered by
+% Proposition prop:isotropic-stages, and what is left of it is asked here. The question on the
+% step witnesses is answered by Proposition prop:step-exponent-dimensions and has left the list.
+\paragraph{The stages.} Let the kernels have no Gaussian part. Is the absolutely continuous
+part of a stage $\mu_{s,t}$ with $s > 0$ bounded near the centre when $c$ is finite
+(Proposition~\ref{prop:isotropic-stages}(2)), and what number decides it? And is the density of
+a stage bounded when $c = \infty$?
+% Q-0450 (the scope audit of 2026-10-13, mismatch 5): with a Gaussian part the stage has a
+% bounded smooth density (Proposition prop:isotropic-stages(3)(c)), so both questions, and the
+% limitation above, are for the kernels with no Gaussian part.

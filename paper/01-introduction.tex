@@ -1,0 +1,624 @@
+% §1 Introduction of the isotropic paper --- new with the split (Q-0307, 2026-10-04; adr/0001),
+% assembled from the single article's introduction (paper/01-introduction.tex before the split): its
+% second paragraph on the axioms of the line papers, its paragraph "The isotropic corner reduces to
+% the line" with the comparison with Schoenberg, its contribution 2, its scope sentence on the line
+% theory, and the part of 1.1 that concerns section 3, each moved with the wording the new context
+% needs. New: the question of this paper alone, the Matern reading of the threshold (from section
+% 3.3), the plan. Every sentence that restates a result was compared with its statement
+% (WRITING.md § 5). Nothing here is shared with the blueprint.
+%
+% 1.1 owns the trust base (article-kit PROCESS.md § 7, WRITING.md § 4): the state of the
+% formalization, the four cited facts with the statements that rest on them (the blueprint's
+% ledger, blueprint/AXIOMS.md, and the cited-fact sentences of section 3), and the figure.
+%
+% Q-0310 (the whole-paper review's fixes for this paper; records/affine/
+% REVIEW-paper-whole-fixes-paper-iso.md): the strictness of Schoenberg's chain is Gneiting's (1999,
+% p. 94, Euclid's hat; READING-gneiting1999radial.md, PRIOR-ART-novelty-claims.md).
+%
+% Q-0311 (the blind review records/affine/REVIEW-paper-iso.md; its flags answered in
+% REVIEW-paper-iso-fixes.md): "hemigroup" defined in the first paragraph, with Hazod-Siebert as
+% Paper V cites it (Def. 2.14.16, p. 380; READING-hazod2001stable.md) (flag 5); the comparison with
+% the classical axioms stated once, as Paper V states it, against Pauwels et al. (flag 12); the
+% kernels from scale zero, never "from the origin" (flag 24); the question framed as a
+% classification of kernel families (flag 8); a paragraph on prior work in probability (Sato
+% Thm. 16.1, p. 99, by Sato 1991, p. 117; Hazod-Siebert Thm. 2.14.21, p. 383; Sato Thm. 28.4 and
+% Lemma 28.5, p. 191, by Zolotarev and Wolfe, Rem. 28.6, p. 193; READING-sato1999levy-prior-art.md)
+% and one on the scale-space neighbours (Pauwels et al. p. 695; Duits et al. pp. 267, 277) (flags
+% 1, 2, 17); the novelty paragraph and the contributions narrowed to the three new results, and its
+% two self-contradictions removed (Schoenberg's Theorem 6 is on the infinitely divisible class, as
+% the intersection; the witness family is [B]'s) (flags 6, 7, 10, 22); the reduction sentence kept
+% here and in 3.2 only (flag 33); the trust base in plain words, with the cited facts renamed C1-C4
+% (flags 3, 25, 28).
+
+%
+% Q-0316 (pass 2, the blind register review records/affine/REVIEW-register-paper-iso.md; every flag
+% answered in REVIEW-register-paper-iso-fixes.md): the prior-work paragraphs split into short
+% sentences and a list (flags 6, 7); (ND) named and the parametrization hedge dropped (flags 9, 10);
+% the Matern kernels said to have Matern densities, for gamma > d/2, with no third nu (flags 11,
+% 13); Sato's two-sided k named as his (flag 12); the line's cone, the folded profile, the
+% subordinated slice and the Cin rays pointed to section 2 where they are first used (flag 1); the
+% bridge's hypothesis named (flag 2); the frame and the new results made to agree (flag 3); the
+% scale-space neighbours positioned against the isotropy axioms of Koenderink, Florack et al.,
+% Florack and Lindeberg, each read at the page (flag 15; READING-koenderink1984structure.md,
+% READING-florack1992scale.md, READING-florack1997image.md, READING-lindeberg2011generalized.md);
+% Wolfe's theorem as the cited fact C5 and the radially nonincreasing density as a proposition; the
+% trust base lists every import and says what the line papers' own trust bases are (flags 4, 14).
+%
+% Q-0328: prop:origin-lower-bound-d (Q-0272, refereed blind) in "The answer", in contribution 1 (the
+% same topic, so still three results) and in 1.1 (it spends C3(iii) only, ledger A3(iii); no new
+% cited fact). Each sentence compared with the statement: d >= 2, c finite, almost everywhere.
+%
+% Q-0344 (pass 6, the author's review of this section; every comment answered in
+% records/affine/REVIEW-author-paper-iso.md): rewritten as questions, then answers, in plain
+% language. No internal label: the earlier papers are named as a reader would ("the line paper",
+% "the cone paper", each with its citation; a numbered place in them is \prog{V}{...} or
+% \prog{B}{...}, printed as a located citation, macros.tex). Self-decomposable laws cited where they
+% are defined (Sato Def. 15.1, p. 90, and Thm. 15.3, p. 91; Steutel-van Harn Ch. V, (1.1), whose
+% stored copy prints no page numbers; READING-steutel2004infinite.md), and the Matern covariance
+% (Matern 1960, (2.4.5)-(2.4.7), pp. 17-18; Stein 1999, pp. 31 and 48-49; Guttorp-Gneiting; Porcu et
+% al.; READING-matern1960spatial.md, READING-stein1999interpolation.md). The reduction to the line
+% explained by the projection of a rotation-invariant vector; the bridge explained as a Brownian
+% motion run for a random time, citing the time-causal paper (fagerstrom2026hemigroup, Thm. 7.3) and
+% the cone paper's Lem. 4.2 and Prop. 4.5. Zolotarev and Wolfe cited from their own papers, read at
+% the page (READING-zolotarev1963structure.md, READING-wolfe1971continuity.md). The three prior-work
+% paragraphs open with the question they position the paper against; the detail moved to its
+% section: the line threshold with Sato's constant to 2.4 (it was there already), the polar
+% criterion's attribution to 3.2, Schoenberg's Theorem 6 to 3.4. Every sentence restating a result
+% compared with its statement (WRITING.md section 5).
+%
+% Q-0377 (the formalization closed: 125 of 125 blueprint nodes \leanok, main at dfafe99): 1.1 is
+% rewritten as "What is machine-checked" on Paper V's model, with the cited fact C6 (Schoenberg's
+% radial theorem, ledger A10), the headline #print axioms block and the trust-base markers
+% `linkage check` reads; the contributions end with one clause on the formalization, and the plan
+% counts six cited facts. The fidelity review (Q-0376) is named as pending in 1.1.
+%
+% Q-0407 (the author's decision on pull request #100): the classification on operators is a
+% statement, Corollary cor:isotropic-classification-operators (section 3.2), machine-checked. "The
+% answers" and "Scope" name it; 1.1 lists it under "What is proved", in the table's row for
+% C3(ii), to which the row for C3(iii) refers, and in the #print axioms block. The abstract is
+% unchanged: its sentence "classifies the rotation-invariant kernel families" is the theorem, and
+% it is at 249 words.
+%
+% Q-0408 (pass 6, the author's review of sections 3.3, 3.4 and 4): checked against the new
+% openings of 3.3 and 3.4 and the conclusion, so that the three tell one story. Two edits. In "The
+% answers", c is introduced first as the power at which the kernel's transform falls off, the
+% reading 3.3 opens with (Lemma lem:isotropic-exponent-log(1) with clause (1) of the theorem give
+% log mu-hat / log|xi| -> -c), and then as the limit of the polar profile; "the density of its
+% small jumps measured on the scale of |x|^{-d}" is gone ("jumps" was never introduced; section 2
+% says "displacements"). The plan names section 4 as the conclusion with the open problems (4.1).
+% The third answer already asks the question of 3.4 in its terms ("an exponent of the line, read
+% as a function of |xi|"), and the abstract is unchanged.
+% Second round (the blind register review of the new prose, REVIEW-register-paper-iso-q0408-fixes.md):
+% "every such law ... occurs" cites Lemma lem:isotropic-realisation with the theorem, as section
+% 3.4 and the conclusion do; "Scope" says what Remark rem:isotropic-line now holds (the comparison
+% at d = 1) and that the not-carried list is section 4.1's.
+% The same round removed from sections 3.3 and 3.4 every sentence that said which cited facts a
+% statement "rests on" (the dispatching session's decision of 2026-10-10: WRITING.md section 3
+% gives that to this subsection). Each was first compared with Table tab:trust-base, and 1.1
+% gained what the sentences said and the table did not: C3(ii) is read by clause (1) of
+% Proposition prop:isotropic-radial-monotone only and clause (2) reads C3(iii) with C2 (as
+% the Lean has radial_monotone_family and radial_monotone_law), and the lower
+% bound is verified for every law whose transform is the datum's, C3(iii) entering through the
+% law of a truncated datum (origin_lower_bound takes a law mu with IsLawOf D mu).
+
+%
+% Q-0414 (the repositioning pass, round 1; records/affine/REPOSITIONING-paper-iso.md has every
+% claim of novelty or attribution made here with the statement that carries it, the source, its
+% anchor and the reading note). The section is rewritten against the prior art read after the
+% paper was written (records/affine/PRIOR-ART-origin-threshold-reading.md): the questions carry
+% their stakes for a measurement; "transform", "exponent", "Gaussian part" and "Levy measure" are
+% said at first use; the second answer is in frequency-side words (c is the power at which the
+% transform falls off, Corollary cor:origin-profile-exponent(2)); the dimension enters twice,
+% through the class A_d and through the threshold d; one name for the Matern kernels, introduced
+% once with their identification as the symmetric variance-gamma laws; the prior work on the
+% centre of the kernel (the line: Zolotarev, Wolfe, Sato for continuity, Sato-Yamazato for
+% boundedness and for the rate, Hartman-Wintner; R^d: Watanabe, Knopova-Schilling,
+% Bogdan-Grzywny-Ryznar, Grzywny-Ryznar-Trojan, Cho-Kang-Kim); the cone paper positioned in the
+% paragraph on the dimension filtration (cone paper, Prop. 4.9, Lem. 4.12(3), Rem. 4.10 and
+% Figure 4, read at the page images of pp. 34, 38 and 39 for this item); the contributions as
+% the queue item states them. 1.1 keeps the statement of the trust base; its inventory is
+% Appendix B (appendix-verification.tex).
+% Anchors: grzywny2019asymptotic by statement number of the published text (advance-access
+% pagination 1-66; the journal pages 7193-7258 are not verified). (cho2021estimates and
+% bogdan2014density, named above, are no longer cited: the rewrite of Q-0428 removed them.)
+% Q-0424 (records/affine/reviews/VERIFY-round1-claims-and-trust-base.md, item 9): the paper
+% cites grzywny2019asymptotic by statement number only and never by page, so nothing waits on its
+% journal folios. One number collides with the first arXiv version, Corollary 5.8 (there Theorem
+% 5.8 is another statement and the corollary is absent; READING-grzywny2019asymptotic.md,
+% section 7), and Table tab:in-print says "of the published article" at that citation.
+%
+% Q-0424 (batch R1 of the response to the external review of round 1; records/affine/reviews/
+% RESPONSE-round1-R1.md has every finding with what was done). In this file: question 2 says
+% what an unbounded kernel does to the record of a point source, in the invariant form (no
+% version of the density bounded near the centre), where it said "no finite value to sample"; and
+% section 1.1 (its opening, the departures of C5 and C6, the paragraph on C5, the caption of
+% Table tab:trust-base, the closed form of A_beta under "Outside the formal verification"). The abstract, "The
+% answers", the prior-work paragraphs and the contributions are not touched: they are the
+% framing batch's (R4), written once after the new statements are in.
+%
+% Q-0428 (the rewrite after the external review, round 1; records/affine/
+% REPOSITIONING-paper-iso-round2.md has every attribution made here with its anchor and note, and
+% every sentence on what the paper contributes with the statement that carries it). The author's
+% direction of 2026-10-12 (records/affine/REVIEW-author-paper-iso.md, last section): the paper is
+% a paper in scale-space theory; no apparatus of novelty; attribution exact and made once. So:
+% the opening says why the semigroup axiom is relaxed and what that admits (the presentation
+% review, item 1); mu_{0,t} and "from scale zero" are defined at first use, with "centre" for the
+% point x = 0 (item 5); the answers carry the eight statements of Q-0425 (the rate through the
+% polar profile, the dictionary and its consequences, the limit of the critical values) and say
+% each result once; the Cin rays are introduced as elementary exponents, with the sentence on
+% their superpositions and Jurek and Vervaat's Theorem 7.2 (item 14;
+% READING-jurek1983integral-driving-process.md); the bridge is a Gaussian variance mixture before
+% it is a process (item 15); "Scope" stands with the answers and names what is not treated (item
+% 2). The three paragraphs "Prior work" and the list of contributions in two tiers are replaced
+% by "Relation to scale-space theory", "Relation to probability" and "What the paper
+% contributes". The anchors of the probability literature are in Table tab:in-print, once.
+% 1.1, as first written in this item: two lists, machine-checked and not, with three statements
+% written as machine-checked ahead of the Lean of the parallel item Q-0427. That Lean is merged
+% since, and the fixes round (below) rewrote the subsection.
+% cygan2017asymptotic and leonenko2013tauberian are cited in the numbering of their arXiv
+% versions and bingham1997abel in that of the Hokkaido preprint: these are the copies held and
+% the ones the paper cites (the author, 2026-10-12), said once, in the caption of Table
+% tab:in-print. Their published numbering was not compared.
+%
+% Q-0428, the fixes round (records/affine/REPOSITIONING-paper-iso-round2-fixes.md has every flag
+% of the register review of the front and every row of the scope audit of 2026-10-12 with what
+% was done). The order of section 1: the cascade, what the semigroup axiom adds and what
+% dropping it gives up and gains; the paper's question, with the axioms on kernels in one
+% sentence, on the first page; what is known on the line, with the definitions the answers need;
+% what the weaker axiom admits; the questions; the answers, each opening with its claim and held
+% to the level of the questions (the two forms of the rate with their constants, the formula
+% and the conditions of the dictionary, the sentence on the Urbanik representation and the limit
+% of the critical values are in the leads of sections 3.3 and 3.4 and in the sources); scope;
+% the two relations; the contributions as three items with their sections; the plan.
+% Each sentence on the scale-space literature is held to its reading note (the scope audit,
+% section 5): scale invariance is named with rotation invariance; Koenderink's route is a
+% diffusion equation, not a semigroup; "stable" is this paper's word for the kernels of Pauwels
+% et al. and of Florack et al.; Florack et al. are cited for the words of p. 380, whose formulas
+% the note did not read on the page image; Florack's book with its p. 57 for "positive Schwartz
+% filters". No sentence places the Matern kernels in the scale-space literature: no reading note
+% supports one (the register review's flag 12 is a lead for the librarian).
+% Section 1.1: three opening sentences (what Lean checked, what it did not, who compared the
+% formal statements with the printed ones), the two lists with each print-only statement named
+% in words, what is assumed, then the caveats, short, with the accounts statement by statement
+% in Appendix B. The second list had four statements when the Lean of Q-0429 was merged, and
+% has five since Q-0448 (Proposition prop:step-exponent-dimensions).
+
+\section{Introduction}\label{sec:introduction}
+
+
+% Q-0448 (the response to the second external round; records/affine/reviews/
+% VERIFY-round2-scale-space-literature.md, sections 2, 3 and 10.2). With rotation and scale
+% invariance the semigroup axioms leave the transforms e^{-t|xi|^p}, and positivity leaves
+% 0 < p <= 2, the Gaussian included; a further requirement singles the Gaussian out (the order
+% was the other way round). The two-scale cascade has its precedent, the causality axiom of
+% Alvarez, Guichard, Lions and Morel (p. 203, at the page image; READING-alvarez1993axioms-
+% architecture.md). "What is given up with the semigroup is an evolution equation" is gone:
+% they obtain one without a semigroup, from locality, which is what is not asked here.
+% Q-0448, the blind draft review after the split (records/affine/
+% REVIEW-draft-paper-iso-q0448.md, with its dispositions beside it), group 2: one telling in
+% section 1. The cascade and the aperture are defined in the first paragraph (flag 19); "stable"
+% has its range where the kernels are first written (flag 13; Sato's Theorem 14.14 is for
+% 0 < alpha <= 2, the Gaussian included, and so is clause (3) of Proposition
+% prop:isotropic-bridge); the first paragraph points to "Relation to scale-space theory" for
+% the causality axiom of Alvarez et al. and for what singles the Gaussian out, each of which is
+% said there, once (flags 11, 12); that no generator is claimed is a limitation, in section 4
+% (flag 7). The second paragraph states the axioms and leaves the questions to their list
+% (flag 20).
+A scale-space representation measures a signal through an aperture whose size is the scale. A
+measurement is convolution with a probability kernel, and the record at a coarser scale is
+computed from the record at a finer one by a further convolution, a \emph{stage}. The stages
+together are the \emph{cascade}, and the \emph{aperture} at scale $t$ is the kernel that takes
+the signal itself to its record at scale $t$.
+Scale-space axioms usually require the cascade to be a semigroup in one scale parameter, as those of
+the extended class of Pauwels, Van Gool, Fiddelaers and Moons do \sscite{pauwels1995extended}. A
+semigroup requires more than a cascade needs: every stage has to be itself one of the apertures, so
+that one parameter indexes the stages and the apertures alike. With rotation and scale
+invariance the semigroup axioms of the literature leave the probability kernels whose Fourier
+transform at the frequency $\xi \in \RR^d$ is $e^{-t|\xi|^p}$, for one $p$ with $0 < p \le 2$.
+This paper calls them the \emph{stable kernels} of index $p$. The Gaussian is the stable kernel
+of index $2$. The axioms studied here require only that the stages compose. With
+$\mu_{s,t}$ the kernel of the stage from scale $s$ to scale $t$, this is
+$\mu_{r,t} = \mu_{s,t} * \mu_{r,s}$ for $r \le s \le t$, and how a stage depends on its two
+scales is left free. Such a family is a \emph{convolution hemigroup}
+(\sscite{hazod2001stable}, Def.~2.14.16, p.~380). What is gained is a larger class of
+apertures. The two-scale cascade has a precedent in scale-space theory, and ``Relation to
+scale-space theory'' below sets the present axioms beside it and beside the semigroup axioms.
+
+The axioms are those of the author's paper on the line \sscite{fagerstrom2026spatial}, the
+\emph{line paper} below, with rotation invariance in place of the reflection symmetry
+(Definition~\ref{def:isotropic-operator-family}): an aperture has a size, and no shape and no
+preferred direction. Read on the kernels, they say that the stages
+compose, that they depend continuously on the pair of scales, that each is rotation invariant,
+and that a dilation of the signal only relabels the scales
+(Definition~\ref{def:isotropic-kernel-family}). A family of kernels with these properties is an
+\emph{isotropic cascade family}, an \emph{isotropic family} for short. The axioms read the same
+in every dimension. In imaging $d$ is $2$ or $3$.
+
+On the line the families are classified in the line paper
+(Theorem~\ref{thm:line-classification}), and a second paper \sscite{fagerstrom2026cone}, the
+\emph{cone paper}, describes the set of them. What is used from the two is restated in
+\S\ref{sec:line}. A kernel is a probability measure, and that classification, like everything
+after it in this paper, rests on the theory of such measures in probability. So from here on
+the paper uses the vocabulary of that theory: a kernel is a \emph{law}, and its Fourier
+transform, the transfer function of the smoothing, is the characteristic function of the law.
+Stage, scale and cascade keep their meaning, and ``kernel'' stays in use for a law in its role
+as an aperture. A frequency is written $\omega$ on the line and $\xi$ in $\RR^d$, and
+$\widehat\mu(\omega) = \int e^{i\omega x}\,\mu(dx)$ is the Fourier transform of a kernel $\mu$
+on the line, its \emph{transform} for short. The axiom on dilations
+makes the apertures, the kernels $\mu_{0,t}$ \emph{from scale zero}, the dilations of one law:
+up to a relabelling of the scales, $\mu_{0,t}$ has the
+transform $e^{-F(t|\omega|)}$ for one function $F$, the \emph{exponent} of the family. The
+cascade makes that law \emph{self-decomposable}: for every $0 < \lambda < 1$ it is the
+convolution of its own image under $x \mapsto \lambda x$ with another law
+(\sscite{sato1999levy}, Def.~15.1, p.~90; \sscite{steutel2004infinite}, Ch.~V, (1.1)). In a
+cascade this is the relation between two scales. The kernel at the finer scale is a contracted
+copy of the kernel at the coarser one, and the other law is the stage between them. Every
+symmetric self-decomposable law other than the point mass occurs. Such a law is the convolution
+of a centred Gaussian, which may be absent, with the law of a sum of independent displacements.
+A law of the second kind alone has \emph{no Gaussian part}. Its \emph{\Levy{} measure} gives the
+expected number of displacements of each size. On the line the density of that measure at the
+size $x$, the two directions counted together and multiplied by $x$, is the \emph{folded
+profile} of the law. In $\RR^d$ the same quantity is
+taken in polar coordinates, the \emph{polar profile} of \S\ref{sec:isotropic-reduction}. The
+Gaussian part and the profile determine the exponent, and the exponent determines them
+(\S\ref{sec:line-axioms}; Proposition~\ref{prop:isotropic-polar-reading}(1)).
+
+% Q-0448, the blind draft review (flags 12 and 13): what the semigroup axioms arrive at is said
+% in the first paragraph and, with its sources, under "Relation to scale-space theory"; here
+% the stable kernels are named as laws. The Bessel scale space is described there, once.
+This is what the weaker axiom admits. In probability the stable kernels are the
+rotation-invariant stable laws (\sscite{sato1999levy}, Thm.~14.14, p.~86). Among the kernels
+added are the laws on the line with transform
+$(1 + \omega^2/2)^{-\gamma}$, $\gamma > 0$, whose folded profile is $2\gamma e^{-\sqrt2\,x}$.
+This paper calls these laws and their dilations the \emph{\Matern{} kernels} of index $\gamma$.
+Scale-space theory knows them as the kernels of the Bessel scale space (``Relation to
+scale-space theory'' below). On the line the kernels of integer index are those computed by a
+cascade of identical first-order recursive filters, run forward and backward along the signal
+(\prog{B}{Prop.~7.2 and Cor.~5.5}). Read as functions of the length $|\xi|$ of a frequency
+$\xi \in \RR^d$, the transforms of the stable and the \Matern{} laws are the
+transforms of self-decomposable laws on $\RR^d$, for every $d$
+(Propositions~\ref{prop:line-filtration}(2) and~\ref{prop:isotropic-bridge}). For
+$\gamma > d/2$ the density of the \Matern{} kernel on $\RR^d$ is a \Matern{} covariance
+function, of smoothness $\gamma - d/2$. Spatial statistics uses that family to model random
+fields whose smoothness is a parameter, and \Matern{} obtained it as a gamma mixture of
+Gaussians (\sscite{matern1960spatial}, (2.4.5)--(2.4.7), pp.~17--18;
+\sscite{stein1999interpolation}, \S2.7, p.~31, and \S2.10, pp.~48--49;
+\sscite{guttorp2006studies}; \sscite{porcu2024matern}). In probability the \Matern{} kernels are
+the symmetric variance-gamma laws \sscite{fischer2025variance}, and in potential theory their
+densities are dilations of the Bessel kernel \sscite{aronszajn1961theory}
+(Example~\ref{ex:matern} has the formulas).
+
+\paragraph{The questions.} Three questions arise.
+\begin{enumerate}
+\item Which kernel families do the axioms allow in $\RR^d$? Their kernels from scale zero are
+the apertures that a scale space with these axioms can use in the plane and in space.
+\item What does the dimension change in a kernel? Chiefly, is the kernel bounded at its
+\emph{centre}, the point $x = 0$, or does it record an ideal point source as a spike?
+\item Does the exponent of a family of the line, read as a function of $|\xi|$, give a family in
+the plane and in space? This is the rotation-invariant extension of the family, not the
+separable one. The Gaussian and the $\alpha$-scale spaces of Duits et al.\
+\sscite{duits2004axioms} pass. Is that general,
+or does the set of allowed exponents shrink as $d$ grows?
+\end{enumerate}
+
+% Q-0448 (the author's decision of 2026-10-13: what is said twice goes; exposition item 4 of
+% records/affine/reviews/VERIFY-round2-length-and-exposition.md): "The answers" and "What the
+% paper contributes" are one passage. It opens with the main result, as the author's section
+% review of 2026-10-12 asked of the contributions, and the two descriptions follow as the second
+% and the third answer.
+\paragraph{The answers.} The main result answers the first question. A probability law on
+$\RR^d$ is a kernel from scale zero to a positive scale of an isotropic family, an aperture of a
+scale space with these axioms, exactly when it is
+rotation invariant, self-decomposable and not the point mass at the origin. In every isotropic
+family the kernels from scale zero are, up to a relabelling of the scales, the dilations of one
+such law, and every such law gives an isotropic family, for every relabelling of the scales
+(Corollary~\ref{cor:isotropic-scale-zero-kernels}, with
+Theorem~\ref{thm:isotropic-classification} and Lemma~\ref{lem:isotropic-realisation}; on the
+operators the theorem is Corollary~\ref{cor:isotropic-classification-operators}). The reason is
+a reduction to the line.
+A rotation-invariant kernel is determined by its projection on a line through the origin, and
+the projections of an isotropic family form a family on the line
+(Lemmas~\ref{lem:radial-marginal} and~\ref{lem:isotropic-marginal-family}). Each aperture has
+a radially nonincreasing density, so it weights a nearer point at least as much as a farther one
+(Proposition~\ref{prop:isotropic-radial-monotone}).
+
+Second, the dimension is a threshold for the kernel at its centre. A kernel with a Gaussian part
+is bounded and smooth in every dimension: its transform falls off faster than every power
+(\S\ref{sec:isotropic-origin}). For a kernel from scale zero with no Gaussian part,
+let $c$ be the power at which its transform falls off at high frequencies:
+$-\log\widehat\mu(\xi)/\log|\xi| \to c$ as $|\xi| \to \infty$, with $0 < c \le \infty$
+(Corollary~\ref{cor:origin-profile-exponent}). The kernel has a density that is bounded near its
+centre exactly when $c > d$, and for $c > d + N$ the density is sure to have $N$ continuous
+derivatives (Theorem~\ref{thm:origin-boundedness-d}). The number $c$ belongs to the exponent. It
+is the same in every dimension that admits the exponent, and only the threshold moves. So one
+exponent can give a kernel that is bounded on the line and has a spike in the plane, and the
+\Matern{} kernels, for which $c = 2\gamma$, do this for $\tfrac12 < \gamma \le 1$. When $c < d$
+the density grows at the centre like $|x|^{c-d}$ times a \emph{slowly varying} factor, one that
+changes more slowly than every power, as a constant or a logarithm does, and when $c = d$ it
+grows at least like $\log(1/|x|)$. The factor and the constant are computed from the \Levy{}
+measure (Proposition~\ref{prop:origin-rate-profile-d}). Its small displacements decide whether
+the kernel is bounded at its centre and how many derivatives it is sure to have, and for a
+spike its power and its slowly varying factor. The large ones enter the constant of the spike.
+
+% Q-0448, the blind draft review (flag 24): the stages have a paragraph of their own, with both
+% cases of Proposition prop:isotropic-stages (a point mass exactly for no Gaussian part and a
+% finite c; a density otherwise). The sentence on what a designer specifies is said of the Levy
+% measure, which is what the statements take as given.
+A stage of the cascade need not be an aperture. When the kernels have no Gaussian
+part and $c$ is finite, the stage from scale $s$ to scale $t > s > 0$ passes a fixed fraction
+of the finer record through unchanged and blurs the rest. The fraction is $(s/t)^c$ when the
+scales are labelled so that the kernel at scale $t$ is the dilation by $t$. With a Gaussian
+part, or with $c = \infty$, as for the stable kernels, a stage is a blur by a density
+(Proposition~\ref{prop:isotropic-stages}).
+
+% Q-0448, the blind draft review (flags 2, 21, 22, 23): the third answer at the level of its
+% question, in four points: strict at every dimension; what remains in all of them, said as
+% Proposition prop:line-filtration(3) says it (the mixtures whose mixing law is a kernel of a
+% time-causal family, not every Gaussian variance mixture: every member of the separating
+% family is one and is admitted in finitely many dimensions); the simplest exponents, in the
+% two sentences of the author's section review of 2026-10-12, unchanged; the test, said and not
+% announced, and the family. The detail, with the time-causal literature (now cited in section
+% 2.3, where the time-causal theory is introduced) and Proposition
+% prop:step-exponent-dimensions, is in sections 2.3 and 3.4.
+Third, each dimension admits strictly fewer exponents than the one before. The sets
+$\mathcal{A}_d$ of the exponents admitted in dimension $d$ form a strictly decreasing sequence,
+the \emph{dimension filtration} (Propositions~\ref{prop:line-filtration}
+and~\ref{prop:profile-one-dimension-down}). The exponents that remain in every dimension are
+those of the Gaussians whose variance is drawn at random from a kernel of a time-causal scale
+space with the same axioms, one that measures a signal in time from its past alone. These
+Gaussian variance mixtures include the stable and the \Matern{} kernels
+(\S\ref{sec:line-bridge};
+Propositions~\ref{prop:line-filtration}(3) and~\ref{prop:isotropic-bridge}). Every exponent of
+the line is a
+superposition of a Gaussian term and of elementary exponents, each with a \Levy{} measure whose
+density is proportional to $1/|x|$ up to a cut-off and zero beyond it
+(Proposition~\ref{prop:line-extreme-rays}). The exponents admitted in the plane are still such
+superpositions, the \Matern{} and the stable ones among them. What is lost first is each
+elementary exponent taken alone: none of them is admitted in the plane
+(Proposition~\ref{prop:profile-one-dimension-down}). For the next dimension there is a test.
+The exponent of a kernel with no Gaussian part and a finite $c$ determines a function of the
+radius $|\xi|$ that is the Fourier transform of a probability law on $\RR^d$, and the exponent
+is admitted in $\RR^{d+1}$ exactly when that function is still the transform of a law there
+(Proposition~\ref{prop:radial-dictionary}). And one explicit family of exponents is followed
+through the dimensions: the dimensions that admit a member are read off its parameter
+(Theorem~\ref{thm:separating-family-critical-values}).
+
+% Q-0448, the blind draft review (flag 7): the scope says what the paper is about. Its
+% limitations (the kernels from scale zero, the smoothing part of a stage, locality, the
+% extrema, the generator) are listed once, in section 4.
+\paragraph{Scope.} The axioms and the classification are stated on operators and on their kernels,
+and the two forms describe the same families (Lemma~\ref{lem:operators-to-kernels}). The other
+statements are on kernels. The paper is theory: it has no
+discretization, no implementation and no experiment, and \S\ref{sec:conclusion} lists its
+limitations. Apertures with a shape are the subject of
+a companion paper on affine covariance, not yet released.
+% TODO(module affine): cite the affine paper of this repository (paper/) when released.
+
+% Each sentence against its reading note (records/affine/READING-koenderink1984structure.md,
+% -florack1992scale.md, -florack1997image.md, -lindeberg2011generalized.md,
+% -pauwels1995extended.md, -duits2004axioms.md; the scope audit of 2026-10-12, section 5).
+% Lindeberg is cited by section; the held copy is the preprint, whose pages 5 and 10 these are.
+% Florack et al.: (6) and (19), (23)-(25) were read at the page images of pp. 379 and 380
+% (READING-florack1992scale-p380.md, Q-0430): G(omega; sigma) = exp(alpha sigma^p omega^p),
+% alpha an arbitrary negative constant, "only positive p-values will be of interest", omega the
+% magnitude of the frequency; no upper bound on p is stated there and positivity of the kernel
+% is not among their conditions, so "when 0 < p <= 2" in the first sentence is this paper's
+% (the range in which the filter is the transform of a law; Duits et al. below have it for
+% their generators). Pauwels et al., p. 694: recursivity and scale invariance give the transforms
+% e^{-a|omega|^alpha t}, alpha > 0; the word "stable" is not theirs.
+
+% Q-0448 (the response to the second external round; VERIFY-round2-scale-space-literature.md,
+% sections 1 to 3 and 10.3, with the page of every anchor and the reading note that read it:
+% READING-alvarez1993axioms-architecture.md, pp. 203, 204, 206, 211, 214, 226;
+% READING-felsberg2004monogenic.md, pp. 7-8; READING-weickert1999linear.md, pp. 239-240;
+% READING-burgeth2005bessel.md, pp. 86, 89, 90; READING-burgeth2005relativistic.md, pp. 3, 7).
+% Four short paragraphs under one heading: the two-scale cascade and the scale invariance with
+% a free relabelling are axioms of Alvarez et al., who ask locality and regularity besides; the
+% semigroups with scale invariance, and what leaves the Gaussian alone; the semigroups without
+% scale invariance, the Bessel scale space among them, whose kernels are the Matern kernels
+% and whose dilations at a fixed index have no composition law there; what the present axioms
+% give. Not written, each for the reason of section 10.7 of the record: that the family of
+% Pauwels et al. was derived by Iijima; that the shadow is Matheron's descente; that the
+% recursive Gaussians are Matern kernels; any constant of p. 87 of Burgeth et al.
+\paragraph{Relation to scale-space theory.} The two-scale cascade is the causality axiom of
+Alvarez, Guichard, Lions and Morel, who state it as the weaker form of the semigroup, and their
+scale invariance, like axiom (A8), lets a dilation relabel the scales in a way that is not
+prescribed (\sscite{alvarez1993axioms}, pp.~203, 206 and~226). They require in addition that the
+stages be regular and local. For linear operators that commute with the isometries the heat
+equation follows, up to a rescaling of the scale (Thm.~3, p.~214). The present axioms keep their
+comparison principle as positivity and do not require locality.
+
+% Q-0448, the blind draft review (flags 12, 13, 14, 38). The range of "stable" is fixed in the
+% first paragraph, and p = 2 alpha is said for Duits et al. Each route to the Gaussian has a
+% sentence that names its assumption, from the reading note of its source: Iijima as reported
+% by Weickert et al. (the transforms exp(-xi^(2m)), m = 1, 2, ..., on the line, Lemma 4 and
+% Theorem 1, p. 240; positivity gives m = 1) with the regularity that Felsberg and Sommer name
+% (p. 8); Koenderink, p. 365 (spurious resolution prohibited, then homogeneity and isotropy);
+% Florack et al., (23)-(25), p. 380 (separability fixes p = 2); Florack's book, Assumption 3.1
+% and Observation 3.1, p. 57, and Result 3.2, p. 61; Lindeberg, sections 3.1 and 4.1.1. The
+% paragraph that recapped the three answers is gone.
+The axiom systems that keep a semigroup with scale invariance arrive at the transforms
+$e^{-a|\xi|^p}$: Pauwels et al.\ from recursivity and scale invariance
+(\sscite{pauwels1995extended}, p.~694 and \S III, p.~695), Duits et al.\ as the semigroups
+generated by $-(-\Delta)^\alpha$, positive for $\alpha \in (0,1]$, where $p = 2\alpha$
+(\sscite{duits2004axioms}, pp.~267 and~277), with the Poisson scale space of Felsberg and
+Sommer at $\alpha = \tfrac12$ (\sscite{felsberg2004monogenic}, Thm.~1, p.~7). A requirement of
+another kind leaves the Gaussian alone, and each derivation has its own. Iijima's axioms, the
+first, give on the line the transforms $\exp(-\xi^{2m})$, $m = 1, 2, \dots$, of which
+positivity leaves the Gaussian (\sscite{weickert1999linear}, pp.~239--240). His derivation
+supposes a transform that is differentiable at the origin, which that of the Poisson kernel is
+not (\sscite{felsberg2004monogenic}, p.~8). Koenderink prohibits spurious resolution, his
+causality, and with homogeneity and isotropy obtains the diffusion equation
+(\sscite{koenderink1984structure}, p.~365). Florack et al.\ require separability
+(\sscite{florack1992scale}, (23)--(25), p.~380). Florack's book requires filters that are positive
+Schwartz functions and form a convolution algebra (\sscite{florack1997image}, p.~57 and
+Result~3.2, p.~61). Lindeberg requires that local extrema not be enhanced
+(\sscite{lindeberg2011generalized}, \S3.1 and \S4.1.1).
+
+Without scale invariance a semigroup of rotation-invariant kernels need not be of this kind. The
+Bessel scale space of Burgeth, Didas and Weickert is the semigroup in $t \ge 0$ of the kernels
+with transform $(1 + |\xi|^2)^{-t/2}$, which at $t = 2\gamma$ are dilations of the \Matern{}
+kernels of index $\gamma$ (\sscite{burgeth2005bessel}, pp.~86 and~89). It runs along the index
+and is not scale invariant. Its authors also dilate the kernels at a fixed index, with no rule
+for composing the dilations (p.~90). The hemigroup is that rule
+(Proposition~\ref{prop:isotropic-bridge}). The relativistic scale spaces of the same authors
+are a second such semigroup \sscite{burgeth2005relativistic}.
+
+% The classification as a statement about laws, and the statements on the centre and on the
+% filtration: every anchor is in the table of the sources (sources.tex), once. This paragraph
+% says in words what is in print and what the proofs use (the scope audit, row 5: the proofs use
+% the seven cited facts, and "uses" was a claim about them that the trust base denies).
+% Q-0448, the blind draft review (flags 15 and 40): the two theorems are named by their numbers
+% at the claim (their pages and what each states are in Table tab:in-print, which the paragraph
+% points to); the clause on the representation of a self-decomposable law by an integral of a
+% Levy process, which named no statement of the paper, is gone (the table has it at the
+% dictionary). The count of the cited facts is said in the abstract, in 1.1 and in 2.6, and
+% no longer here and in the plan.
+\paragraph{Relation to probability.} The laws that the axioms select are a known class. Read on
+laws, the classification is in print, for the self-similar processes with independent
+increments (\sscite{sato1999levy}, Thm.~16.1) and for hemigroups on groups
+(\sscite{hazod2001stable}, Thm.~2.14.21). In both the action of a
+dilation on the parameter is prescribed. Here it is a relabelling of the scales that the axioms
+leave free. The statements on the kernels have counterparts in print as well, for a case or in
+another form: on the line, results of Zolotarev, of Wolfe and of Sato and Yamazato
+(\S\ref{sec:line-origin}); in $\RR^d$, Tauberian theorems, which pass from the decay of a
+transform to the growth of a density. Table~\ref{tab:in-print} in
+\S\ref{sec:isotropic-sources} says, statement by statement, where each is in print and for
+which case. The proofs given here are written out from the cited facts of
+\S\ref{sec:cited-facts} and the statements restated in \S\ref{sec:line}.
+
+\paragraph{Plan of the paper.} \S\ref{sec:line} restates what is used from the line paper and the
+cone paper, and the theorems of the literature that the proofs cite, the
+\emph{cited facts}.
+\S\ref{sec:isotropic} is the isotropic theory: the axioms, then the three questions in their
+order.
+\S\ref{sec:conclusion} has the limitations and what is left open.
+Appendix~\ref{app:isotropic-proofs} has a table of the notation (Table~\ref{tab:notation}), the
+sources (\S\ref{sec:isotropic-sources}), the proofs of the classification, the statements that
+\S\ref{sec:isotropic} names and does not state, and the proofs of the statements that are
+proved in print only. Appendix~\ref{app:verification} says where the formal development is. The
+other proofs that Lean checked, the cited facts in full and the list of the formal declarations are
+in \suppl. \supplnumbers{} What is machine-checked, and what is proved in print only, is said
+next.
+
+\subsection{What is machine-checked}\label{sec:trust-base}
+% trust base: begin
+% This subsection is the STATEMENT of the trust base (article-kit WRITING.md section 4): what is
+% machine-checked, what is assumed, what is neither. Its inventory (tool versions, commands, the
+% Lean names of the cited facts, the table of the cited facts per statement, the stamped #print
+% axioms block, the account of the statements of section 2 one by one) is Appendix B,
+% appendix-verification.tex, under a second pair of "trust base" markers. `linkage check` reads
+% every marked region of every .tex file of the paper directory (LINKAGE.md rule 13), each on
+% its own. It reads a row of a table, an \item or a sentence that \ref's a statement and says
+% "machine-checked" as a claim that the node is \leanok, and "not machine-checked" as a claim
+% that it is not. So the items of the two lists are checked one by one, and no other sentence of
+% the subsection gives a statement a status.
+% C1-C4 are the ledger's A1-A4, C5 is A8, C6 is A10, C7 is A11 (blueprint/trust-boundary.txt).
+%
+% Q-0428, the fixes round (the register review of the front, structural change 3; the author's
+% answer of 2026-10-11, records/affine/REVIEW-author-paper-iso.md: "I have not reviewed the Lean
+% statements myself"). The opening is three sentences: what Lean checked, what it did not, who
+% compared the formal statements with the printed ones. The print-only statements are named in
+% words beside their numbers. The state the prose is written for: five statements proved in
+% print and not machine-checked (lem:exponent-profile-constant, prop:radial-dictionary,
+% cor:dictionary-filtration, prop:separating-family-mixtures, and since Q-0448
+% prop:step-exponent-dimensions), every other statement machine-checked.
+%
+% Q-0431 (the author's section review of 2026-10-12, verbatim in
+% records/affine/REVIEW-author-paper-iso.md: "we focus on what is not what isn't, and this is
+% discussed in the AI statement"; and, of the sentences on Proposition prop:isotropic-bridge,
+% "It gives the impression that we have just invented an hypothesis out of thin air. When we in
+% fact have cited a published result"). The subsection says what is the case. The opening: what
+% Lean checked; where the seven theorems are stated; who compared the formal statements with
+% the printed ones, with a pointer to the statement on the use of AI; how the rest is
+% established (in print, in the text, by scripts). "It did not check ..." and "no human, the
+% author included, has read the formal statements" are gone, and so is "No human has read a
+% formal statement" at the end of the paragraph on the review. The two lists stay as they are:
+% they say what is, and `linkage check` reads them. After the lists, Proposition
+% prop:isotropic-bridge is said to be stated for the kernels of a time-causal family, whose
+% existence for the three named delays is two cited results (the time-causal paper's
+% classification, Halgreen's theorem), outside the formal development: the formal statement
+% takes the family as given (IsCausalKernels, and hT for the inverse-gamma delay). "Conditional"
+% and "assumes" are gone. The count of seven assumed theorems is about the formal statements
+% and stays true. Other sentences turned from what was not done to what is: the statements of
+% section 2 in their own papers; the three things "neither machine-checked nor cited" (they are
+% proved in print or computed); "No statement uses a computed value"; "no profile with such a
+% factor is constructed in Lean" (the example of section 3.3 is computed in the text).
+% Q-0448 (the split, specification 3(b)): the subsection is one paragraph and the two lists.
+% Its other paragraphs (the statements of section 2, the form of five formal statements, what
+% is outside the formal verification, the review of the formal statements) are section S1 of the
+% supplement, supp-trust.tex, cut whole (records/affine/split_q0448_roots.py).
+% Q-0448, the blind draft review of the split (records/affine/REVIEW-draft-paper-iso-q0448.md,
+% flags 1, 3 and 40). The opening names the three parts whose statements have formal
+% counterparts, as it did before the split ("of this paper and of its supplement" took in the
+% restatements of section 2 and the cited facts of section S2). The three caveats that the
+% split had left in section S1 alone stand after the lists (WRITING.md section 4: nothing
+% honesty-critical leaves 1.1): the statements of section 2, the time-causal families of
+% Proposition prop:isotropic-bridge in the wording of Q-0431, and what is computed. Lemma
+% lem:filtration-top is named with what it states. The closing sentence, which repeated the
+% plan, is gone.
+The statements of \S\ref{sec:isotropic}, of Appendix~\ref{app:isotropic-proofs} and of
+\S\ref{supp:proofs} have formal counterparts in the Lean~4 proof
+assistant, on its mathematical library Mathlib, except those of the second list below. Lean
+checked that each formal statement follows from the formal definitions, its own logical
+foundations and seven theorems of the literature, the cited facts \ledger{A1}, \ledger{A2},
+\ledger{A3}, \ledger{A4}, \ledger{A8}, \ledger{A10} and \ledger{A11}, which are its only
+assumptions. \S\ref{sec:cited-facts} names the seven, each with the page of its source, and
+says with which statement each enters: Theorems~\ref{thm:isotropic-classification}
+and~\ref{thm:origin-boundedness-d}, Propositions~\ref{prop:isotropic-polar-reading},
+\ref{prop:isotropic-radial-monotone} and~\ref{prop:origin-rate-profile-d}, and
+Lemma~\ref{lem:filtration-top} of \suppl.
+% Q-0449 (the author's final reading, 2026-10-13): the sentence that said with which statement
+% each cited fact enters (C3 with the classification, ...) was a forward reference to section
+% 2.6; it is there now, after the list. The statements are still named here, without the
+% C-numbers: LINKAGE.md rule 13 compares the cited facts this region names with those that the
+% statements it \ref's read, and two of them (A8, A11) are read by no other statement named in
+% this section.
+Table~\ref{tab:trust-base} in
+Appendix~\ref{app:verification} has the cited facts of every statement. The statements of the second list are proved in
+\S\ref{app:print-proofs}, and their proofs were refereed by AI agents that saw the statements
+and their proofs and no other part of the work. The formal statements were compared with the
+printed ones by AI agents. \S\ref{supp:trust} has the account of that review, of the form of
+the formal statements and of what the text computes, and the statement on the use of AI at the
+end of the paper says how the work was done.
+\begin{itemize}
+% `linkage check` reads each \item as one row and compares its status with the \leanok tag of
+% every node it names.
+\item \emph{Machine-checked}: every definition, lemma, proposition, theorem and corollary of
+these three parts that the second list does not name.
+\item \emph{Not machine-checked}, proved in print:
+Proposition~\ref{prop:radial-dictionary}, the dictionary between the exponents of logarithmic
+growth and the radial characteristic functions;
+Corollary~\ref{cor:dictionary-filtration}, the two readings of the test in that dictionary;
+Proposition~\ref{prop:separating-family-mixtures}, the separating family as laws;
+Lemma~\ref{lem:exponent-profile-constant}, the closed form of the constant $\varkappa_d$;
+and Proposition~\ref{prop:step-exponent-dimensions}, the step exponent one and two dimensions up.
+% Q-0448, the joining step: Proposition prop:isotropic-stages stood in this list until the Lean
+% of queue item Q-0447 was merged. Its three blueprint nodes are \leanok, it falls under the
+% first item, and its proof is in the supplement (supp-proofs.tex inputs proof-stages.tex).
+% Five statements are in this list.
+% Q-0428, at the merge of the Lean of Q-0429 (its second part): the sentence "At this revision
+% also: ..." that stood here, with Lemma lem:shadow-polar-profile, Proposition
+% prop:profile-one-dimension-down and Theorem thm:separating-family-critical-values, is gone.
+% The three are machine-checked and fall under the first item, which names no statement: it is
+% the complement of this one. Their items, with their declarations, are in the list of Appendix
+% B, where `linkage check` reads their status.
+\end{itemize}
+The statements of \S\ref{sec:line} are restated from the line paper and the cone paper. The
+formal development proves what it needs of them from the seven cited facts, and in their own
+papers part of them is proved in print. Proposition~\ref{prop:isotropic-bridge} is stated for
+the kernels of a time-causal family. That each of its three named delays has such a family is
+the classification of the time-causal paper, with Halgreen's theorem for the inverse-gamma
+delay, both cited after the proposition. The formal statement takes the family as given, so
+these two results are outside the formal development. The examples, Table~\ref{tab:matern},
+the list of $c$ in \S\ref{sec:isotropic-origin} and the figures are computed, in the text or by
+scripts, and the statements are independent of the computed values. That a kernel with a
+Gaussian part is bounded is argued in \S\ref{sec:isotropic-origin} from \ledger{A1}, with no
+formal counterpart.
+% Q-0450 (the scope audit of 2026-10-13, mismatch 3): the abstract's threshold covers the
+% kernels with a Gaussian part, and for them it is the argument of the paragraph before Theorem
+% thm:origin-boundedness-d (the transform is at most e^{-a|xi|^2/2}, and C1 applies), which is
+% no numbered statement and has no declaration (isotropic_stage_smooth_density is for a stage,
+% 0 < s < t). The abstract's last sentence sends the reader here for what is not
+% machine-checked, so it is said here.
+% trust base: end

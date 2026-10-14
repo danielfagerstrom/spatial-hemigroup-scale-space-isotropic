@@ -1,0 +1,2341 @@
+% Q-0448: the proofs that Lean checked, section S3 of the supplement (supplement.tex) and an
+% appendix of the full document (full.tex). Every proof and statement below was cut unchanged
+% from appendix-isotropic.tex by records/affine/split_q0448.py, with the comment lines above
+% it; the header of that file has their history. Six statements that are used in these proofs
+% only are stated here. `linkage check` reads this file as it reads every .tex file of the
+% directory: a statement by its marker, a proof by the \ref of its heading.
+\section{Proofs of the machine-checked statements}\label{supp:proofs}
+
+This section has the proofs of the statements of the paper that Lean checked, in the order of
+\S\ref{sec:isotropic}. The proofs of the classification are in the paper
+(\S\ref{app:classification-proofs}), and so is the proof of
+Proposition~\ref{prop:profile-one-dimension-down} (\S\ref{app:print-proofs}). Six lemmas are
+stated here and not in the paper:
+Lemmas~\ref{lem:positive-transform-origin}, \ref{prop:origin-rate-d},
+\ref{lem:threshold-monotone}, \ref{lem:threshold-limit}, \ref{lem:threshold-asymptotic}
+and~\ref{lem:filtration-top}. The paper cites them by these numbers, and where a statement or
+a figure of its main text needs a formula of one of them, the paper gives the formula.
+% Q-0448, the blind draft review of the split (flag 3): "that only these proofs use" was not
+% true. The main text of the paper uses five of the six: the Gaussian density g_t of the first
+% (displayed before Theorem thm:origin-boundedness-d), the constant R(d,c) and clause (1) of
+% the second (displayed, and stated, before Proposition prop:origin-rate-profile-d), the
+% criterion of the third (before Definition def:filtration-thresholds), the two bounds of the
+% fourth (displayed after Theorem thm:separating-family-critical-values, and drawn in Figure
+% fig:thresholds), and the sixth as what the cited fact C6 enters with (section 1.1, with
+% what it states). The fifth is clause (3) of that theorem with sharper bounds.
+
+\subsection{The axioms}\label{supp:proofs-axioms}
+
+The proof is the line paper's, carried from the line to $\RR^d$: clause (1) is proved as
+\prog{V}{Lem.~4.1} is, with balls in place of intervals, and the passage between the operators
+and the kernels follows the proofs of \prog{V}{Lem.~4.2 and Lem.~6.1}, with $\GL(d)$ in place of
+the dilations. It is written out in full because those statements are on the line.
+
+% Q-0406: the proof of this paper's Lemma lem:operators-to-kernels, assembled from the proofs of
+% record of the two blueprint nodes it renders, in the order of the paper's clauses:
+% lem:operators-to-kernels (the two facts used throughout; clause (1) whole; clauses (2), (3), (5))
+% and lem:kernels-to-operators (clauses (1) and (3)). It replaces the proof of Q-0334, which had the
+% passage from kernels to operators only. The paragraphs are the proofs of record's, with these
+% differences, none of which adds or drops a step:
+%   - the clauses carry the numbers of the paper's lemma; the node's clause (2), the transport
+%     identity, is the paragraph headed "Transport";
+%   - lem:operators-to-kernels(5) says "the same argument on the parameter set" as its clause (4):
+%     that argument is written out on {0 <= s <= t}, with (I1) and (I2) for (K1) and (K2); so is
+%     lem:kernels-to-operators(3), as Q-0334 wrote it;
+%   - (I2) is derived from (A7) at every f, the hypothesis of the paper's clause (2), where the node
+%     reads (A7) at f = varphi only;
+%   - varphi (the standard Gaussian density; gamma before Q-0327, which renamed it at the
+%     nodes, and this copy follows) and D_A are defined here (the node defines them in its
+%     statement, the paper's statement does not need them); rotation invariance is cited as (A3), its number in
+%     Definition def:isotropic-operator-family;
+%   - the transport display is broken over two lines (layout only);
+%   - the frequency on R^d is xi, as in the paper's clause (2) since Q-0417, where the proofs of
+%     record write omega (the letter only, 31 occurrences).
+% Pinned against both nodes' proofs.
+\begin{proof}[Proof of Lemma~\ref{lem:operators-to-kernels}]
+For $A \in \GL(d)$ write $D_Af := |\det A|^{-1}f(A^{-1}\,\cdot)$ on $L^1(\RR^d)$. Then
+$R_Q = D_Q$ for $Q \in \Orth(d)$, since $|\det Q| = 1$, and $D_\lambda = D_{\lambda I}$. Let
+$\varphi(x) := (2\pi)^{-d/2}e^{-|x|^2/2}$ be the standard Gaussian density, and for $\sigma > 0$
+write $\varphi_\sigma(x) := \sigma^{-d}\varphi(x/\sigma)$, the centred Gaussian density with
+covariance $\sigma^2I$.
+
+Two facts are used throughout. For a probability measure $\mu$ and $f \in L^1(\RR^d)$, $\mu * f$
+is the $L^1(\RR^d)$-valued Bochner integral $\int T_yf\,\mu(dy)$: the map $y \mapsto T_yf$ is
+continuous because translation acts continuously on $L^1(\RR^d)$, and it is bounded by
+$\|f\|_1$. And with $\widehat h(\xi) := \int e^{i\langle\xi,x\rangle}h(x)\,dx$ for
+$h \in L^1(\RR^d)$, Fubini gives the pairing
+\[
+  \widehat{\mu * f}(\xi) = \widehat\mu(\xi)\,\widehat f(\xi),
+  \qquad |\widehat h(\xi)| \le \|h\|_1 ,
+\]
+and $\widehat\varphi(\xi) = e^{-|\xi|^2/2} > 0$.
+
+\emph{(1), the interchange identity.} For $f, g \in L^1(\RR^d)$, $f * g = \int f(y)\,T_yg\,dy$ as
+a Bochner integral, dominated by $|f(y)|\,\|g\|_1$. A bounded operator commutes with an
+$L^1(\RR^d)$-valued integral, so (A1) and (A2) give $\Phi(f * g) = \int f(y)\,T_y\Phi g\,dy
+= f * \Phi g$.
+
+\emph{The approximants.} Let $B_\varepsilon := \{|x| < \varepsilon\}$, $|B_\varepsilon|$ its
+volume, $\rho_\varepsilon := |B_\varepsilon|^{-1}\mathbf 1_{B_\varepsilon}$ and
+$h_\varepsilon := \Phi\rho_\varepsilon$. By (A4) and (A5), $h_\varepsilon \ge 0$ with
+$\int h_\varepsilon = 1$, so $\nu_\varepsilon := h_\varepsilon\,dx$ is a probability measure on
+$\RR^d$. For every $f$, $\|f * \rho_\varepsilon - f\|_1 \le \sup_{|y| < \varepsilon}
+\|T_yf - f\|_1 \to 0$ as $\varepsilon \downarrow 0$.
+
+\emph{Tightness.} By the interchange identity $\rho_1 * h_\varepsilon = \Phi(\rho_1 *
+\rho_\varepsilon)$, which tends to $\Phi\rho_1$ in $L^1(\RR^d)$ by (A1). Along
+$\varepsilon_n := 1/(n+1)$ the functions $\rho_1 * h_{\varepsilon_n}$ therefore have uniformly
+small tails: given $\eta > 0$ there is $R$ with $\int_{|x| > R}(\rho_1 * h_{\varepsilon_n}) < \eta$
+for every $n$ (choose $N$ with $\|\rho_1 * h_{\varepsilon_n} - \Phi\rho_1\|_1 < \eta/2$ for
+$n \ge N$, then $R$ for $\Phi\rho_1$ and the first $N$ terms). Convolution with a nonnegative
+unit-mass density carried by the unit ball moves mass by at most $1$: for $|y| > R + 1$ the
+translate $\rho_1(\cdot - y)$ is carried by $\{|x| > R\}$, so by Tonelli
+\[
+  \int_{|x| > R}(\rho_1 * h_\varepsilon)(x)\,dx
+  = \int h_\varepsilon(y)\int_{|x| > R}\rho_1(x - y)\,dx\,dy
+  \ge \nu_\varepsilon\bigl(\{|y| > R + 1\}\bigr) .
+\]
+So the sequence $(\nu_{\varepsilon_n})$ is tight, with the closed balls of radius $R + 1$ as
+compacts.
+
+\emph{The limit.} By Prokhorov's theorem a subsequence $\nu_{\varepsilon_{n_k}}$ converges weakly
+to a probability measure $\mu$ on $\RR^d$.
+
+\emph{Identification.} Let $\Psi \in L^\infty(\RR^d)$, acting on $L^1(\RR^d)$ by
+$\Psi(h) := \int\Psi h$, and $f \in L^1(\RR^d)$. The map $y \mapsto \Psi(T_yf)$ is continuous and
+bounded by $\|\Psi\|_\infty\|f\|_1$, hence a test function for weak convergence. Since
+$f * h_\varepsilon = \int h_\varepsilon(y)\,T_yf\,dy$ and $\Psi$ commutes with the integral,
+\[
+  \Psi(f * h_{\varepsilon_{n_k}}) = \int\Psi(T_yf)\,\nu_{\varepsilon_{n_k}}(dy)
+  \ \xrightarrow{\ k \to \infty\ }\ \int\Psi(T_yf)\,\mu(dy) = \Psi(\mu * f) .
+\]
+On the other hand $f * h_\varepsilon = \Phi(f * \rho_\varepsilon) \to \Phi f$ in $L^1(\RR^d)$, by
+the interchange identity and (A1). Hence $\Psi(\Phi f - \mu * f) = 0$ for every $\Psi$; taking
+$\Psi$ the sign of $\Phi f - \mu * f$ gives $\Phi f = \mu * f$.
+
+\emph{Uniqueness.} If $\mu$ and $\nu$ are probability measures with
+$\mu * \varphi = \nu * \varphi$, the pairing gives
+$\widehat\mu(\xi)\,\widehat\varphi(\xi) = \widehat\nu(\xi)\,\widehat\varphi(\xi)$, so
+$\widehat\mu = \widehat\nu$ because $\widehat\varphi > 0$, and $\mu = \nu$ because a finite measure
+on $\RR^d$ is determined by its Fourier transform. In particular two measures representing the
+same operator agree.
+
+\emph{Converse.} For a probability measure $\mu$, $\|\mu * f\|_1 \le \|f\|_1$ by Minkowski's
+integral inequality (A1); $T_a(\mu * f) = \mu * T_af$, both being
+$x \mapsto \int f(x - a - y)\,\mu(dy)$ (A2); $\mu * f \ge 0$ when $f \ge 0$ (A4); and
+$\int\mu * f = \int f$ for $f \ge 0$ by Tonelli (A5).
+
+\emph{(2), from $L^1$ to the transforms.} Suppose $\mu_n * f \to \mu * f$ in $L^1(\RR^d)$ for
+every $f$, and take $f = \varphi$. By the pairing,
+$|\widehat\mu_n(\xi) - \widehat\mu(\xi)|\,\widehat\varphi(\xi)
+\le \|\mu_n * \varphi - \mu * \varphi\|_1 \to 0$; divide by $\widehat\varphi(\xi) > 0$. The test
+density must have a zero-free transform, which is why the indicator of a ball would not do.
+
+\emph{(2), from the transforms to $L^1$: the smoothed measures.} For a probability measure $\nu$
+and $f, g \in L^1(\RR^d)$ three facts are used, each by Fubini's theorem:
+$\|\nu * f\|_1 \le \|f\|_1$; $\|g * f\|_1 \le \|g\|_1\|f\|_1$; and
+$\nu * (g * f) = (\nu * g) * f$, where $\nu * g$ is the integrable function
+$x \mapsto \int g(x - y)\,\nu(dy)$. The Gaussian integral gives, for every $z \in \RR^d$,
+\[
+  \varphi_\sigma(z) = (2\pi)^{-d}\int e^{-i\langle\xi,z\rangle}e^{-\sigma^2|\xi|^2/2}\,d\xi .
+\]
+Put $z = x - y$ and integrate in $\nu(dy)$. The integrand is bounded by $e^{-\sigma^2|\xi|^2/2}$,
+which is integrable for $d\xi \otimes \nu$, so Fubini's theorem gives, for every probability
+measure $\nu$ and every $x \in \RR^d$,
+\[
+  (\nu * \varphi_\sigma)(x) = (2\pi)^{-d}\int e^{-i\langle\xi,x\rangle}\,\widehat\nu(\xi)\,
+  e^{-\sigma^2|\xi|^2/2}\,d\xi .
+\]
+Put $h_n := \mu_n * \varphi_\sigma$ and $h := \mu * \varphi_\sigma$. Since $|\widehat\mu_n| \le 1$ and
+$\widehat\mu_n \to \widehat\mu$ pointwise, dominated convergence gives $h_n(x) \to h(x)$ for every
+$x$. The $h_n$ and $h$ are nonnegative with integral $1$ (Tonelli), so $\int(h_n - h) = 0$ and
+\[
+  \|h_n - h\|_1 = 2\int(h - h_n)^+ \xrightarrow{\ n \to \infty\ } 0 ,
+\]
+by dominated convergence again, since $0 \le (h - h_n)^+ \le h$ and $(h - h_n)^+ \to 0$ pointwise.
+
+\emph{(2), the approximation.} By Minkowski's integral inequality and the substitution $y = \sigma z$,
+\[
+  \|\varphi_\sigma * f - f\|_1 \le \int\varphi_\sigma(y)\,\|T_yf - f\|_1\,dy
+  = \int\varphi(z)\,\|T_{\sigma z}f - f\|_1\,dz ,
+\]
+which tends to $0$ as $\sigma \downarrow 0$ by dominated convergence: the integrand is bounded by
+$2\|f\|_1\varphi(z)$ and tends to $0$ pointwise, translation being continuous on $L^1(\RR^d)$. Now
+split $f = (f - \varphi_\sigma * f) + \varphi_\sigma * f$. By the three facts,
+$\mu_n * (\varphi_\sigma * f) = h_n * f$ and $\mu * (\varphi_\sigma * f) = h * f$, so
+\[
+  \|\mu_n * f - \mu * f\|_1 \le 2\,\|f - \varphi_\sigma * f\|_1 + \|(h_n - h) * f\|_1
+  \le 2\,\|f - \varphi_\sigma * f\|_1 + \|h_n - h\|_1\,\|f\|_1 .
+\]
+Given $\varepsilon > 0$, choose $\sigma$ so that the first term is below $\varepsilon$, and then $n_0$ so
+that the second is below $\varepsilon$ for $n \ge n_0$.
+
+\emph{Transport.} For a probability measure $\mu$, $A \in \GL(d)$, $f \in L^1(\RR^d)$ and
+$x \in \RR^d$, substituting $z = Ay$,
+\[
+\begin{aligned}
+  \bigl((A_*\mu) * D_Af\bigr)(x) &= \int |\det A|^{-1}f\bigl(A^{-1}(x - z)\bigr)\,(A_*\mu)(dz) \\
+  &= |\det A|^{-1}\int f(A^{-1}x - y)\,\mu(dy) = D_A(\mu * f)(x) .
+\end{aligned}
+\]
+$D_A$ is invertible on $L^1(\RR^d)$ with inverse $D_{A^{-1}}$, so applying the identity to
+$D_A^{-1}g$ gives $D_A\,(\mu * D_A^{-1}g) = (A_*\mu) * g$ for every $g$: the operator
+$D_A\,(\mu * \cdot\,)\,D_A^{-1}$ is convolution by $A_*\mu$. It is convolution by a probability
+measure $\nu$ if and only if $A_*\mu = \nu$, by the uniqueness in (1).
+
+\emph{(3).} By (1), each $\Phi_{s,t}$ is convolution by a unique probability measure
+$\mu_{s,t}$. \emph{(I1).} $\Phi_{t,t} = \mathrm{Id}$ is convolution by $\delta_0$, so
+$\mu_{t,t} = \delta_0$ by uniqueness. By Fubini
+$\mu_{s,t} * (\mu_{r,s} * f) = (\mu_{s,t} * \mu_{r,s}) * f$, so (A6) says that $\mu_{r,t}$ and
+$\mu_{s,t} * \mu_{r,s}$ represent the same operator, and they are equal by uniqueness.
+\emph{(I2).} $\{0 \le s \le t\}$ is a subset of $\RR^2$, so continuity on it is sequential. If
+$(s_n,t_n) \to (s,t)$ in it, (A7) gives $\mu_{s_n,t_n} * f \to \mu_{s,t} * f$ in $L^1(\RR^d)$ for
+every $f$, and (2) gives $\widehat\mu_{s_n,t_n}(\xi) \to \widehat\mu_{s,t}(\xi)$ for every
+$\xi$. \emph{(I3).} $R_Q = D_Q$, and (A3) reads $D_Q\Phi_{s,t}D_Q^{-1} = \Phi_{s,t}$; the
+transport with $\nu = \mu = \mu_{s,t}$ gives $Q_*\mu_{s,t} = \mu_{s,t}$. \emph{(I4).}
+$D_\lambda = D_{\lambda I}$, and (A8) reads
+$D_{\lambda I}\Phi_{s,t}D_{\lambda I}^{-1} = \Phi_{S_\lambda s,\,S_\lambda t}$; the transport gives
+$(\lambda I)_*\mu_{s,t} = \mu_{S_\lambda s,\,S_\lambda t}$. \emph{(ND).} If $\mu_{s,t} = \delta_0$
+with $s < t$ then $\Phi_{s,t} = \mathrm{Id}$, against (ND).
+
+\emph{(4).} Each $\Phi_{s,t}$ is linear and satisfies (A1), (A2), (A4) and (A5) by the converse
+in (1). \emph{Cascade.} $\Phi_{t,t} = \delta_0 * \cdot = \mathrm{Id}$ by (I1), and for
+$r \le s \le t$, by the associativity of convolution (Fubini) and (I1),
+$\Phi_{s,t}\Phi_{r,s}f = \mu_{s,t} * (\mu_{r,s} * f) = (\mu_{s,t} * \mu_{r,s}) * f
+= \Phi_{r,t}f$, which is (A6). \emph{Continuity.} $\{0 \le s \le t\}$ is a subset of $\RR^2$, so
+continuity on it is sequential. If $(s_n,t_n) \to (s,t)$ in it, (I2) gives
+$\widehat\mu_{s_n,t_n}(\xi) \to \widehat\mu_{s,t}(\xi)$ for every $\xi$, and (2) gives
+$\Phi_{s_n,t_n}f \to \Phi_{s,t}f$ in $L^1(\RR^d)$ for every $f$, which is (A7). \emph{(ND).} If
+$\Phi_{s,t} = \mathrm{Id}$ with $s < t$, then $\mu_{s,t}$ and $\delta_0$ represent the same
+operator, so $\mu_{s,t} = \delta_0$ by uniqueness, against (ND) of the family.
+\emph{Covariance.} For $Q \in \Orth(d)$, $D_Q = R_Q$, and (I3) with the
+transport gives $R_Q\Phi_{s,t}R_Q^{-1} = \Phi_{s,t}$, that is
+$\Phi_{s,t}R_Q = R_Q\Phi_{s,t}$, which is (A3). For $\lambda > 0$, $D_\lambda = D_{\lambda I}$, and
+(I4) with the transport gives $D_\lambda\Phi_{s,t}D_\lambda^{-1} = \Phi_{S_\lambda s,\,S_\lambda t}$,
+which is (A8). \emph{The measures.} $\Phi_{s,t}$ is convolution by $\mu_{s,t}$, so by the
+uniqueness in (1) the measure that (1) gives for it is $\mu_{s,t}$.
+\end{proof}
+
+\subsection{Reduction to the line}\label{supp:proofs-reduction}
+
+In the next proof the argument for the continuity (A7) is the one by which the line paper
+verifies that axiom in the sufficiency half of its classification (the proof of
+\prog{V}{Thm.~7.3}).
+
+\begin{proof}[Proof of Lemma~\ref{lem:isotropic-marginal-family}]
+\emph{The kernels.} By (I3) each $\mu_{s,t}$ is rotation invariant, so by
+Lemma~\ref{lem:radial-marginal}(1) each $\kappa_{s,t}$ is a symmetric probability measure with
+$\widehat\mu_{s,t}(\xi) = \widehat\kappa_{s,t}(|\xi|)$.
+
+\emph{(A1), (A2), (A4), (A5).} For a probability measure $\kappa$ on $\RR$ and $f \in L^1(\RR)$,
+$(\kappa * f)(x) = \int f(x-y)\,\kappa(dy)$. Tonelli gives $\|\kappa * f\|_1 \le \|f\|_1$, so the
+operator is bounded, and Fubini gives $\int \kappa * f = \int f$. A nonnegative $f$ gives a
+nonnegative $\kappa * f$, and $\tau_a(\kappa * f) = \kappa * \tau_af$ is a change of variables.
+
+\emph{(A3).} As $\kappa_{s,t}$ is symmetric, $R(\kappa_{s,t} * f)(x) = \int f(-x-y)\,\kappa_{s,t}(dy)
+= \int f(-x+y)\,\kappa_{s,t}(dy) = (\kappa_{s,t} * Rf)(x)$.
+
+\emph{(A6).} By (I1) and Lemma~\ref{lem:radial-marginal}(3), $\kappa_{t,t} = \pi_*\delta_0 = \delta_0$
+and $\kappa_{r,t} = \pi_*(\mu_{s,t} * \mu_{r,s}) = \kappa_{s,t} * \kappa_{r,s}$. So
+$\Phi_{t,t} = \mathrm{Id}$, and $\Phi_{s,t}\Phi_{r,s}f = \kappa_{s,t} * (\kappa_{r,s} * f)
+= (\kappa_{s,t} * \kappa_{r,s}) * f = \Phi_{r,t}f$, by Fubini in the middle step.
+
+\emph{(A8).} By (I4) and Lemma~\ref{lem:radial-marginal}(3),
+$(\lambda I)_*\kappa_{s,t} = \pi_*\bigl((\lambda I)_*\mu_{s,t}\bigr) = \kappa_{S_\lambda s,S_\lambda t}$.
+For a probability measure $\kappa$ on $\RR$, substituting $z = \lambda y$,
+\[
+  D_\lambda(\kappa * f)(x) = \int \lambda^{-1}f\Bigl(\frac{x - \lambda y}{\lambda}\Bigr)\kappa(dy)
+   = \int (D_\lambda f)(x - z)\,\bigl((\lambda I)_*\kappa\bigr)(dz) ,
+\]
+so $D_\lambda\Phi_{s,t}f = \kappa_{S_\lambda s,S_\lambda t} * D_\lambda f
+= \Phi_{S_\lambda s,S_\lambda t}D_\lambda f$.
+
+\emph{(ND).} Let $s < t$. By (ND) of the family $\mu_{s,t} \ne \delta_0$, so
+$\kappa_{s,t} \ne \delta_0$ by Lemma~\ref{lem:radial-marginal}(2). If $\kappa_{s,t} * f = f$ for every
+$f \in L^1(\RR)$, take $f$ the standard Gaussian density: its transform is positive, and the
+transform of the identity reads $\widehat\kappa_{s,t}\widehat f = \widehat f$, so
+$\widehat\kappa_{s,t} \equiv 1$ and $\kappa_{s,t} = \delta_0$, a contradiction. So
+$\Phi_{s,t} \ne \mathrm{Id}$.
+
+\emph{(A7), the collapsing increment.} For $f \in L^1(\RR)$ put
+$\Theta_f(y) := \|\tau_yf - f\|_1$, a function that is bounded by $2\|f\|_1$, continuous, and zero
+at $y = 0$, because translation acts continuously on $L^1(\RR)$. For a probability measure $\kappa$,
+$\kappa * f - f = \int(\tau_yf - f)\,\kappa(dy)$, so Minkowski's integral inequality gives
+\begin{equation}\label{eq:collapsing-increment}
+  \|\kappa * f - f\|_1 \le \int \Theta_f\,d\kappa .
+\end{equation}
+Moreover $\Theta_{\kappa' * g} \le \Theta_g$ for every probability measure $\kappa'$ and every
+$g \in L^1(\RR)$, because $\tau_y(\kappa' * g) - \kappa' * g = \kappa' * (\tau_yg - g)$ and
+convolution by $\kappa'$ does not increase the norm. Now let pairs $(s_n,t_n)$ with
+$s_n \le t_n$ converge to a diagonal point $(t_0,t_0)$. By (I2) at $\xi = \omega e$,
+$\widehat\kappa_{s_n,t_n}(\omega) = \widehat\mu_{s_n,t_n}(\omega e) \to \widehat\mu_{t_0,t_0}(\omega e) = 1$
+for every $\omega \in \RR$. \Levy's continuity theorem on the line \restatedp{V}{Prop.~2.8}{sec:line-facts} says that if
+the transforms of probability measures on $\RR$ converge at every point to the transform of a
+probability measure, the measures converge weakly to it. So $\kappa_{s_n,t_n} \to \delta_0$
+weakly. Since $\Theta_g$ is bounded and continuous, $\int\Theta_g\,d\kappa_{s_n,t_n} \to
+\Theta_g(0) = 0$ for every $g$.
+
+\emph{(A7), the general pair.} Let $(s_n,t_n) \to (s,t)$ with $s_n \le t_n$. If $s = t$ then
+$\Phi_{s,t} = \mathrm{Id}$ and \ref{eq:collapsing-increment} with the previous paragraph gives
+$\Phi_{s_n,t_n}f \to f$. If $s < t$ put $u_n := \max\{s_n,s\}$ and $v_n := \min\{t_n,t\}$, so
+that $u_n \to s$, $v_n \to t$ and, for all large $n$, $s_n \le u_n \le v_n \le t_n$ and
+$s \le u_n \le v_n \le t$. By (A6),
+\[
+  \Phi_{s_n,t_n}f = \Phi_{v_n,t_n}\,\Phi_{u_n,v_n}\,\Phi_{s_n,u_n}f ,
+  \qquad
+  \Phi_{s,t}f = \Phi_{v_n,t}\,\Phi_{u_n,v_n}\,\Phi_{s,u_n}f .
+\]
+The left endpoints are moved first, where contraction absorbs them: with
+$g_n := \Phi_{u_n,v_n}\Phi_{s_n,u_n}f$ and $h_n := \Phi_{u_n,v_n}\Phi_{s,u_n}f$,
+\[
+  \|g_n - h_n\|_1 \le \|\Phi_{s_n,u_n}f - f\|_1 + \|f - \Phi_{s,u_n}f\|_1 \to 0 ,
+\]
+both increments collapsing onto $(s,s)$. The right endpoints are moved last, where
+\ref{eq:collapsing-increment} is read at $h_n$ and $\Theta_{h_n} \le \Theta_f$:
+\[
+  \|\Phi_{v_n,t_n}h_n - \Phi_{v_n,t}h_n\|_1
+   \le \int\Theta_f\,d\kappa_{v_n,t_n} + \int\Theta_f\,d\kappa_{v_n,t} \to 0 ,
+\]
+both increments collapsing onto $(t,t)$. Hence
+$\|\Phi_{s_n,t_n}f - \Phi_{s,t}f\|_1 \le \|g_n - h_n\|_1
++ \|\Phi_{v_n,t_n}h_n - \Phi_{v_n,t}h_n\|_1 \to 0$.
+% Q-0344 (the author's review of section 2): the proof of record's last paragraph, "What is
+% machine-checked where", is not printed. It describes the Lean and what the line paper's checked
+% construction rests on; the paper says neither in a proof (WRITING.md section 3; section 1.1 owns the
+% trust base). The rest of the proof is the proof of record verbatim.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:isotropic-bridge}]
+\emph{(1).} Each $\mu_{s,t}$ is a mixture of probability measures, and $u \mapsto g^{(d)}_u(B)$
+is measurable for every Borel $B$, so it is a probability measure. By Fubini and
+$\widehat{g^{(d)}_u}(\xi) = e^{-u|\xi|^2/2}$,
+\[
+  \widehat\mu_{s,t}(\xi) = \int e^{-u|\xi|^2/2}\,\mu^{\mathrm I}_{s^2,t^2}(du)
+   = \exp\bigl[-\bigl(F_{\mathrm I}(t^2|\xi|^2/2) - F_{\mathrm I}(s^2|\xi|^2/2)\bigr)\bigr] ,
+\]
+which is $\exp[-(F(t|\xi|) - F(s|\xi|))]$.
+The axioms are read off this transform exactly as in the sufficiency half of
+Theorem~\ref{thm:isotropic-classification}, with $\chi = \mathrm{id}$ and $S_\lambda t = \lambda t$. That
+half used three properties of $F$, and they hold here. $F$ is continuous on $[0,\infty)$, because
+$F_{\mathrm I}$ is continuous by dominated convergence: its integrand is at most
+$\max\{1,\Sigma\}(1 \wedge u)\,k_{\mathrm I}(u)/u$ on $\sigma \le \Sigma$, integrable by the two
+conditions. $F(0) = F_{\mathrm I}(0) = 0$. And $F \not\equiv 0$, because $F_{\mathrm I} \not\equiv 0$
+and $r^2/2$ runs over $[0,\infty)$. So $(\mu_{s,t})$ is an
+isotropic cascade family, and Theorem~\ref{thm:isotropic-classification} applies. Its conclusion is met by
+$(\mathrm{id},F)$ once $F \in \mathcal{A}_d$, and the argument of its necessity half gives that.
+% Q-0406 (item 5): the proof of record restates [B, Lem. 4.2] here after "restated:"; it is
+% Proposition prop:line-bridge of section 2, and the restatement is dropped. Here $k_{\mathrm I}$
+% and "the two conditions" above are those of Definition def:line-causal. Pinned.
+$F$ is admissible by \restated{B}{Lem.~4.2}{prop:line-bridge}. And $\mu_{0,1}$ has transform $e^{-F(|\cdot|)}$ and, by
+(I1), residuals $\mu_{\lambda,1}$ in \ref{eq:self-decomposable}, as $\widehat\mu_{0,\lambda}(\xi)
+= e^{-F(\lambda|\xi|)} = \widehat\mu_{0,1}(\lambda\xi)$. So $F \in \mathcal{A}_d$, and $d$ was
+arbitrary.
+
+\emph{(2) and (3)} are the exponent identities $\gamma\log(1 + r^2/2)$ and
+$(r^2/2)^\alpha = 2^{-\alpha}r^{2\alpha}$, read at $r = t|\xi|$ through (1). At $\alpha = 1$,
+$\widehat\mu_{s,t}(\xi) = e^{-(t^2-s^2)|\xi|^2/2}$, the transform of $g^{(d)}_{t^2-s^2}$.
+
+\emph{(4).} The mixture is a probability measure as in (1), and by Fubini its transform is
+$E\,e^{-t^2T_1|\xi|^2/2}$. On the line, \prog{B}{Prop.~5.10(2)} says that the law of the mixture of
+$g^{(1)}_u$ against $T_1$ has transform
+$\tfrac{2^{1-\vartheta}}{\Gamma(\vartheta)}|\omega|^\vartheta K_\vartheta(|\omega|)$. By the
+same Fubini that transform is $E\,e^{-T_1\omega^2/2}$. Reading it at $\omega = t|\xi|$ gives the
+display. When $\mu^{\mathrm I}_{0,1}$ is the law of $T_1$, by (1) and its Laplace transform at
+$t^2|\xi|^2/2$, $\widehat\mu_{0,t}(\xi) = e^{-F_{\mathrm I}(t^2|\xi|^2/2)} = E\,e^{-t^2T_1|\xi|^2/2}$,
+which is the transform of the mixture. Two probability measures on $\RR^d$ with the same
+transform are equal, so $\mu_{0,t}$ is the mixture, and its exponent is in $\mathcal{A}_d$ by (1).
+\end{proof}
+
+\subsection{The kernel at its centre}\label{supp:proofs-origin}
+
+% Q-0414: Feller, vol. II (2nd ed.), XV.3, Corollary, p. 510, read at the page image
+% (READING-feller2009introduction.md). The lemma is an identity and one implication, in R^d;
+% the equivalence is the lemma with C1, said after it. How Feller proves his corollary is not
+% retold.
+The proof of Theorem~\ref{thm:origin-boundedness-d} rests on two lemmas. The first goes back to an
+observation of Feller, on the line: a nonnegative characteristic function is integrable exactly
+when the law has a bounded density (\sscite{feller2009introduction}, XV.3, Corollary, p.~510).
+The lemma is one half of it in $\RR^d$. It gives the value at the centre of the law blurred by a
+Gaussian as an integral of the transform, and from it the direction that the unbounded side of
+the theorem uses: a bound on the law near the origin makes the transform integrable.
+
+% shared with blueprint lem:positive-transform-origin
+\begin{lemma}[a nonnegative transform: bounded near the origin only if integrable]\label{lem:positive-transform-origin}
+Let $d \ge 1$ and let $\mu$ be a probability measure on $\RR^d$ whose characteristic function
+$\widehat\mu(\xi) = \int e^{i\langle\xi,x\rangle}\mu(dx)$ is real and nonnegative at every
+$\xi \in \RR^d$. For $t > 0$ let $g_t(x) = (2\pi t)^{-d/2}e^{-|x|^2/2t}$ be the heat kernel.
+\begin{enumerate}
+\item For every $t > 0$,
+\[
+  \int_{\RR^d} g_t\,d\mu = (2\pi)^{-d}\int_{\RR^d}\widehat\mu(\xi)\,e^{-t|\xi|^2/2}\,d\xi ,
+\]
+and as $t \downarrow 0$ this increases to $(2\pi)^{-d}\int_{\RR^d}\widehat\mu(\xi)\,d\xi \in (0,\infty]$.
+\item If there are $\delta > 0$ and $M < \infty$ with $\mu(B) \le M|B|$ for every Borel set
+$B \subseteq \{|x| < \delta\}$, then $\int_{\RR^d}\widehat\mu(\xi)\,d\xi \le (2\pi)^d M$. The
+hypothesis holds in particular when $\mu$ has a density with a representative bounded by $M$ on
+$\{0 < |x| < \delta\}$.
+\end{enumerate}
+\end{lemma}
+
+With C1 (Theorem~\ref{thm:cited-A1}), which gives the other direction, the lemma is the form in
+$\RR^d$ of Feller's equivalence: a law with a nonnegative transform has a density bounded near
+the origin exactly when its transform is integrable. The law of every isotropic origin datum has
+the positive transform $e^{-F_d}$. The second lemma, Lemma~\ref{lem:isotropic-exponent-log},
+bounds that transform from below.
+
+\begin{proof}[Proof of Lemma~\ref{lem:positive-transform-origin}]
+\emph{Clause (1).} The one-dimensional Gaussian integral
+$\int_{\RR}e^{-isy}e^{-ts^2/2}\,ds = (2\pi/t)^{1/2}e^{-y^2/2t}$, multiplied over the $d$
+coordinates, gives $g_t(x) = (2\pi)^{-d}\int_{\RR^d}e^{-i\langle\xi,x\rangle}e^{-t|\xi|^2/2}\,d\xi$.
+The integrand has modulus $e^{-t|\xi|^2/2}$, which is integrable against $d\xi \otimes \mu(dx)$
+because $\mu$ is finite, so Fubini's theorem gives
+\[
+  \int g_t\,d\mu = (2\pi)^{-d}\int e^{-t|\xi|^2/2}\int e^{-i\langle\xi,x\rangle}\mu(dx)\,d\xi
+   = (2\pi)^{-d}\int e^{-t|\xi|^2/2}\,\widehat\mu(-\xi)\,d\xi ,
+\]
+and the substitution $\xi \mapsto -\xi$ gives the display. Since $\widehat\mu \ge 0$, the integrand
+increases as $t$ decreases, and monotone convergence gives the limit. It is positive because
+$\widehat\mu$ is continuous with $\widehat\mu(0) = 1$.
+
+\emph{Clause (2).} Put $U = \{|x| < \delta\}$. The hypothesis gives
+$\int_U h\,d\mu \le M\int_U h\,dx$ for every nonnegative Borel $h$, for indicator functions of
+Borel subsets of $U$ directly and in general by simple functions and monotone convergence. With
+$h = g_t$, $\int_U g_t\,d\mu \le M\int_{\RR^d}g_t\,dx = M$. Off $U$,
+$g_t \le (2\pi t)^{-d/2}e^{-\delta^2/2t}$, so
+$\int_{\RR^d\setminus U}g_t\,d\mu \le (2\pi t)^{-d/2}e^{-\delta^2/2t}$, which tends to $0$ as
+$t \downarrow 0$. By clause (1), $(2\pi)^{-d}\int\widehat\mu = \lim_{t\downarrow0}\int g_t\,d\mu \le
+M$. For the last sentence: if $q$ is a density of $\mu$ with $q \le M$ on $U \setminus \{0\}$, then
+$\mu(B) = \int_{B\setminus\{0\}}q \le M|B|$ for every Borel $B \subseteq U$, since the origin is a
+Lebesgue-null set.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:isotropic-exponent-log}]
+Since the Gaussian coefficient is $0$, \ref{eq:isotropic-exponent} and \ref{eq:polar-decomposition}
+give, with $\sigma_{d-1}$ the surface measure of $S^{d-1}$,
+\[
+  F_d(\xi) = \frac{1}{|S^{d-1}|}\int_{S^{d-1}}\varphi\bigl(\langle\xi,\eta\rangle\bigr)\,\sigma_{d-1}(d\eta),
+  \qquad
+  \varphi(s) := \int_0^\infty\bigl(1 - \cos(rs)\bigr)\,k_d(r)\,\frac{dr}{r} \quad (s \in \RR).
+\]
+$\varphi$ is even and finite, because $1 - \cos(rs) \le \min\{2, r^2s^2/2\}$ and the two
+integrability conditions of Definition~\ref{def:isotropic-origin-datum} hold. As $k_d$ is nonincreasing with
+right limit $c$ at the origin, $k_d \le c$ on $(0,\infty)$. And $k_d(r) \to 0$ as $r \to \infty$,
+since a nonincreasing $k_d \ge \ell > 0$ would make $\int_1^\infty k_d(r)\,dr/r$ diverge.
+
+\emph{The logarithmic bounds on $\Cin$.} Write $\Cin(X) = \int_0^X(1-\cos s)\,s^{-1}ds$ for
+$X \ge 0$, a nondecreasing function. For $X \ge 1$,
+$\Cin(X) = \Cin(1) + \log X - \int_1^X s^{-1}\cos s\,ds$. Here $0 \le \Cin(1) \le \int_0^1 \tfrac s2\,ds
+= \tfrac14$, because $1 - \cos s \le s^2/2$. Integrating by parts,
+$\bigl|\int_1^X s^{-1}\cos s\,ds\bigr| = \bigl|[s^{-1}\sin s]_1^X + \int_1^X s^{-2}\sin s\,ds\bigr|
+\le 1 + \sin 1 + 1 \le 3$. For $0 < X < 1$ the lower bound below holds because its right side is
+negative. Hence
+\begin{equation}\label{eq:cin-log}
+  \log X - 3 \le \Cin(X) \quad (X > 0),
+  \qquad
+  \Cin(X) \le \log X + \tfrac{13}{4} \quad (X \ge 1).
+\end{equation}
+
+\emph{Clause (1).} Write $\rho = |\xi| \ge 1$. For $|s| \le \rho$, split $\varphi(s)$ at $r = 1$.
+On $(0,1)$ use $k_d \le c$, and on $[1,\infty)$ use $1 - \cos \le 2$:
+\[
+  \varphi(s) \le c\,\Cin(|s|) + 2C_k \le c\,\Cin(\rho) + 2C_k .
+\]
+On the sphere $|\langle\xi,\eta\rangle| \le \rho$, and the normalized surface measure has mass $1$.
+So $F_d(\xi) \le c\,\Cin(\rho) + 2C_k$, and the upper bound of \ref{eq:cin-log} gives the bound on
+$F_d$. The bound on $e^{-F_d}$ follows.
+
+\emph{Clause (2), one variable.} Let $a \ge 1$ and $s > 0$. Substituting $u = ar$ in
+$\varphi(as)$,
+\[
+  \varphi(as) - \varphi(s) = \int_0^\infty \bigl(1 - \cos(us)\bigr)\,h_a(u)\,du ,
+  \qquad h_a(u) := \frac{k_d(u/a) - k_d(u)}{u} \ge 0 ,
+\]
+where both terms on the left are finite. For $0 < \varepsilon < N$,
+\[
+  \int_\varepsilon^N h_a(u)\,du = \int_{\varepsilon/a}^{N/a}k_d(v)\,\frac{dv}{v}
+     - \int_\varepsilon^N k_d(v)\,\frac{dv}{v}
+   = \int_{\varepsilon/a}^{\varepsilon}k_d(v)\,\frac{dv}{v} - \int_{N/a}^{N}k_d(v)\,\frac{dv}{v} ,
+\]
+and every integral here is finite because $k_d \le c$. The first term lies between
+$k_d(\varepsilon)\log a$ and $c\log a$, and tends to $c\log a$ as $\varepsilon \downarrow 0$. The
+second lies between $0$ and $k_d(N/a)\log a$, and tends to $0$ as $N \to \infty$. By monotone
+convergence $\int_0^\infty h_a = c\log a$, so $h_a$ is integrable on $(0,\infty)$, and the
+Riemann--Lebesgue lemma gives $\int_0^\infty\cos(us)\,h_a(u)\,du \to 0$ as $s \to \infty$. Hence
+\[
+  \varphi(as) - \varphi(s) \to c\log a \quad (s \to \infty),
+  \qquad 0 \le \varphi(as) - \varphi(s) \le 2c\log a \quad (s > 0).
+\]
+For $0 < a < 1$ apply this with $1/a$ at the point $as$, which tends to infinity with $s$:
+$\varphi(as) - \varphi(s) = -\bigl(\varphi(a^{-1}\cdot as) - \varphi(as)\bigr) \to c\log a$, and
+$|\varphi(as) - \varphi(s)| \le 2c|\log a|$.
+
+\emph{Clause (2), the sphere average.} Write $\xi = \rho\widehat\xi$ with $|\widehat\xi| = 1$.
+Since $\varphi$ is even,
+\[
+  F_d(a\xi) - F_d(\xi) = \frac{1}{|S^{d-1}|}\int_{S^{d-1}}
+    \Bigl[\varphi\bigl(a\rho|\langle\widehat\xi,\eta\rangle|\bigr)
+      - \varphi\bigl(\rho|\langle\widehat\xi,\eta\rangle|\bigr)\Bigr]
+    \sigma_{d-1}(d\eta) .
+\]
+For every $\eta$ with $\langle\widehat\xi,\eta\rangle \ne 0$ the bracket tends to $c\log a$ as
+$\rho \to \infty$. The remaining $\eta$ form a $\sigma_{d-1}$-null set: a great subsphere when
+$d \ge 2$, and no point at all when $d = 1$. The bracket is bounded by $2c|\log a|$. By dominated
+convergence $F_d(a\rho\widehat\xi) - F_d(\rho\widehat\xi) \to c\log a$ as $\rho \to \infty$. The
+left side does not depend on $\widehat\xi$, because $F_d$ is rotation invariant, so the limit holds
+as $|\xi| \to \infty$. For the equivalent form, $g(au) - g(u) = F_d(\sqrt a\,\sqrt u\,e) -
+F_d(\sqrt u\,e) \to c\log\sqrt a = \tfrac c2\log a$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:origin-boundedness-d}]
+\emph{Clause (1).} Write $\rho = |\xi|$, and let $\Cin$ be as in the proof of
+Lemma~\ref{lem:isotropic-exponent-log}. Since $a = 0$, \ref{eq:isotropic-exponent} and
+\ref{eq:polar-decomposition} give
+\[
+  -\log\bigl|\widehat\mu(\xi)\bigr| = F_d(\xi)
+   = \frac{1}{|S^{d-1}|}\int_{S^{d-1}}\varphi\bigl(\langle\xi,\eta\rangle\bigr)\,\sigma_{d-1}(d\eta),
+  \qquad
+  \varphi(s) := \int_0^\infty\bigl(1 - \cos(rs)\bigr)\,k_d(r)\,\frac{dr}{r} .
+\]
+$F_d$ is radial: if $|\xi| = |\xi'|$, the reflection $Q$ in $(\xi - \xi')^\perp$ carries $\xi$ to
+$\xi'$, preserves Lebesgue measure and the radial density of $\nu_d$, so substituting $x = Qy$ in
+\ref{eq:isotropic-exponent} gives $F_d(\xi') = F_d(\xi)$. It is therefore enough to bound
+$F_d(\rho e_1)$. Fix a finite $\beta < c$. If $\beta \le 0$ the bound holds with $C_\beta = 1$,
+since $|\widehat\mu| \le 1 \le (1+|\xi|)^{-\beta}$. Let $\beta > 0$ and choose $\beta_1$ with
+$\beta < \beta_1 < c$. As $k_d$ is nonincreasing with right limit $c$ at the origin, there is
+$r_\beta \in (0,1]$ with $k_d \ge \beta_1$ on $(0,r_\beta)$. The integrand of $\varphi$ is
+nonnegative, so discarding $(r_\beta,\infty)$ and substituting gives
+$\varphi(s) \ge \beta_1\,\Cin(r_\beta|s|)$.
+
+For $\varepsilon > 0$ let $K_\varepsilon := \{\eta \in S^{d-1} : |\langle e_1,\eta\rangle| \ge
+\varepsilon\}$. As $\varepsilon \downarrow 0$ these caps increase to the complement of the great
+subsphere $\{\langle e_1,\eta\rangle = 0\}$, which is $\sigma_{d-1}$-null: $\sigma_{d-1}(E)$ is $d$
+times the Lebesgue measure of the cone $(0,1)\cdot E$, and the cone over the great subsphere lies in
+the hyperplane $e_1^\perp$. So there is $\varepsilon \in (0,1]$ with
+$p := \sigma_{d-1}(K_\varepsilon)/|S^{d-1}| \ge \beta/\beta_1$. Put
+$L := 3 - \log(\varepsilon r_\beta) \ge 0$. For $\eta \in K_\varepsilon$,
+$r_\beta|\langle\rho e_1,\eta\rangle| \ge \rho\varepsilon r_\beta$, so the lower bound of
+\ref{eq:cin-log} gives $\varphi(\langle\rho e_1,\eta\rangle) \ge \beta_1(\log\rho - L)$. Discarding
+the rest of the sphere, $F_d(\rho e_1) \ge p\,\beta_1(\log\rho - L) \ge \beta(\log\rho - L)$ when
+$\log\rho \ge L$, and the outer inequality holds as well when $\log\rho < L$, because $F_d \ge 0$.
+Hence $|\widehat\mu(\xi)| \le e^{\beta L}\rho^{-\beta}$ for every $\xi \ne 0$. For $\rho \ge 1$,
+$1 + \rho \le 2\rho$ gives $\rho^{-\beta} \le 2^\beta(1+\rho)^{-\beta}$; for $\rho < 1$,
+$|\widehat\mu(\xi)| \le 1 \le 2^\beta(1+\rho)^{-\beta}$. This is the stated bound with
+$C_\beta = 2^\beta(1 + e^{\beta L})$.
+
+\emph{Clause (2).} Let $c > d+N$ and choose a finite $\beta$ with $d + N < \beta < c$. By clause
+(1),
+\[
+  \int_{\RR^d}\bigl|\widehat\mu(\xi)\bigr|\,|\xi|^N\,d\xi
+   \le C_\beta\int_{\RR^d}(1+|\xi|)^{-\beta}|\xi|^N\,d\xi < \infty .
+\]
+The integral converges at infinity because $\beta - N > d$, and at the origin because $N \ge 0$.
+That is the hypothesis of \ledger{A1}, whose conclusion is the clause: a density $g \ge 0$ of
+class $C^N$ whose partial derivatives of orders $0,\dots,N$ tend to $0$ at infinity.
+At $N = 0$ the density is continuous and tends to $0$ at infinity, so it is bounded: it is at most
+$1$ outside a compact set, and continuous on that set. For $c = \infty$ every $N$ is admissible,
+and the densities obtained for different $N$ coincide: two continuous densities of $\mu$ agree
+almost everywhere, hence everywhere, since a nonempty open set has positive Lebesgue measure. So the
+density at $N = 0$ is of class $C^N$ for every $N$, that is, of class $C^\infty$.
+
+\emph{Clause (3).} First, $c = 2\,k_{\mathrm I}(0{+})$. As $r \downarrow 0$ the integrand of
+\ref{eq:polar-profile-d} increases to $v^{d/2-1}e^{-v}k_{\mathrm I}(0{+})$, because $k_{\mathrm I}$
+is nonincreasing. So monotone convergence gives
+$k_d(0{+}) = 2\,\Gamma(d/2)^{-1}\Gamma(d/2)\,k_{\mathrm I}(0{+})$. Next, \prog{B}{Prop.~4.9(2)},
+restated, which is Lemma~\ref{lem:delay-polar-profile} for the delay datum $(0,k_{\mathrm I})$: the datum's exponent is $F_d(\xi) = F_{\mathrm I}(|\xi|^2/2)$. The law of $W$ has Laplace
+transform $e^{-F_{\mathrm I}}$ by hypothesis. So
+$\widehat\mu(\xi) = e^{-F_{\mathrm I}(|\xi|^2/2)} = \int_0^\infty e^{-u|\xi|^2/2}\Pr(W \in du)$,
+which is the transform of the law of $\sqrt{W}Z$, and $\mu$ is that law. Since
+$k_{\mathrm I}(0{+}) = c/2 > 0$, clause (1) read along a ray, at $|\xi| = \sqrt{2\sigma}$, gives
+$e^{-F_{\mathrm I}(\sigma)} \to 0$, so
+$\Pr(W = 0) = \lim_{\sigma\to\infty}e^{-F_{\mathrm I}(\sigma)} = 0$. So $W > 0$ almost surely,
+and conditioning on $W$ gives \ref{eq:mixture-density}. For $x \ne 0$ the integrand is bounded in
+$u$, so $p(x) < \infty$. Each integrand is radial and nonincreasing in $|x|$, and so is $p$.
+Monotone convergence as $x \to 0$ gives
+\[
+  p_0 := \lim_{x\to0}p(x) = \int_0^\infty (2\pi u)^{-d/2}\Pr(W \in du) \in (0,\infty] .
+\]
+The two other forms of $p_0$ in the clause follow from Tonelli. Since $\widehat\mu \ge 0$, its
+integral is defined in $[0,\infty]$, and $\int_{\RR^d}e^{-u|\xi|^2/2}d\xi = (2\pi/u)^{d/2}$ gives
+\[
+  (2\pi)^{-d}\int_{\RR^d}\widehat\mu(\xi)\,d\xi
+   = (2\pi)^{-d}\int_0^\infty\Bigl(\frac{2\pi}{u}\Bigr)^{d/2}\Pr(W \in du) = p_0 .
+\]
+And $\int_0^\infty\sigma^{d/2-1}e^{-\sigma u}d\sigma = \Gamma(d/2)u^{-d/2}$ gives
+\[
+  \int_0^\infty\sigma^{d/2-1}e^{-F_{\mathrm I}(\sigma)}\,d\sigma
+   = \Gamma(d/2)\int_0^\infty u^{-d/2}\Pr(W \in du) = \Gamma(d/2)\,(2\pi)^{d/2}\,p_0 .
+\]
+
+It remains to decide when $p_0$ is finite, and the argument reads the transform $\widehat\mu$
+itself. If $c > d$, pick a finite $\beta \in (d,c)$. By clause (1),
+$\widehat\mu(\xi) \le C_\beta(1+|\xi|)^{-\beta}$, which is integrable over $\RR^d$ because
+$\beta > d$; so $p_0 < \infty$. If $c \le d$, then $c$ is finite, and
+Lemma~\ref{lem:isotropic-exponent-log}(1) gives $\widehat\mu(\xi) \ge C_0|\xi|^{-c}$ for $|\xi| \ge 1$,
+with $C_0 = e^{-13c/4 - 2C_k}$. In polar coordinates
+$\int_{\RR^d}\widehat\mu \ge C_0|S^{d-1}|\int_1^\infty\rho^{d-1-c}\,d\rho = \infty$, because
+$d - 1 - c \ge -1$. So $p_0 = \infty$, the threshold $c = d$ included.
+
+That makes \emph{every} representative unbounded near the origin, by comparing measures rather than
+functions, as in \restated{B}{Cor.~3.9}{cor:line-threshold}. If a representative $q$ of $\mu$'s density had $q \le M$ on
+$\{0 < |x| < \delta\}$, then $\mu(B) = \int_B q \le M|B|$ for every Borel
+$B \subseteq \{|x| < \delta\}$, the origin being a Lebesgue-null set, and
+Lemma~\ref{lem:positive-transform-origin}(2) would give $\int_{\RR^d}\widehat\mu \le (2\pi)^dM < \infty$,
+a contradiction.
+
+\emph{Clause (4).} By Definition~\ref{def:isotropic-origin-datum}, $\widehat\mu = e^{-F_d}$ with $F_d$ real
+and finite, so $\widehat\mu > 0$ everywhere and Lemma~\ref{lem:positive-transform-origin} applies. By
+Lemma~\ref{lem:isotropic-exponent-log}(1), $\widehat\mu(\xi) \ge C_0|\xi|^{-c}$ for $|\xi| \ge 1$, with
+$C_0 = e^{-13c/4 - 2C_k} > 0$ and $C_k$ as in that lemma. In polar coordinates,
+\[
+  \int_{\RR^d}\widehat\mu(\xi)\,d\xi \ge C_0\,|S^{d-1}|\int_1^\infty \rho^{d-1-c}\,d\rho = \infty ,
+\]
+because $d - 1 - c \ge -1$. If there were $\delta$ and $M$ with $\mu(B) \le M|B|$ for every Borel
+$B \subseteq \{|x| < \delta\}$, Lemma~\ref{lem:positive-transform-origin}(2) would make this integral at
+most $(2\pi)^dM$. So there are none. A representative $q$ of a density with $q \le M$ on
+$\{0 < |x| < \delta\}$ would give such $\delta$ and $M$, by the last sentence of
+Lemma~\ref{lem:positive-transform-origin}(2). So there is none.
+
+For the rate, Lemma~\ref{lem:positive-transform-origin}(1) and the same lower bound give, for
+$0 < t \le 1$,
+\[
+  \int g_t\,d\mu \ge (2\pi)^{-d}C_0\,|S^{d-1}|\int_1^\infty \rho^{d-1-c}e^{-t\rho^2/2}\,d\rho .
+\]
+If $c < d$, the substitution $\rho = \sigma/\sqrt t$ turns the last integral into
+$t^{-(d-c)/2}\int_{\sqrt t}^\infty\sigma^{d-1-c}e^{-\sigma^2/2}\,d\sigma \ge
+t^{-(d-c)/2}\int_1^\infty\sigma^{d-1-c}e^{-\sigma^2/2}\,d\sigma$, a positive multiple of
+$t^{-(d-c)/2}$. If $c = d$, it is at least
+$e^{-1/2}\int_1^{t^{-1/2}}\rho^{-1}\,d\rho = \tfrac12 e^{-1/2}\log(1/t)$, since
+$t\rho^2 \le 1$ on that range. For the upper bound let $0 < \beta < c$. Clause (1) and
+$(1+|\xi|)^{-\beta} \le |\xi|^{-\beta}$ give, with $\xi = y/\sqrt t$,
+\[
+  \int g_t\,d\mu \le (2\pi)^{-d}C_\beta\int_{\RR^d}|\xi|^{-\beta}e^{-t|\xi|^2/2}\,d\xi
+   = (2\pi)^{-d}C_\beta\,t^{-(d-\beta)/2}\int_{\RR^d}|y|^{-\beta}e^{-|y|^2/2}\,dy ,
+\]
+and the last integral is finite because $\beta < c \le d$. Now take logarithms and divide by
+$\log(1/t)$. By the lower bound, the quotient $\log\int g_t\,d\mu/\log(1/t)$ is at least
+$(d-c)/2 - \varepsilon$ for every $\varepsilon > 0$ once $t$ is small enough. At $c = d$ this
+uses $\log\log(1/t)/\log(1/t) \to 0$. By the upper bound, the quotient is at most
+$(d-\beta)/2 + \varepsilon$ for every $\beta < c$ and $\varepsilon > 0$ once $t$ is small enough. So it
+tends to $(d-c)/2$.
+
+\emph{Clause (5).} If $c > d$, clause (2) at $N = 0$ gives $\mu$ a continuous density that tends
+to $0$ at infinity, hence a bounded one. If $c \le d$, clause (4) excludes every bound
+$\mu(B) \le M|B|$ on the Borel subsets $B$ of a ball $\{|x| < \delta\}$, and with it every
+representative of a density bounded near the origin.
+\end{proof}
+
+% Q-0409: the proof of record of cor:origin-profile-exponent, transcribed (records/affine/
+% edits_q0409_paper.py): Theorem thm:origin-boundedness-d(1) for the blueprint's split child
+% lem:origin-decay-exponent, and without the proof of record's last sentence on what is
+% machine-checked, which is section 1.1's. Pinned.
+\begin{proof}[Proof of Corollary~\ref{cor:origin-profile-exponent}]
+Let $\nu_d$ be the datum's \Levy{} measure and put
+$G(\xi) := \int_{\RR^d}(1 - \cos\langle\xi,x\rangle)\,\nu_d(dx)$, so that
+$F_d(\xi) = \tfrac12 a|\xi|^2 + G(\xi)$ by \ref{eq:isotropic-exponent}. Then $G \ge 0$, and $G$ is the
+exponent of the datum $(0,k_d)$, which has the same polar profile and the same profile at the origin
+$c$. As in the proof of Lemma~\ref{lem:isotropic-exponent-log}, \ref{eq:polar-decomposition} gives
+\[
+  G(\xi) = \frac{1}{|S^{d-1}|}\int_{S^{d-1}}\varphi\bigl(\langle\xi,\eta\rangle\bigr)\,\sigma_{d-1}(d\eta),
+  \qquad
+  \varphi(s) := \int_0^\infty\bigl(1 - \cos(rs)\bigr)\,k_d(r)\,\frac{dr}{r} .
+\]
+
+\emph{Clause (1).} Fix $\tau \in (0,1]$ and put $I(\tau) := \int_0^\tau k_d(r)\,r\,dr$ and
+$T(\tau) := \int_\tau^\infty k_d(r)\,dr/r$. Both are finite: $I(\tau)$ is at most the first integral
+of Definition~\ref{def:isotropic-origin-datum}, and
+$T(\tau) \le k_d(\tau)\log(1/\tau) + \int_1^\infty k_d(r)\,dr/r$ because $k_d$ is nonincreasing.
+Since $1 - \cos(rs) \le r^2s^2/2$ on $(0,\tau)$ and $1 - \cos \le 2$ on $[\tau,\infty)$,
+$\varphi(s) \le \tfrac12 s^2\,I(\tau) + 2\,T(\tau)$. On the sphere
+$|\langle\xi,\eta\rangle| \le |\xi|$, and the normalized surface measure has mass $1$. So
+\[
+  0 \le G(\xi) \le \tfrac12|\xi|^2\,I(\tau) + 2\,T(\tau), \qquad \xi \in \RR^d .
+\]
+Let $\varepsilon > 0$. The integrand of $I(1)$ is integrable on $(0,1)$, so $I(\tau) \to 0$ as
+$\tau \downarrow 0$, and there is a $\tau$ with $I(\tau) \le \varepsilon$. For that $\tau$,
+$G(\xi)/|\xi|^2 \le \tfrac12\varepsilon + 2T(\tau)/|\xi|^2 \le \varepsilon$ once
+$|\xi|^2 \ge 4T(\tau)/\varepsilon$. Hence $G(\xi)/|\xi|^2 \to 0$, and
+$F_d(\xi)/|\xi|^2 = \tfrac12 a + G(\xi)/|\xi|^2 \to \tfrac12 a$.
+
+\emph{Clause (2).} The quotient is $G(\xi)/\log|\xi|$, and it is nonnegative for $|\xi| > 1$.
+\emph{From below.} Let $\beta$ be finite with $0 < \beta < c$. By Theorem~\ref{thm:origin-boundedness-d}(1)
+for the datum $(0,k_d)$ there is $C_\beta$ with $e^{-G(\xi)} \le C_\beta(1+|\xi|)^{-\beta}$ for
+every $\xi$, and $C_\beta \ge 1$ by the bound at $\xi = 0$. That clause states the bound for
+$|\widehat\mu|$, $\mu$ being a law of the datum $(0,k_d)$. Its proof bounds $e^{-G}$, which is
+$|\widehat\mu|$ by the definition of the law, so the bound holds whether or not a law is given.
+Taking logarithms, $G(\xi) \ge \beta\log|\xi| - \log C_\beta$ for $|\xi| \ge 1$. \emph{From above.}
+Let $c < \infty$. By Lemma~\ref{lem:isotropic-exponent-log}(1) for the datum $(0,k_d)$,
+$G(\xi) \le c\log|\xi| + \tfrac{13}{4}c + 2C_k$ for $|\xi| \ge 1$, with
+$C_k = \int_1^\infty k_d(r)\,dr/r$. \emph{The limit.} Divide by $\log|\xi|$, which tends to
+infinity. For every $\varepsilon > 0$ the quotient is at least $\beta - \varepsilon$ once $|\xi|$ is
+large enough, for every finite $\beta$ with $0 < \beta < c$, and at most $c + \varepsilon$ once
+$|\xi|$ is large enough when $c < \infty$. If $c = \infty$ the first bound makes the quotient tend to
+$+\infty$. If $0 < c < \infty$ the two bounds give the limit $c$. If $c = 0$ the quotient lies
+between $0$ and $\varepsilon$, and tends to $0$. For the last sentence of the clause, $a = 0$ gives
+$F_d = G$, and $|\widehat\mu| = e^{-F_d}$ by the definition of the law.
+
+\emph{Clause (3).} Since $d, d' \ge 1$ there are unit vectors $e \in \RR^d$ and $e' \in \RR^{d'}$,
+and $F_d(re) = F(r) = F'_{d'}(re')$ for every $r > 0$. Clause (1) for the two data, read along
+$\xi = re$ and $\xi' = re'$, gives $F(r)/r^2 \to \tfrac12 a$ and $F(r)/r^2 \to \tfrac12 a'$ as
+$r \to \infty$. So $a' = a$. Clause (2), read along the same rays, then gives
+$\bigl(F(r) - \tfrac12 a r^2\bigr)/\log r \to k_d(0{+})$ and
+$\bigl(F(r) - \tfrac12 a r^2\bigr)/\log r \to k'_{d'}(0{+})$ as $r \to \infty$. A limit in
+$[0,\infty]$ is unique, so $k'_{d'}(0{+}) = k_d(0{+})$.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:origin-lower-bound-d}]
+Write $|E|$ for the Lebesgue measure of $E$, $B(z,r)$ and $\bar B(z,r)$ for the open and the closed
+ball, and $\nu_d$ for the datum's \Levy{} measure. As $k_d$ is nonincreasing with right limit $c$ at
+the origin, $k_d \le c$ on $(0,\infty)$ and $k_d(r) \uparrow c$ as $r \downarrow 0$, so
+$\varepsilon_0$ exists. Every integral of $\nu_d$ below is computed by \ref{eq:polar-decomposition},
+applied to a nonnegative Borel function vanishing at the origin.
+
+\emph{The decomposition at scale $\varepsilon$.} Fix $\varepsilon \in (0,\varepsilon_0]$ and let
+$\nu_1$ and $\nu_{\ge}$ be the restrictions of $\nu_d$ to $\{0 < |x| < \tau\varepsilon\}$ and to
+$\{|x| \ge \tau\varepsilon\}$. Each has a radial density, so each is symmetric, and
+$\psi_1(\xi) := \int(1 - \cos\langle\xi,x\rangle)\,\nu_1(dx)$ and
+$\psi_{\ge}(\xi) := \int(1 - \cos\langle\xi,x\rangle)\,\nu_{\ge}(dx)$ are finite with
+$F_d = \psi_1 + \psi_{\ge}$, $F_d$ being \ref{eq:isotropic-exponent} at $a = 0$. The mass of
+$\nu_{\ge}$ is finite: as $\tau\varepsilon \le 1$ and $k_d \le c$,
+\[
+  m := \nu_{\ge}(\RR^d) = \int_{\tau\varepsilon}^{\infty}k_d(r)\,\frac{dr}{r}
+   \le c\log\frac{1}{\tau\varepsilon} + C_k ,
+  \qquad\text{so}\qquad e^{-m} \ge \tau^c\varepsilon^c e^{-C_k} .
+\]
+For a finite symmetric measure $\lambda$ of mass $m_\lambda$ put
+$\pi_\lambda := e^{-m_\lambda}\sum_{n\ge0}\lambda^{*n}/n!$, with $\lambda^{*0} = \delta_0$; it is a
+probability measure, and, summing the series of transforms by dominated convergence
+($|\widehat\lambda^n| \le m_\lambda^n$), its transform is
+$\exp(\widehat\lambda(\xi) - m_\lambda) = \exp\bigl(-\int(1 - \cos\langle\xi,x\rangle)\,\lambda(dx)\bigr)$,
+the sine part of $\widehat\lambda$ vanishing by symmetry. Put $\pi := \pi_{\nu_{\ge}}$, of transform
+$e^{-\psi_{\ge}}$. The profile $k_d\mathbf 1_{(0,\tau\varepsilon)}$ is nonincreasing and satisfies the
+two integrability conditions of Definition~\ref{def:isotropic-origin-datum}, so
+$(0, k_d\mathbf 1_{(0,\tau\varepsilon)})$ is an isotropic origin datum, with \Levy{} measure $\nu_1$
+and exponent $\psi_1$; let $\mu_1$ be its law (\ledger{A3}(iii)), so $\widehat\mu_1 = e^{-\psi_1}$.
+Then $\mu_1 * \pi$ has transform $e^{-F_d} = \widehat\mu$, and by the uniqueness of the Fourier
+transform
+\[
+  \mu = \mu_1 * \pi .
+\]
+Keeping the term $n = 2$ of the series, $\pi \ge \tfrac12 e^{-m}\,\nu_{\ge} * \nu_{\ge}$, as measures.
+
+\emph{The twofold convolution fills a ball.} Let $S := \{\varepsilon/2 \le |x| < \varepsilon\}$, which
+lies in $\{|x| \ge \tau\varepsilon\}$ because $\tau \le 1/2$. On $S$ the density
+$k_d(|x|)\,(|S^{d-1}||x|^d)^{-1}$ of $\nu_{\ge}$ is at least
+$a := c\,(2|S^{d-1}|\varepsilon^d)^{-1}$, because $k_d(|x|) \ge k_d(\varepsilon_0) \ge c/2$ and
+$|x|^d < \varepsilon^d$; so $\nu_{\ge}(A) \ge a\,|A \cap S|$ for every Borel $A$. Let
+$|z| \le 3\varepsilon/2$. As $d \ge 2$ there is a unit vector $w$ orthogonal to $z$; put
+$y_0 := z/2 + sw$ with $s := (9\varepsilon^2/16 - |z|^2/4)^{1/2}$, so that
+$|y_0| = |z - y_0| = 3\varepsilon/4$. Every $y \in B(y_0,\varepsilon/8)$ has $|y|$ and $|z - y|$ in
+$(5\varepsilon/8, 7\varepsilon/8)$, inside $S$, so
+$|\{y \in S : z - y \in S\}| \ge |B(0,\varepsilon/8)|$. For a Borel $G \subseteq \bar B(0,3\varepsilon/2)$,
+Tonelli's theorem and the substitution $x = z - y$ give
+\[
+\begin{aligned}
+  (\nu_{\ge} * \nu_{\ge})(G) &\ge a^2\iint\mathbf 1_S(x)\,\mathbf 1_S(y)\,\mathbf 1_G(x + y)\,dx\,dy \\
+   &= a^2\int_G\bigl|\{y \in S : z - y \in S\}\bigr|\,dz
+   \ge a^2\,\bigl|B(0,\varepsilon/8)\bigr|\,|G| = \kappa_0\,\varepsilon^{-d}|G| .
+\end{aligned}
+\]
+Hence $\pi(G) \ge \tfrac12 e^{-m}\kappa_0\varepsilon^{-d}|G|$ for every Borel
+$G \subseteq \bar B(0, 3\varepsilon/2)$.
+
+\emph{The small jumps move little.} By $1 - \cos u \le u^2/2$ and \ref{eq:polar-decomposition},
+\[
+  \psi_1(\xi) \le \frac{|\xi|^2}{2}\int|x|^2\,\nu_1(dx)
+   = \frac{|\xi|^2}{2}\int_0^{\tau\varepsilon}k_d(r)\,r\,dr
+   \le \frac{c\,\tau^2\varepsilon^2}{4}\,|\xi|^2 .
+\]
+Let $\gamma$ be the centred Gaussian law on $\RR^d$ with covariance $\varepsilon^{-2}I$, whose
+transform at $w$ is $e^{-|w|^2/2\varepsilon^2}$ and whose second moment is
+$\int|\xi|^2\,\gamma(d\xi) = d\,\varepsilon^{-2}$. By Fubini's theorem, $\widehat\mu_1$ being real,
+and by $1 - e^{-\psi} \le \psi$,
+\[
+  \int\bigl(1 - e^{-|w|^2/2\varepsilon^2}\bigr)\,\mu_1(dw)
+   = \int\bigl(1 - \widehat\mu_1(\xi)\bigr)\,\gamma(d\xi)
+   \le \int\psi_1\,d\gamma
+   \le \frac{c\,\tau^2\varepsilon^2}{4}\cdot\frac{d}{\varepsilon^2} = \frac{c\,\tau^2 d}{4} .
+\]
+The integrand on the left is at least $1 - e^{-1/2} \ge 1/3$ where $|w| \ge \varepsilon$, and
+$c\tau^2 d/4 \le 3/(16d) \le 3/32$ by the choice of $\tau$ and $d \ge 2$, so
+\[
+  \mu_1\bigl(\{|w| \ge \varepsilon\}\bigr) \le \tfrac{9}{32} \le \tfrac12 .
+\]
+
+\emph{One scale.} Let $E \subseteq \bar B(0,\varepsilon/2)$ be Borel. For $|w| < \varepsilon$ the
+translate $E - w$ lies in $\bar B(0,3\varepsilon/2)$ and has measure $|E|$. So, the integrand being
+nonnegative,
+\[
+  \mu(E) = \int\pi(E - w)\,\mu_1(dw)
+   \ge \int_{\{|w|<\varepsilon\}}\pi(E - w)\,\mu_1(dw)
+   \ge \tfrac12 e^{-m}\kappa_0\varepsilon^{-d}|E|\cdot\tfrac12 .
+\]
+With $e^{-m} \ge \tau^c\varepsilon^c e^{-C_k}$ this is
+\[
+  \mu(E) \ge \kappa_1\,\varepsilon^{c-d}\,|E| ,\qquad
+  \kappa_1 := \tfrac14\kappa_0\tau^ce^{-C_k},\qquad
+  E \subseteq \bar B(0,\varepsilon/2),\ 0 < \varepsilon \le \varepsilon_0 .
+\]
+
+\emph{All scales.} For $n \ge 0$ put $\varepsilon_n := 2^{-n}\varepsilon_0$ and
+$A_n := \{\varepsilon_n/4 < |x| \le \varepsilon_n/2\}$; these sets are disjoint and cover
+$B(0,\delta)\setminus\{0\}$. For $x \in A_n$, $2|x| \le \varepsilon_n < 4|x|$, so
+$\varepsilon_n^{c-d} \ge \theta|x|^{c-d}$ with $\theta := \min\{2^{c-d},4^{c-d}\}$ (the first bound
+when $c \ge d$, the second when $c < d$). For a Borel $E \subseteq B(0,\delta)$, the origin being a
+Lebesgue-null set, the previous step at $\varepsilon = \varepsilon_n$ gives
+\[
+  \mu(E) \ge \sum_{n\ge0}\mu(E \cap A_n)
+   \ge \kappa_1\sum_{n\ge0}\varepsilon_n^{c-d}|E \cap A_n|
+   \ge \kappa_1\theta\sum_{n\ge0}\int_{E\cap A_n}|x|^{c-d}\,dx
+   = c_1\int_E|x|^{c-d}\,dx ,
+\]
+which is \ref{eq:origin-lower-bound}.
+
+\emph{The consequences.} Write $\mu = \mu_{\mathrm{ac}} + \mu_{\mathrm s}$ for the Lebesgue
+decomposition and let $N$ be a Borel set with $\mu_{\mathrm s}(N) = 0$ and
+$|\RR^d \setminus N| = 0$. For a Borel $E \subseteq B(0,\delta)$,
+$\int_E q\,dx \ge \int_{E\cap N} q\,dx = \mu_{\mathrm{ac}}(E \cap N) = \mu(E \cap N)
+\ge c_1\int_{E\cap N}|x|^{c-d}\,dx = c_1\int_E|x|^{c-d}\,dx$. A function whose integral over every
+Borel subset of $B(0,\delta)$ is at least that of the measurable $c_1|x|^{c-d}$ is at least
+$c_1|x|^{c-d}$ almost everywhere on $B(0,\delta)$, both functions being nonnegative and measurable
+and Lebesgue measure being $\sigma$-finite: on a set $E \subseteq B(0,\delta)$ of finite measure
+where $q + 1/n \le c_1|x|^{c-d} \le n$, the inequality gives
+$\int_E q\,dx + |E|/n \le \int_E q\,dx$, the integral being finite as $q \le n$ on $E$, so $|E| = 0$, and such sets exhaust the set
+where $q < c_1|x|^{c-d}$. That is clause (1); for a density $q$ of $\mu$ the
+same argument runs with $\int_E q\,dx = \mu(E)$, and $c_1|x|^{c-d} > 0$ off the origin, which is
+null. As $x \to 0$, $|x| \to 0$ through positive values, and $|x|^{c-d} \to \infty$ when $c < d$.
+Clause (2) is \ref{eq:origin-lower-bound} at $E = \{|x| < r\}$, in polar coordinates:
+$\int_{\{|x|<r\}}|x|^{c-d}dx = |S^{d-1}|\int_0^r\rho^{c-1}d\rho = |S^{d-1}|\,r^c/c$.
+% Q-0377: the proof of record's last paragraph, "What is machine-checked", is not printed, as Q-0344
+% decided for lem:kernels-to-operators: section 1.1 owns what the formal proofs rest on. The rest of
+% the proof is the proof of record verbatim (the marker's + pin records the difference).
+\end{proof}
+
+The last paragraph of the next proof shows that the uniform laws of C5 form a Borel set. Its
+argument is a standard one in the space of the compact convex sets with the Hausdorff metric, by
+Blaschke's selection theorem and the support function, and the facts are cited there from
+\sscite{schneider2014convex}.
+
+\begin{proof}[Proof of Proposition~\ref{prop:isotropic-radial-monotone}]
+The argument reads four properties of a law $\mu$ on $\RR^d$: it is rotation invariant, it is
+self-decomposable, its transform is real, and $\widehat\mu(\xi) \to 0$ as $|\xi| \to \infty$. The
+first two paragraphs check them for the two clauses. The rest derives the density from them.
+
+\emph{Clause (1): the four properties.} Put $\mu := \mu_{0,t}$. By
+Theorem~\ref{thm:isotropic-classification}, $\widehat\mu(\xi) = e^{-F(\chi(t)|\xi|)}$ for a gauge $\chi$
+and an $F \in \mathcal{A}_d$ that does not vanish identically on $[0,\infty)$, and
+$s := \chi(t) > 0$. By the definition of $\mathcal{A}_d$ there is a self-decomposable law $\mu'$
+on $\RR^d$ with $\widehat{\mu'}(\xi) = e^{-F(|\xi|)}$, so $\widehat\mu(\xi) = \widehat{\mu'}(s\xi)$.
+So $\widehat\mu$ is real and radial: for $Q \in \Orth(d)$,
+$\widehat{Q_*\mu}(\xi) = \widehat\mu(Q^{\tp}\xi) = \widehat\mu(\xi)$, and a law is determined by its
+transform, so $\mu$ is rotation invariant. For $\lambda \in (0,1)$ let $\rho_\lambda$ be a residual
+of $\mu'$, $\widehat{\mu'}(\xi) = \widehat{\mu'}(\lambda\xi)\,\widehat\rho_\lambda(\xi)$. Then
+\[
+  \widehat\mu(\xi) = \widehat{\mu'}(s\xi) = \widehat{\mu'}(\lambda s\xi)\,\widehat\rho_\lambda(s\xi)
+   = \widehat\mu(\lambda\xi)\,\widehat{(sI)_*\rho_\lambda}(\xi) ,
+\]
+which is \ref{eq:self-decomposable} with residual $(sI)_*\rho_\lambda$. It remains to see that
+$e^{-F(r)} \to 0$ as $r \to \infty$. $F$ is admissible, of the form \ref{eq:admissible-line} with
+Gaussian coefficient $a_{\mathrm V}$ and folded profile $k$. The pair $(2a_{\mathrm V}, k)$ is an
+isotropic origin datum in dimension $1$: its two integrability conditions are those of
+\ref{eq:admissible-line}, and by \ref{eq:polar-decomposition} at $d = 1$, where $|S^0| = 2$, its
+exponent at $\omega$ is
+$a_{\mathrm V}\omega^2 + \int_{\RR}(1 - \cos\omega x)\,k(|x|)\,(2|x|)^{-1}dx = F(|\omega|)$. Its
+law is the image of $\mu'$ under $x \mapsto \langle e_1, x\rangle$, whose transform is
+$\widehat{\mu'}(\omega e_1) = e^{-F(|\omega|)}$, as in Lemma~\ref{lem:radial-marginal}(1). The datum is
+not trivial: a trivial datum has exponent $0$, and $F$ does not vanish identically on $[0,\infty)$.
+So the last two sentences of the next paragraph, at $d = 1$, give $e^{-F(r)} \to 0$, and
+$\widehat\mu(\xi) \to 0$ as $|\xi| \to \infty$.
+
+\emph{Clause (2): the four properties.} Let $\mu$ be the datum's law, so that
+$\widehat\mu = e^{-F_d}$ is real, positive and radial by \ref{eq:isotropic-exponent}. For
+$Q \in \Orth(d)$, $\widehat{Q_*\mu}(\xi) = \widehat\mu(Q^{\tp}\xi) = \widehat\mu(\xi)$, and a law is
+determined by its transform, so $\mu$ is rotation invariant. Put $F(r) := F_d(re_1)$. Then
+$\xi \mapsto F(|\xi|)$ is the exponent $F_d$ of the datum, so by
+Proposition~\ref{prop:isotropic-polar-reading}(1), in its converse direction, it is the exponent of a
+self-decomposable law, which is $\mu$. Finally $F_d(\xi) \ge \tfrac12 a|\xi|^2$, which tends to
+infinity if $a > 0$. If $a = 0$, then $k_d$ is not almost everywhere $0$, so
+$c = k_d(0{+}) > 0$, $k_d$ being at most $c$ on $(0,\infty)$, and
+Theorem~\ref{thm:origin-boundedness-d}(1) with a finite $\beta \in (0,c)$ gives
+$\widehat\mu(\xi) \le C_\beta(1+|\xi|)^{-\beta}$.
+
+\emph{No atom at the origin.} Let $\mu$ have the four properties. For $\varepsilon > 0$, multiply
+the identity of Lemma~\ref{lem:positive-transform-origin}(1) at $t = \varepsilon$ by
+$(2\pi\varepsilon)^{d/2}$ and substitute $\xi = y/\sqrt\varepsilon$:
+\[
+  \int_{\RR^d} e^{-|x|^2/2\varepsilon}\,\mu(dx)
+   = (2\pi)^{-d/2}\int_{\RR^d}\widehat\mu\bigl(y/\sqrt\varepsilon\bigr)\,e^{-|y|^2/2}\,dy .
+\]
+Let $\varepsilon \downarrow 0$. On the left the integrand tends to the indicator of the origin, and
+on the right $\widehat\mu(y/\sqrt\varepsilon) \to 0$ for every $y \ne 0$. The integrand on the left is bounded
+by $1$, which is integrable against $\mu$, and the one on the right by $e^{-|y|^2/2}$, which is
+integrable against $dy$, as $|\widehat\mu| \le 1$; so by dominated convergence $\mu(\{0\}) = 0$.
+
+\emph{The mixture.} The law $\mu$ is symmetric, by rotation invariance at $Q = -I$, and
+self-decomposable. By \ledger{A8} it is symmetric unimodal: there is a probability measure
+$\Lambda$ on the uniform laws $u_K$ of the compact convex symmetric sets $K \subset \RR^d$ with
+\[
+  \mu(A) = \int u_K(A)\,\Lambda(du_K) \qquad \text{for every Borel } A \subseteq \RR^d .
+\]
+Here $u_K$ is uniform for the Lebesgue measure $\mathrm{Vol}_V$ of the linear span $V$ of $K$, whose
+dimension $k$ may be anything from $0$ to $d$, and $K$ is nonempty. $\Lambda$ is a probability
+measure on the measurable space of the probability measures on $\RR^d$, whose $\sigma$-algebra is
+generated by the evaluations $\nu \mapsto \nu(A)$, and almost every measure under it is a $u_K$;
+nothing below asks the set $W_d$ of the $u_K$ to be measurable. The source puts its mixing measure
+on $W_d$ itself, with the Borel sets of weak convergence, which on the probability measures of
+$\RR^d$ are the sets of that $\sigma$-algebra. Reading it as almost every measure being a $u_K$
+uses that $W_d$ is such a set. It is one, being a countable union of weakly compact sets, as the
+paragraph on $W_d$ at the end of the proof shows. The formal statement puts
+$\Lambda$ on all measures on $\RR^d$, which loses nothing: the probability measures form a
+measurable set, and almost every measure under $\Lambda$, being a $u_K$, lies in it. A set with
+$k < d$ carries no density in $\RR^d$, and the next two paragraphs deal with that.
+
+\emph{The radial part of one uniform law.} Let $\omega_d$ be the volume of the unit ball and
+$\varphi(x) := \omega_d|x|^d$ the volume of the ball of radius $|x|$. For $v \ge 0$ put
+$r_v := (v/\omega_d)^{1/d}$ and $B(v) := \varphi^{-1}((0,v]) = \{0 < |x| \le r_v\}$, the
+punctured closed ball of volume $v$, and put $G_K(v) := u_K(B(v))$. We show that $G_K$ is concave
+on $[0,\infty)$. If $k = 0$, then $K = \{0\}$, $u_K = \delta_0$ and $G_K \equiv 0$, as $B(v)$
+misses the origin. Let $k \ge 1$, let $S_V$ be the unit sphere of $V$ and $\sigma_V$ its surface
+measure, so that $\mathrm{Vol}_V(A) = \int_{S_V}\sigma_V(d\theta)\int_0^\infty
+\mathbf{1}_A(s\theta)\,s^{k-1}\,ds$ for every Borel $A \subseteq V \setminus \{0\}$ (polar
+coordinates in $V$). Fix $\theta \in S_V$. The set $J_\theta := \{s > 0 : s\theta \in K\}$ contains
+$(0, s]$ with each of its points $s$: $K$ contains $0 = \tfrac12 y + \tfrac12(-y)$ for any
+$y \in K$, so $s\theta \in K$ and $0 < s' < s$ give
+$s'\theta = \tfrac{s'}{s}\,s\theta + \bigl(1 - \tfrac{s'}{s}\bigr)0 \in K$ by convexity. It is
+bounded, $K$ being compact. With $\rho_\theta := \sup J_\theta$ ($\rho_\theta := 0$ if
+$J_\theta$ is empty), $(0,\rho_\theta) \subseteq J_\theta \subseteq (0,\rho_\theta]$, and for
+$s > 0$, $s\theta \in B(v)$ exactly when $s \le r_v$. So the ray in the direction $\theta$
+contributes
+\[
+  \int_0^\infty\mathbf{1}_{K \cap B(v)}(s\theta)\,s^{k-1}\,ds
+   = \int_0^{\min\{\rho_\theta,\,r_v\}}s^{k-1}\,ds
+   = \frac1k\min\Bigl\{\rho_\theta^k,\ \Bigl(\frac{v}{\omega_d}\Bigr)^{k/d}\Bigr\} .
+\]
+As $k \le d$, $v \mapsto (v/\omega_d)^{k/d}$ is concave on $[0,\infty)$, and so is its minimum with
+a constant. Integrating over $\theta$ against $\sigma_V$ and dividing by
+$\mathrm{Vol}_V(K) \in (0,\infty)$, $G_K(v) = \mathrm{Vol}_V(K \cap B(v))/\mathrm{Vol}_V(K)$ is
+concave in $v$. The volume is positive because $K$ spans $V$, so it contains a basis
+$v_1,\dots,v_k$ of $V$ and, being convex and symmetric, the convex hull of the $\pm v_i$, which has
+positive volume in $V$; it is finite because $K$ is compact. (Concavity survives multiplication by
+any nonnegative constant, so the formal proof does not need this; that $u_K$ is a probability
+measure is checked separately.) In words: each ray of $K$ contributes the minimum of a constant and
+a concave power of the volume, the power being $k/d \le 1$ because $K$ has dimension at most $d$.
+
+\emph{The density.} Put $G(v) := \mu(B(v)) = \int G_K(v)\,\Lambda(du_K)$. A mixture of concave
+functions is concave, the inequality $aG_K(v) + bG_K(w) \le G_K(av + bw)$ integrating against
+$\Lambda$, so $G$ is concave on $[0,\infty)$. Let $m$ be the image of $\mu$ under $\varphi$, a
+finite measure on $\RR$ with $m((0,v]) = G(v)$ and $m((-\infty,0]) = \mu(\{0\}) = 0$. $G$ is
+nondecreasing; let $D(v)$ be its right derivative at $v > 0$. It is finite, nonnegative and
+nonincreasing, and $G$ is continuous on $(0,\infty)$, so by the fundamental theorem of calculus
+for right derivatives $m((a,b]) = G(b) - G(a) = \int_a^b D(w)\,dw$ for $0 < a \le b$. Letting
+$a \downarrow 0$ by continuity from below, and as $m$ does not charge $(-\infty,0]$, the measures
+$m$ and $D(w)\,dw$ on $(0,\infty)$ agree on every interval $(a,b]$, so $m = D(w)\,dw$ on
+$(0,\infty)$. Put $q(r) := D(\omega_d r^d)$, a nonincreasing function on $(0,\infty)$ with values
+in $[0,\infty)$, so that $q(|x|) = D(\varphi(x))$. The image of Lebesgue measure on $\RR^d$ under
+$\varphi$ is Lebesgue measure on $(0,\infty)$, because $\varphi^{-1}((-\infty,v])$ is the closed
+ball of volume $v$. So the image of $q(|x|)\,dx$ under $\varphi$ is $D(w)\,dw = m$, the image of
+$\mu$, and as $|x| = (\varphi(x)/\omega_d)^{1/d}$ the two measures have the same image under
+$x \mapsto |x|$. Both are finite and rotation invariant ($q(|x|)\,dx$ because Lebesgue measure is and
+the density is radial), and both vanish at the origin. A measure with these properties is
+determined by its image under $x \mapsto |x|$. For let $m$ be one of them and
+$\varepsilon > 0$, and let $m_\varepsilon$ be its restriction to
+$U_\varepsilon := \{|x| > \varepsilon\}$, a finite measure invariant under every $Q \in \Orth(d)$,
+as $U_\varepsilon$ is. Then $\widehat{m_\varepsilon}(\xi) = \widehat{m_\varepsilon}(|\xi|\theta)$
+for every unit vector $\theta$, a reflection carrying $\xi$ to $|\xi|\theta$. Averaging over
+$\theta$ against $\sigma_{d-1}/|S^{d-1}|$ and exchanging the integrals gives
+\[
+  \widehat{m_\varepsilon}(\xi)
+   = \frac{1}{|S^{d-1}|}\int_{U_\varepsilon}\Phi(|\xi|,|x|)\,m(dx) ,
+  \qquad
+  \Phi(s,r) := \int_{S^{d-1}} e^{i s r\langle e_1,\theta\rangle}\,\sigma_{d-1}(d\theta) ,
+\]
+since $\int e^{i s\langle x,\theta\rangle}\sigma_{d-1}(d\theta)$ depends on $x$ only through $|x|$,
+by the invariance of $\sigma_{d-1}$. The right side depends on $m$ only through its image under
+$x \mapsto |x|$. So the two measures have restrictions to $U_\varepsilon$ with the same transform,
+hence equal; letting $\varepsilon \downarrow 0$ along $1/(n+1)$, they agree off the origin, and as
+neither charges it, they are equal. Hence $\mu = q(|x|)\,dx$, and $p(x) := q(|x|)$ is a density of
+$\mu$.
+
+% Q-0424 (the external review, round 1; records/affine/reviews/VERIFY-round1-mathematics.md, item
+% 6(a)): the paragraph below and the three sentences on the source's mixing measure in the
+% paragraph on the mixture are the proof of record's, changed at the blueprint and mirrored here
+% verbatim (the marker is re-pinned). They replace the assertion that W_d is analytic, hence
+% universally measurable, which had no proof and no reference.
+% Q-0430: citations only, changed at the blueprint and mirrored here verbatim (the marker is
+% re-pinned): Schneider, Convex Bodies, 2nd ed., Thm. 1.8.7, p. 63, with p. 8; Lemma 1.8.14,
+% p. 66; p. 45, each read at the page image (records/affine/READING-schneider2014convex.md).
+\emph{The set $W_d$ is a Borel set.} This paragraph proves the reading of the source made in the
+paragraph on the mixture, and no other step uses it. Let $\bar B$ be the closed unit ball of
+$\RR^d$, and give the nonempty compact convex sets $K = -K$ of $\RR^d$ the Hausdorff metric. For
+integers $k \ge 1$ and $n \ge 1$ let $\mathcal{K}_{k,n}$ be the set of those $K$ whose span $V$
+has dimension $k$ and which satisfy
+\[
+  \tfrac1n\bar B \cap V \subseteq K \subseteq n\bar B .
+\]
+Every $K$ of dimension $k \ge 1$ is in $\mathcal{K}_{k,n}$ for some $n$. It is bounded, and it
+contains the convex hull of the points $\pm v_i$ of the paragraph on one uniform law, which
+contains a ball of $V$ round the origin.
+
+Each $\mathcal{K}_{k,n}$ is compact. Let $K_j \in \mathcal{K}_{k,n}$, with spans $V_j$. By
+Blaschke's selection theorem (\sscite{schneider2014convex}, Thm.~1.8.7, p.~63, where a convex
+body is any nonempty compact convex set, p.~8), the nonempty compact convex subsets of a ball
+form a compact space in the Hausdorff metric. So a subsequence of $(K_j)$ converges to a nonempty compact convex set
+$K$, and $K = -K$. Let $P_j$ be the orthogonal projection onto $V_j$. Along a further subsequence
+the matrices $P_j$ converge, and their limit $P$ is the orthogonal projection onto a subspace $V'$
+of dimension $k$, since $P_j^2 = P_j = P_j^{\tp}$ and $\tr P_j = k$ pass to the limit. A point
+$x \in K$ is a limit of points $x_j \in K_j$, and $x_j = P_jx_j \to Px$, so $x \in V'$. Hence
+$K \subseteq V' \cap n\bar B$. For $y \in V'$ with $|y| \le 1/n$ the points $P_jy$ lie in
+$\tfrac1n\bar B \cap V_j \subseteq K_j$ and converge to $y$, so $y \in K$. Hence the span of $K$
+is $V'$, and $K \in \mathcal{K}_{k,n}$.
+
+The map $K \mapsto u_K$ is continuous on $\mathcal{K}_{k,n}$, for the weak convergence of measures.
+Let $K_j \to K$ in $\mathcal{K}_{k,n}$, with spans $V_j$ and $V$. Choose a basis $y_1,\dots,y_k$ of
+$V$ in $K$ and points $y_{i,j} \in K_j$ with $y_{i,j} \to y_i$ as $j \to \infty$. For large $j$
+the points $y_{1,j},\dots,y_{k,j}$ are linearly independent, their Gram determinant converging to
+that of the $y_i$, which is positive. So they are a basis of $V_j$. Let $T_j$ be the linear map
+from $V$ onto $V_j$ with $T_jy_i = y_{i,j}$, and let $\varepsilon_j$ be the supremum of $|T_jz - z|$
+over the $z \in V$ with $|z| \le 1$. Then $\varepsilon_j \to 0$. A linear bijection carries the
+uniform law of a set to the uniform law of its image, so $u_{K_j}$ is the image of $u_{K'_j}$ under
+$T_j$, where $K'_j := T_j^{-1}K_j \subseteq V$. For $w \in K'_j$, $|T_jw - w| \le \varepsilon_j|w|$
+and $|T_jw| \le n$, so $|w| \le n/(1-\varepsilon_j)$, and the Hausdorff distance of $K'_j$ and $K_j$
+is at most $\varepsilon_jn/(1-\varepsilon_j)$. So $K'_j \to K$. Let $\eta_j$ be the Hausdorff
+distance of $K'_j$ and $K$, and put $r := 1/n$ and $B_V := \bar B \cap V$, so that
+$rB_V \subseteq K$. Then
+\[
+  K'_j \subseteq K + \eta_jB_V \subseteq \bigl(1 + \eta_j/r\bigr)K ,
+\]
+$K$ being convex. In the other direction, write $h_A(e) := \sup_{x \in A}\langle e,x\rangle$ for the
+support function of a compact convex set $A \subseteq V$ at a unit vector $e$ of $V$. Then
+$h_K \le h_{K'_j} + \eta_j$, the Hausdorff distance of two compact convex sets being the supremum
+over the unit vectors of the absolute difference of their support functions
+(\sscite{schneider2014convex}, Lemma~1.8.14, p.~66), and $h_K \ge r$, so
+$h_{K'_j} \ge (1 - \eta_j/r)\,h_K$. A compact
+convex set contains every compact convex set with a smaller support function, and
+$h_{\lambda A} = \lambda h_A$ for $\lambda \ge 0$ (\sscite{schneider2014convex}, p.~45), so
+$(1 - \eta_j/r)K \subseteq K'_j$ once $\eta_j < r$. The two inclusions hold for $K$ in place of
+$K'_j$ as well. So $K'_j$ and $K$ differ by a set of volume at most
+$\bigl((1+\eta_j/r)^k - (1-\eta_j/r)^k\bigr)\mathrm{Vol}_V(K)$, which tends to $0$, and
+$u_{K'_j}(A) \to u_K(A)$ uniformly in the Borel set $A$. For a bounded continuous function
+$\varphi$ on $\RR^d$,
+\[
+  \int\varphi\,du_{K_j} = \int\varphi(T_jw)\,u_{K'_j}(dw) ,
+\]
+and $\varphi(T_jw) \to \varphi(w)$ uniformly for $w$ in the bounded set $2K$, which contains $K'_j$
+for large $j$. So $\int\varphi\,du_{K_j} \to \int\varphi\,du_K$.
+
+So each set $\{u_K : K \in \mathcal{K}_{k,n}\}$ is the continuous image of a compact set. It is
+weakly compact, hence weakly closed. With $\{\delta_0\}$, the case $k = 0$, these countably many
+sets make up $W_d$. So $W_d$ is a Borel set for weak convergence.
+% Q-0377: the proof of record's last paragraph, "What is machine-checked", is not printed, as Q-0344
+% decided for lem:kernels-to-operators: section 1.1 owns what the formal proofs rest on. The rest of
+% the proof is the proof of record verbatim (the marker's + pin records the difference).
+\end{proof}
+
+% Q-0415: the proof of record of prop:origin-upper-bound-d, transcribed (records/affine/
+% edits_q0415_paper.py), after that of prop:isotropic-radial-monotone, which it reads, and
+% without the proof of record's last paragraph on what is machine-checked, which is section
+% 1.1's. Pinned.
+\begin{proof}[Proof of Proposition~\ref{prop:origin-upper-bound-d}]
+Write $B_r := \{|x| < r\}$ for the open ball and $|E|$ for the Lebesgue measure of $E$, so that
+$|B_r| = V_d\,r^d$.
+
+\emph{Clause (1).} Fix $\beta$ with $0 < \beta < c$, and let $C'_\beta$ be a constant with
+$\int g_t\,d\mu \le C'_\beta\,t^{-(d-\beta)/2}$ for all $t > 0$, $g_t$ being the heat kernel of
+Lemma~\ref{lem:positive-transform-origin}. There is one by Theorem~\ref{thm:origin-boundedness-d}(4), since
+$c \le d$. Let $r > 0$. For $|x| < r$,
+\[
+  g_{r^2}(x) = (2\pi r^2)^{-d/2}e^{-|x|^2/2r^2} \ge (2\pi)^{-d/2}e^{-1/2}\,r^{-d} .
+\]
+As $g_{r^2} \ge 0$,
+\[
+  \int_{\RR^d} g_{r^2}\,d\mu \ge \int_{B_r} g_{r^2}\,d\mu
+   \ge (2\pi)^{-d/2}e^{-1/2}\,r^{-d}\,\mu(B_r) .
+\]
+The left side is at most $C'_\beta\,(r^2)^{-(d-\beta)/2} = C'_\beta\,r^{\beta-d}$. Hence
+$\mu(B_r) \le (2\pi)^{d/2}e^{1/2}\,C'_\beta\,r^{\beta}$, which is the bound with the stated
+$A_\beta$.
+
+\emph{Clause (2).} As $c = \sup_{r>0}k_d(r) > 0$, there is $r_0 > 0$ with $k_d(r_0) > 0$, and
+$k_d \ge k_d(r_0)$ on $(0,r_0]$ because $k_d$ is nonincreasing. So $k_d$ is not almost everywhere
+$0$, the datum is not trivial, and Proposition~\ref{prop:isotropic-radial-monotone}(2) gives a density
+$p(x) = q(|x|)$ with $q$ nonincreasing. Now let $q : (0,\infty) \to [0,\infty)$ be any
+nonincreasing function such that $x \mapsto q(|x|)$ is a density of $\mu$, and let $r > 0$. For
+$0 < |x| < r$, $q(|x|) \ge q(r)$. The origin is a Lebesgue-null set, so
+\[
+  \mu(B_r) = \int_{B_r} q(|x|)\,dx \ge q(r)\,|B_r| = q(r)\,V_d\,r^d .
+\]
+With clause (1), $q(r) \le A_\beta V_d^{-1}\,r^{\beta-d}$.
+
+\emph{Clause (3), the lower bound at every radius.} Let $d \ge 2$. Since $c \le d$, $c$ is finite,
+and Proposition~\ref{prop:origin-lower-bound-d} applies. By its clause (1) the density $x \mapsto q(|x|)$ of
+$\mu$ is at least $c_1|x|^{c-d}$ at almost every $x \in B_\delta$. Suppose that
+$q(r_0) < c_1 r_0^{c-d}$ for some $r_0$ with $0 < r_0 < \delta$. The function
+$r \mapsto c_1 r^{c-d}$ is continuous at $r_0$, so there is $r_1$ with $r_0 < r_1 \le \delta$ and
+$q(r_0) < c_1 r^{c-d}$ for $r_0 < r < r_1$. For such $r$, $q(r) \le q(r_0) < c_1 r^{c-d}$,
+because $q$ is nonincreasing. So $q(|x|) < c_1|x|^{c-d}$ on the shell $\{r_0 < |x| < r_1\}$. The
+shell is a nonempty open subset of $B_\delta$, hence of positive Lebesgue measure, and this
+contradicts the bound at almost every point. So $q(r) \ge c_1 r^{c-d}$ for every $0 < r < \delta$.
+
+\emph{Clause (3), the limits.} Both follow from one remark. Let $L$ be real and let $f$ be a
+function on $(0,\infty)$ such that, for small $r > 0$, $f(r) \ge C r^{-L}$ with a $C > 0$ and, for
+every $\varepsilon > 0$, $f(r) \le C_\varepsilon r^{-(L+\varepsilon)}$ with a
+$C_\varepsilon > 0$. Then $\log f(r)/\log(1/r) \to L$ as $r \downarrow 0$. Indeed, for
+$0 < r < 1$ small, $f(r) > 0$ and $\log(1/r) > 0$, and taking logarithms gives
+\[
+  L + \frac{\log C}{\log(1/r)} \le \frac{\log f(r)}{\log(1/r)}
+   \le L + \varepsilon + \frac{\log C_\varepsilon}{\log(1/r)} .
+\]
+As $\log(1/r) \to \infty$, the quotient is at least $L - \varepsilon$ and at most
+$L + 2\varepsilon$ once $r$ is small enough, for every $\varepsilon > 0$.
+
+For the density take $f = q$ and $L = d - c$. The lower bound is the one just proved,
+$q(r) \ge c_1 r^{-(d-c)}$ for $0 < r < \delta$. For the upper bound let $\varepsilon > 0$ and
+choose $\beta$ with $0 < \beta < c$ and $\beta \ge c - \varepsilon$. By clause (2), for
+$0 < r < 1$,
+$q(r) \le A_\beta V_d^{-1}\,r^{\beta-d} \le A_\beta V_d^{-1}\,r^{-(d-c+\varepsilon)}$, as
+$\beta - d \ge -(d - c + \varepsilon)$ and $r < 1$. So $\log q(r)/\log(1/r) \to d - c$, and with
+$r = |x|$ this is the first limit, since $|x| \downarrow 0$ through positive values as $x \to 0$.
+
+For the mass of a ball take $f(r) = \mu(B_r)$ and $L = -c$. By
+Proposition~\ref{prop:origin-lower-bound-d}(2), $\mu(B_r) \ge c_1|S^{d-1}|\,c^{-1}\,r^{c}$ for
+$0 < r \le \delta$. By clause (1), with $\beta$ as before,
+$\mu(B_r) \le A_\beta\,r^{\beta} \le A_\beta\,r^{c-\varepsilon}$ for $0 < r < 1$. So
+$\log\mu(B_r)/\log(1/r) \to -c$, and $\log(1/r) = -\log r$ gives the second limit.
+\end{proof}
+
+% Q-0328, Q-0424: the closed form of the constant of the upper bound, computed in the text.
+\paragraph{The constant of Proposition~\ref{prop:origin-upper-bound-d} in closed form.} This
+paragraph computes a constant from the two proofs above. It is not part of the formal development
+(\S\ref{sec:trust-base}). Let $0 < \beta < c \le d$, put $\beta_1 := (\beta + c)/2$, and let
+$r_\beta \in (0,1]$ satisfy $k_d(r_\beta) \ge \beta_1$. There is such an $r_\beta$, because
+$k_d(0{+}) = c > \beta_1$, and $k_d \ge \beta_1$ on $(0,r_\beta)$, because $k_d$ is nonincreasing.
+So $\beta_1$ and $r_\beta$ can be used in the proof of clause (1) of
+Theorem~\ref{thm:origin-boundedness-d}. That proof also asks for an $\varepsilon \in (0,1]$ for
+which the cap $K_\varepsilon = \{\eta \in S^{d-1} : |\langle e_1,\eta\rangle| \ge \varepsilon\}$
+has at least the share $\beta/\beta_1$ of the sphere. Take
+\[
+  \varepsilon := \frac{c - \beta}{(c + \beta)\sqrt d} .
+\]
+Then $1 - \beta/\beta_1 = \varepsilon\sqrt d$, so it is enough that the band
+$\{|\langle e_1,\eta\rangle| < \varepsilon\}$ has at most the share $\varepsilon\sqrt d$. For
+$d = 1$ the band is empty. For $d = 2$ its share is $(2/\pi)\arcsin\varepsilon \le \varepsilon$.
+For $d \ge 3$ the first coordinate of a uniform point of the sphere has the density
+$\Gamma(\tfrac d2)\,\bigl(\sqrt\pi\,\Gamma(\tfrac{d-1}2)\bigr)^{-1}(1 - u^2)^{(d-3)/2}$ on $(-1,1)$.
+It is at most $\sqrt{(d-1)/(2\pi)}$, since $\Gamma(x + \tfrac12) \le \Gamma(x)\sqrt x$ by the
+logarithmic convexity of $\Gamma$. So the share of the band is at most
+$2\varepsilon\sqrt{(d-1)/(2\pi)} \le \varepsilon\sqrt d$. With these choices the number $L$ of
+that proof satisfies $e^{L} = e^3/(\varepsilon r_\beta) = e^3\sqrt d\,(c+\beta)/((c-\beta)\,r_\beta)$,
+and clause (1) holds with $C_\beta = 2^\beta(1 + e^{\beta L})$. The proof of clause (4) gives
+\[
+  C'_\beta = (2\pi)^{-d}\,C_\beta\int_{\RR^d}|y|^{-\beta}e^{-|y|^2/2}\,dy ,
+  \qquad
+  \int_{\RR^d}|y|^{-\beta}e^{-|y|^2/2}\,dy
+   = |S^{d-1}|\,2^{(d-\beta)/2-1}\,\Gamma\bigl(\tfrac{d-\beta}{2}\bigr) ,
+\]
+the second in polar coordinates. With $|S^{d-1}| = 2\pi^{d/2}/\Gamma(\tfrac d2)$, the constant
+$A_\beta = (2\pi)^{d/2}e^{1/2}\,C'_\beta$ of the proposition is
+\[
+  A_\beta = \sqrt e\;2^{-\beta/2}\,C_\beta\,
+    \frac{\Gamma\bigl(\tfrac{d-\beta}{2}\bigr)}{\Gamma\bigl(\tfrac d2\bigr)}
+  = \sqrt e\;2^{\beta/2}\,\frac{\Gamma\bigl(\tfrac{d-\beta}{2}\bigr)}{\Gamma\bigl(\tfrac d2\bigr)}
+    \Bigl(1 + \Bigl(\frac{e^3\sqrt d\,(c + \beta)}{(c - \beta)\,r_\beta}\Bigr)^{\beta}\Bigr) .
+\]
+
+% Q-0448 (the author's decision of 2026-10-13: the rate at the centre is stated once in the
+% paper, through the polar profile): the rate through the transform, Proposition 3.16 of the
+% second review build, is a lemma of the supplement. The statement is the blueprint node
+% prop:origin-rate-d, verbatim, and the label is the node's. Its attribution is in the table of
+% the sources of the paper, once.
+The rate through the polar profile (Proposition~\ref{prop:origin-rate-profile-d}) is proved
+from the rate through the transform, which is the next lemma. For a law whose transform is a
+power times a slowly varying factor its clause (1) is a known Tauberian theorem, and
+\S\ref{sec:isotropic-sources} says where it is in print. For a finite $c$ the transform of a
+kernel has that form, $|\xi|^{-c}L(|\xi|)$ with $L$ slowly varying
+(Lemma~\ref{lem:isotropic-exponent-log}(2)). In the statement $s$ is a distance from the
+centre, not a scale, $e$ is a unit vector, and $\widehat\mu(e/s)$ is the transform at a
+frequency of length $1/s$.
+
+% shared with blueprint prop:origin-rate-d+8e1d7317599c
+\begin{lemma}[the rate at the centre through the transform]\label{prop:origin-rate-d}
+Let $d \ge 1$, let $(0, k_d)$ be an isotropic origin datum in dimension $d$ with Gaussian
+coefficient $0$, let $\mu$ be its law, and suppose that $c := k_d(0{+})$ satisfies $0 < c \le d$.
+Let $e$ be a unit vector of $\RR^d$, let $|S^{d-1}|$ be the surface measure of the unit sphere and
+$V_d$ the volume of the unit ball. The law $\mu$ has a density $p$ with $p(x) = q(|x|)$ for
+$x \ne 0$, where $q : (0,\infty) \to [0,\infty)$ is nonincreasing. Let $q$ be any such function.
+All limits are as $s \downarrow 0$.
+\begin{enumerate}
+\item \emph{(Below the threshold.)} Let $c < d$ and put
+\[
+  R(d,c) := \frac{\Gamma\bigl(\tfrac{d-c}{2}\bigr)}{2^{c}\,\pi^{d/2}\,\Gamma\bigl(\tfrac c2\bigr)} .
+\]
+Then
+\[
+  \frac{\mu(\{|x| \le s\})}{R(d,c)\,|S^{d-1}|\,c^{-1}\,\widehat\mu(e/s)} \to 1
+  \qquad\text{and}\qquad
+  \frac{q(s)}{R(d,c)\,s^{-d}\,\widehat\mu(e/s)} \to 1 .
+\]
+\item \emph{(At the threshold.)} Let $c = d$ and put
+$I(s) := \int_{\{|\xi| \le 1/s\}}\widehat\mu(\xi)\,d\xi$. Then
+\[
+  \frac{\mu(\{|x| \le s\})}{(2\pi)^{-d}\,V_d\,s^{d}\,I(s)} \to 1
+  \qquad\text{and}\qquad
+  \frac{q(s)}{(2\pi)^{-d}\,I(s)} \to 1 .
+\]
+Moreover $I(s) \ge |S^{d-1}|\,e^{-13d/4 - 2C_k}\log(1/s)$ for $0 < s \le 1$, with
+$C_k = \int_1^\infty k_d(r)\,dr/r$. So for every
+$C < (2\pi)^{-d}\,|S^{d-1}|\,e^{-13d/4 - 2C_k}$ there is $s_0 > 0$ with
+$q(s) \ge C\log(1/s)$ for $0 < s < s_0$.
+\end{enumerate}
+\end{lemma}
+
+% A paragraph of paper prose stands between the statement and its proof: `linkage check` reads a
+% proof that directly follows a statement as that statement's proof, heading included.
+So for $c < d$ the density $p(x)$ is asymptotic, as $x \to 0$, to
+$R(d,c)\,|x|^{c-d}L(1/|x|)$. Clause (2) is the boundary case. The density at distance $s$ is
+asymptotic to $(2\pi)^{-d}$ times the integral of the transform cut at the frequency $1/s$,
+which depends on the law and grows at least like $\log(1/s)$.
+
+\begin{proof}[Proof of Lemma~\ref{prop:origin-rate-d}]
+As $c = \sup_{r>0}k_d(r) > 0$ and $k_d$ is nonincreasing, $k_d$ is positive on an interval
+$(0,r_0]$, so the datum is not trivial and Proposition~\ref{prop:isotropic-radial-monotone}(2) gives a density
+$p(x) = q(|x|)$ of $\mu$ with $q$ nonincreasing. From here on $q$ is any nonincreasing function
+on $(0,\infty)$ such that $x \mapsto q(|x|)$ is a density of $\mu$.
+
+Write $\chi(\rho) := \widehat\mu(\rho e) = e^{-F_d(\rho e)}$ for $\rho > 0$. As $F_d$ is rotation
+invariant, $\widehat\mu(\xi) = \chi(|\xi|)$ for $\xi \ne 0$. Three properties of $\chi$ are used.
+
+(a) $0 < \chi \le 1$, and $\chi$ is continuous, because $F_d \ge 0$ and $\widehat\mu$ is a
+characteristic function.
+
+(b) $\chi$ is nonincreasing. In the notation of the proof of
+Lemma~\ref{lem:isotropic-exponent-log}, $F_d(\xi)$ is the average over the sphere of
+$\varphi(\langle\xi,\eta\rangle)$, and the substitution $u = ar$ made there gives
+$\varphi(as) = \int_0^\infty(1 - \cos(us))\,k_d(u/a)\,du/u \ge \varphi(s)$ for $a \ge 1$ and every
+real $s$, because $k_d(u/a) \ge k_d(u)$. So $F_d(a\xi) \ge F_d(\xi)$ for $a \ge 1$.
+
+(c) $\chi(a\rho)/\chi(\rho) \to a^{-c}$ as $\rho \to \infty$, for every $a > 0$. This is
+Lemma~\ref{lem:isotropic-exponent-log}(2), which applies because $c \le d$ is finite.
+
+\emph{Step 1: a bound on the ratios of $\chi$.} Let $\gamma > c$. By (c) at $a = 2$,
+$\chi(2y)/\chi(y) \to 2^{-c} > 2^{-\gamma}$, so there is $X \ge 1$ with
+$\chi(y) \le 2^{\gamma}\chi(2y)$ for every $y \ge X$. Let $X \le y \le x$, and let $n \ge 0$ be the
+least integer with $2^n y \ge x$, so that $n < \log_2(x/y) + 1$. Iterating the inequality and
+using (b),
+\[
+  \chi(y) \le 2^{\gamma n}\,\chi(2^n y) \le 2^{\gamma n}\,\chi(x)
+   \le 2^{\gamma}\,(x/y)^{\gamma}\,\chi(x) .
+\]
+It follows that, with $C := 2^{\gamma}/\chi(X)$,
+\begin{equation}\label{eq:rate-ratio-bound}
+  \frac{\chi(Ru)}{\chi(R)} \le 1 + C\,u^{-\gamma} \qquad (R \ge X,\ u > 0) .
+\end{equation}
+Indeed, for $u \ge 1$ the quotient is at most $1$ by (b). For $u < 1$ and $Ru \ge X$ the display
+with $y = Ru$ and $x = R$ gives the bound $2^{\gamma}u^{-\gamma}$, and $2^{\gamma} \le C$ because
+$\chi(X) \le 1$. For $u < 1$ and $Ru < X$ the numerator is at most $1$, and the display with
+$y = X$ and $x = R$ gives $1/\chi(R) \le 2^{\gamma}(R/X)^{\gamma}/\chi(X) \le C\,u^{-\gamma}$.
+
+\emph{Step 2: the Gaussian average of the law.} For $\lambda > 0$ put
+$M(\lambda) := \int_{\RR^d}e^{-\lambda|x|^2}\mu(dx)$. At $t = 1/(2\lambda)$ the heat kernel is
+$g_t(x) = (\lambda/\pi)^{d/2}e^{-\lambda|x|^2}$, and Lemma~\ref{lem:positive-transform-origin}(1) gives
+$M(\lambda) = (\pi/\lambda)^{d/2}(2\pi)^{-d}\int_{\RR^d}\widehat\mu(\xi)\,e^{-|\xi|^2/4\lambda}\,d\xi$.
+In polar coordinates, at $\lambda = R^2$,
+\begin{equation}\label{eq:rate-gaussian-average}
+  M(R^2) = (4\pi)^{-d/2}\,|S^{d-1}|\,R^{-d}\,T(R),
+  \qquad
+  T(R) := \int_0^\infty \chi(\rho)\,\rho^{d-1}\,e^{-\rho^2/4R^2}\,d\rho ,
+\end{equation}
+and the substitution $\rho = Ru$ gives
+$T(R) = R^{d}\int_0^\infty \chi(Ru)\,u^{d-1}\,e^{-u^2/4}\,du$.
+
+\emph{Step 3: the Gaussian average for $c < d$.} Let $c < d$ and take $\gamma := (c+d)/2$ in
+Step 1, so that $c < \gamma < d$. By the second form of $T(R)$ in Step 2,
+\[
+  \frac{T(R)}{R^{d}\chi(R)} = \int_0^\infty \frac{\chi(Ru)}{\chi(R)}\,u^{d-1}\,e^{-u^2/4}\,du .
+\]
+For each $u > 0$ the quotient under the integral tends to $u^{-c}$ as $R \to \infty$, by (c). For
+$R \ge X$ the integrand is at most $(1 + C\,u^{-\gamma})\,u^{d-1}e^{-u^2/4}$ by
+\ref{eq:rate-ratio-bound}, which is integrable on $(0,\infty)$ because $\gamma < d$. By dominated
+convergence
+\[
+  \frac{T(R)}{R^{d}\chi(R)} \to \int_0^\infty u^{d-1-c}\,e^{-u^2/4}\,du
+   = 2^{d-c-1}\,\Gamma\bigl(\tfrac{d-c}{2}\bigr) \qquad (R \to \infty),
+\]
+and with $|S^{d-1}| = 2\pi^{d/2}/\Gamma(d/2)$,
+\begin{equation}\label{eq:rate-abelian}
+  \frac{M(R^2)}{\chi(R)} \to I_c := (4\pi)^{-d/2}\,|S^{d-1}|\,2^{d-c-1}\,\Gamma\bigl(\tfrac{d-c}{2}\bigr)
+   = \frac{2^{-c}\,\Gamma\bigl(\tfrac{d-c}{2}\bigr)}{\Gamma\bigl(\tfrac d2\bigr)} .
+\end{equation}
+
+\emph{Step 3$'$: the Gaussian average for $c = d$.} Let $c = d$, and put
+$P(y) := \int_0^y\chi(\rho)\,\rho^{d-1}\,d\rho$ for $y > 0$ and $L(\rho) := \rho^{d}\chi(\rho)$.
+By (b), for $0 < x \le y$,
+\begin{equation}\label{eq:rate-P-increments}
+  \chi(y)\,\frac{y^{d} - x^{d}}{d} \le P(y) - P(x) \le \chi(x)\,\frac{y^{d} - x^{d}}{d} .
+\end{equation}
+\emph{(i) $L(R)/P(R) \to 0$ as $R \to \infty$.} The left inequality of
+\ref{eq:rate-P-increments} at $x = y/2$ reads $P(y) - P(y/2) \ge \kappa\,L(y)$ with
+$\kappa := (1 - 2^{-d})/d$. For each integer $j \ge 0$,
+$L(R/2^j)/L(R) = 2^{-jd}\chi(2^{-j}R)/\chi(R) \to 1$ as $R \to \infty$, by (c) with $c = d$. Let
+$n \ge 1$. For all large $R$, $L(R/2^j) \ge L(R)/2$ for every $j < n$, and then
+\[
+  P(R) \ge \sum_{j=0}^{n-1}\bigl(P(R/2^j) - P(R/2^{j+1})\bigr) \ge \kappa\sum_{j=0}^{n-1}L(R/2^j)
+   \ge \tfrac{n\kappa}{2}\,L(R) .
+\]
+As $n$ is arbitrary, $L(R)/P(R) \to 0$.
+\emph{(ii) $P(aR)/P(R) \to 1$ as $R \to \infty$, for every $a > 0$.} For $a \ge 1$ the right
+inequality of \ref{eq:rate-P-increments} gives
+$0 \le P(aR) - P(R) \le (a^{d} - 1)\,L(R)/d$, and (i) gives the limit. For $a < 1$ the quotient is
+the reciprocal of $P(a^{-1}R')/P(R')$ at $R' = aR$, which tends to infinity with $R$.
+\emph{(iii) $T(R)/P(R) \to 1$ as $R \to \infty$.} Let $\varepsilon > 0$. On $(0, \varepsilon R]$
+the Gaussian factor of $T(R)$ is at least $e^{-\varepsilon^2/4}$, so
+$T(R) \ge e^{-\varepsilon^2/4}P(\varepsilon R)$. On $(0, R]$ it is at most $1$, and on $(R,\infty)$,
+$\chi(\rho) \le \chi(R)$ by (b), so
+\[
+  T(R) \le P(R) + \chi(R)\int_0^\infty\rho^{d-1}e^{-\rho^2/4R^2}\,d\rho
+   = P(R) + 2^{d-1}\Gamma\bigl(\tfrac d2\bigr)\,L(R) .
+\]
+Hence
+$e^{-\varepsilon^2/4}\,P(\varepsilon R)/P(R) \le T(R)/P(R) \le 1 + 2^{d-1}\Gamma(d/2)\,L(R)/P(R)$.
+By (ii) the left side tends to $e^{-\varepsilon^2/4}$ and by (i) the right side tends to $1$. As
+$\varepsilon$ is arbitrary, $T(R)/P(R) \to 1$. With \ref{eq:rate-gaussian-average},
+\begin{equation}\label{eq:rate-abelian-critical}
+  \frac{M(R^2)}{(4\pi)^{-d/2}\,|S^{d-1}|\,R^{-d}\,P(R)} \to 1 \qquad (R \to \infty) .
+\end{equation}
+
+\emph{Step 4: the mass of a ball, by Karamata's theorem.} Let $\nu$ be the image of $\mu$ under
+$x \mapsto |x|^2$. It is a probability measure on $[0,\infty)$ with
+$\int_{[0,\infty)}e^{-\lambda r}\,\nu(dr) = M(\lambda)$ and $\nu([0,r]) = \mu(\{|x| \le \sqrt r\})$.
+
+Let $c < d$ and put $\ell(\lambda) := \lambda^{c/2}\chi(\sqrt\lambda)$ for $\lambda > 0$. It is
+positive and continuous, and
+$\ell(a\lambda)/\ell(\lambda) = a^{c/2}\chi(\sqrt a\sqrt\lambda)/\chi(\sqrt\lambda) \to 1$ as
+$\lambda \to \infty$ for every $a > 0$, by (c). By \ref{eq:rate-abelian} at $R = \sqrt\lambda$,
+$M(\lambda)/(I_c\,\lambda^{-c/2}\,\ell(\lambda)) \to 1$. Karamata's Tauberian theorem
+(Theorem~\ref{thm:cited-A11}, with the index $c/2 > 0$ and the constant $I_c > 0$) gives
+$\nu([0,r]) \sim I_c\,r^{c/2}\,\ell(1/r)/\Gamma(1 + c/2)$ as $r \downarrow 0$, and
+$r^{c/2}\ell(1/r) = \chi(r^{-1/2})$. At $r = s^2$,
+\begin{equation}\label{eq:rate-ball}
+  \frac{\mu(\{|x| \le s\})}{B_c\,\chi(1/s)} \to 1 \quad (s \downarrow 0),
+  \qquad B_c := \frac{I_c}{\Gamma(1 + c/2)} = \frac{R(d,c)\,|S^{d-1}|}{c} ,
+\end{equation}
+the last equality by $\Gamma(1 + c/2) = (c/2)\Gamma(c/2)$ and $|S^{d-1}| = 2\pi^{d/2}/\Gamma(d/2)$.
+This is the first limit of clause (1).
+
+Let $c = d$ and put $\ell(\lambda) := P(\sqrt\lambda)$. It is positive and continuous, and
+$\ell(a\lambda)/\ell(\lambda) \to 1$ by Step 3$'$(ii). By \ref{eq:rate-abelian-critical},
+$M(\lambda)/\bigl((4\pi)^{-d/2}|S^{d-1}|\,\lambda^{-d/2}\,\ell(\lambda)\bigr) \to 1$. Karamata's
+theorem with the index $d/2$ gives, at $r = s^2$,
+$\mu(\{|x| \le s\}) \sim (4\pi)^{-d/2}\,|S^{d-1}|\,s^{d}\,P(1/s)/\Gamma(1 + d/2)$. In polar
+coordinates $|S^{d-1}|\,P(1/s) = I(s)$, and
+$(4\pi)^{-d/2}/\Gamma(1 + d/2) = (2\pi)^{-d}\,\pi^{d/2}/\Gamma(1 + d/2) = (2\pi)^{-d}\,V_d$. This is
+the first limit of clause (2).
+
+\emph{Step 5: from the mass of balls to the density.} Write $m(s) := \mu(\{|x| \le s\})$. Let
+$W$ be a positive function on $(0,\infty)$, $\varkappa > 0$ and $B > 0$, and suppose that
+$W(as)/W(s) \to a^{\varkappa}$ for every $a > 0$ and $m(s)/W(s) \to B$, as $s \downarrow 0$. Then
+\begin{equation}\label{eq:rate-monotone-density}
+  \frac{q(s)\,s^{d}}{W(s)} \to \frac{B\,\varkappa}{|S^{d-1}|} \qquad (s \downarrow 0) .
+\end{equation}
+Indeed, let $0 < a < b$. On the shell $\{as < |x| \le bs\}$, whose volume is
+$V_d\,s^{d}(b^{d} - a^{d})$, the density $q(|x|)$ lies between $q(bs)$ and $q(as)$, because $q$ is
+nonincreasing. So
+\[
+  q(bs)\,V_d\,s^{d}\,(b^{d} - a^{d}) \le m(bs) - m(as) \le q(as)\,V_d\,s^{d}\,(b^{d} - a^{d}) ,
+\]
+and $(m(bs) - m(as))/W(s) \to B\,(b^{\varkappa} - a^{\varkappa})$. With $b = 1$ and $a < 1$ the left
+inequality shows that, for every $\varepsilon > 0$, $q(s)s^{d}/W(s) \le
+B(1 - a^{\varkappa})/(V_d(1 - a^{d})) + \varepsilon$ for all small $s$. With $a = 1$ and $b > 1$ the
+right one shows $q(s)s^{d}/W(s) \ge B(b^{\varkappa} - 1)/(V_d(b^{d} - 1)) - \varepsilon$ for all small
+$s$. Now $(t^{\varkappa} - 1)/(t^{d} - 1) \to \varkappa/d$ as $t \to 1$, the quotient of the
+derivatives of $t^{\varkappa}$ and $t^{d}$ at $1$. So the first bound tends to
+$B\varkappa/(V_d\,d) + \varepsilon$ as $a \uparrow 1$ and the second to
+$B\varkappa/(V_d\,d) - \varepsilon$ as $b \downarrow 1$. As $\varepsilon$ is arbitrary and
+$V_d\,d = |S^{d-1}|$, this proves \ref{eq:rate-monotone-density}. It is the argument of the
+monotone density theorem (\sscite{bingham1987regular}, Thm.~1.7.2b, pp.~39--40), on spherical
+shells.
+
+For $c < d$ take $W(s) := \chi(1/s)$, $\varkappa := c$ and $B := B_c$: the first hypothesis is (c)
+at the ratio $1/a$, the second is \ref{eq:rate-ball}. So
+$q(s)\,s^{d}/\chi(1/s) \to B_c\,c/|S^{d-1}| = R(d,c)$, the second limit of clause (1). For $c = d$
+take $W(s) := s^{d}I(s)$, $\varkappa := d$ and $B := (2\pi)^{-d}V_d$: the first hypothesis is
+Step 3$'$(ii), since $I(s) = |S^{d-1}|P(1/s)$, and the second is the first limit of clause (2).
+So $q(s)/I(s) \to (2\pi)^{-d}\,V_d\,d/|S^{d-1}| = (2\pi)^{-d}$, the second limit of clause (2).
+
+\emph{The logarithmic bound of clause (2).} Let $c = d$ and $0 < s \le 1$. By
+Lemma~\ref{lem:isotropic-exponent-log}(1), $\chi(\rho) \ge e^{-13d/4 - 2C_k}\rho^{-d}$ for $\rho \ge 1$.
+In polar coordinates
+\[
+  I(s) \ge |S^{d-1}|\int_1^{1/s}\chi(\rho)\,\rho^{d-1}\,d\rho
+   \ge |S^{d-1}|\,e^{-13d/4 - 2C_k}\int_1^{1/s}\frac{d\rho}{\rho}
+   = |S^{d-1}|\,e^{-13d/4 - 2C_k}\log(1/s) .
+\]
+Let $C < C_* := (2\pi)^{-d}|S^{d-1}|e^{-13d/4-2C_k}$. If $C \le 0$ there is nothing to prove, as
+$q(s) > 0$ for small $s$ by the second limit. Otherwise $q(s) \ge (C/C_*)(2\pi)^{-d}I(s)$ for all
+small $s$, by the same limit, and the bound on $I(s)$ gives $q(s) \ge C\log(1/s)$.
+\end{proof}
+
+% Q-0428: the proofs of the two machine-checked nodes of Q-0425 on the rate through the polar
+% profile, written by records/affine/transcribe-q0428-nodes.py from the blueprint and pinned
+% (its header says what the transcription changes). The proof of the third node,
+% lem:exponent-profile-constant, which is proved in print only, is in Appendix A of the paper.
+The proofs of Propositions~\ref{prop:isotropic-exponent-profile}
+and~\ref{prop:origin-rate-profile-d} follow.
+
+\begin{proof}[Proof of Proposition~\ref{prop:isotropic-exponent-profile}]
+Write $k := k_d$ and $\bar\sigma := \sigma_{d-1}/|S^{d-1}|$ for the normalized surface measure.
+Three things are taken from the proof of Lemma~\ref{lem:isotropic-exponent-log}. First,
+\[
+  F_d(\xi) = \int_{S^{d-1}}\varphi\bigl(\langle\xi,\eta\rangle\bigr)\,\bar\sigma(d\eta),
+  \qquad
+  \varphi(s) := \int_0^\infty\bigl(1 - \cos(rs)\bigr)\,k(r)\,\frac{dr}{r} \quad (s \in \RR),
+\]
+with $\varphi$ even and finite. Second, $k \le c$ on $(0,\infty)$ and $k(r) \to 0$ as
+$r \to \infty$. Third, the bounds \ref{eq:cin-log}, and $0 \le \Cin(X) \le \tfrac14$ for
+$0 \le X \le 1$, because $\Cin$ is nondecreasing and $\Cin(1) \le \tfrac14$.
+
+\emph{Clause (1).} For $0 < u \le 1$ the integrand $(c - k(u))/u$ lies in $[0, c/u]$. So
+$\int_x^1 (c - k(u))\,du/u$ lies in $[0, c\log(1/x)]$, it is continuous and nonincreasing in $x$,
+and it vanishes at $x = 1$. Hence $K$ is continuous and nonincreasing with
+$1 = K(1) \le K(x) \le x^{-c}$. Let $a > 0$, and let $0 < x \le \min\{1, 1/a\}$, so that $x$ and
+$ax$ lie in $(0,1]$. Between $x$ and $ax$ the integrand is at most $(c - k(\max\{a,1\}x))/u$,
+because $k$ is nonincreasing. So
+\[
+  \bigl|\log K(ax) - \log K(x)\bigr| = \Bigl|\int_{ax}^{x}\bigl(c - k(u)\bigr)\frac{du}{u}\Bigr|
+   \le \bigl(c - k(\max\{a,1\}\,x)\bigr)\,|\log a| ,
+\]
+which tends to $0$ as $x \downarrow 0$ because $k(0{+}) = c$. By monotone convergence
+$\int_x^1 (c - k(u))\,du/u$ increases to $\int_0^1 (c - k(u))\,du/u$ as $x \downarrow 0$. If this
+integral is finite, $K(x)$ increases to its exponential, which is $K(0{+})$. If it is infinite,
+$K(x) \to \infty$.
+
+\emph{Clause (2), the limit $g_\infty$.} Put $\log^+ X := \max\{\log X, 0\}$ for $X > 0$,
+$\log^+ 0 := 0$, and
+\[
+  G(X) := \Cin(X) - \log^+ X \qquad (X \ge 0) .
+\]
+Then $-3 \le G \le \tfrac{13}{4}$ on $[0,\infty)$: for $X \ge 1$ this is \ref{eq:cin-log}, and for
+$0 \le X < 1$, $G(X) = \Cin(X) \in [0,\tfrac14]$. For $X \ge 1$,
+$\Cin(X) = \Cin(1) + \log X - \int_1^X u^{-1}\cos u\,du$, so
+\[
+  G(X) = \Cin(1) - \int_1^X \frac{\cos u}{u}\,du
+       = \Cin(1) - \Bigl[\frac{\sin u}{u}\Bigr]_1^X - \int_1^X \frac{\sin u}{u^2}\,du .
+\]
+The bracket tends to $-\sin 1$ as $X \to \infty$, and $u^{-2}\sin u$ is absolutely integrable on
+$[1,\infty)$. So $G(X)$ has a limit as $X \to \infty$. As $G(X) = \Cin(X) - \log X$ for $X \ge 1$,
+this limit is $g_\infty$, and $-3 \le g_\infty \le \tfrac{13}{4}$.
+
+\emph{Clause (2), the mean of the logarithm over the sphere.} Let $B$ be the closed unit ball of
+$\RR^d$ and $e_1$ the first basis vector. Lebesgue measure is the image of
+$\sigma_{d-1} \otimes r^{d-1}dr$ under $(\eta, r) \mapsto r\eta$, so for every Borel
+$h : S^{d-1} \to [0,\infty]$,
+\[
+  \int_B h\bigl(x/|x|\bigr)\,dx = \int_0^1 r^{d-1}\,dr\int_{S^{d-1}}h\,d\sigma_{d-1}
+   = \frac1d\int_{S^{d-1}}h\,d\sigma_{d-1} .
+\]
+Take $h(\eta) := -\log|\langle e_1,\eta\rangle| \in [0,\infty]$. For $x \in B$ with $x_1 \ne 0$,
+$h(x/|x|) = -\log|x_1| + \log|x| \le -\log|x_1|$, because $|x| \le 1$. As $B$ lies in the cube
+$[-1,1]^d$, on which $-\log|x_1| \ge 0$,
+\[
+  \frac1d\int_{S^{d-1}}h\,d\sigma_{d-1} \le \int_{[-1,1]^d}\bigl(-\log|x_1|\bigr)\,dx
+   = 2^{d-1}\int_{-1}^{1}\bigl(-\log|t|\bigr)\,dt = 2^{d} .
+\]
+So $\log|\langle e_1,\eta\rangle|$ is $\sigma_{d-1}$-integrable, and its mean is at most $0$
+because $|\langle e_1,\eta\rangle| \le 1$. For a unit vector $e$ take $Q \in \Orth(d)$ with
+$Qe_1 = e$. Then $\langle e,\eta\rangle = \langle e_1, Q^{\tp}\eta\rangle$, and $\sigma_{d-1}$ is
+invariant under $Q^{\tp}$, so the integral is the same for $e$ as for $e_1$. At $d = 1$ the
+sphere is $\{\pm1\}$, $|\langle e,\eta\rangle| = 1$, and $\lambda_1 = 0$.
+
+\emph{Clause (3), the tail integral.} For $s > 0$ put
+\[
+  T(s) := \int_{1/s}^{\infty}k(r)\,\frac{dr}{r} .
+\]
+It is finite: it is at most $C_k$ for $s \le 1$ and at most $c\log s + C_k$ for $s \ge 1$. For
+$s \ge 1$,
+\begin{equation}\label{eq:profile-tail}
+  T(s) = \int_{1/s}^{1}k(r)\,\frac{dr}{r} + C_k
+       = c\log s - \int_{1/s}^{1}\bigl(c - k(r)\bigr)\frac{dr}{r} + C_k
+       = c\log s - \log K(1/s) + C_k .
+\end{equation}
+
+\emph{Clause (3), the layer-cake identity.} For $0 < y < c$ put
+$\tau(y) := \sup\{r > 0 : k(r) > y\}$. The set is not empty, because $\sup k = c > y$. It is
+bounded, because $k(r) \to 0$ as $r \to \infty$ and $y > 0$. So $0 < \tau(y) < \infty$. As $k$ is
+nonincreasing, the set contains every $r' < r$ with each of its points $r$, so it is
+$(0,\tau(y))$ or $(0,\tau(y)]$; and $\tau$ is nonincreasing in $y$, hence Borel. Since
+$0 \le k \le c$,
+\[
+  k(r) = \int_0^c \mathbf 1\{y < k(r)\}\,dy \qquad (r > 0),
+\]
+and the indicator is a Borel function of $(r,y)$, $k$ being monotone. For a Borel
+$w : (0,\infty) \to [0,\infty)$, Tonelli's theorem gives
+\[
+  \int_0^\infty w(r)\,k(r)\,dr = \int_0^c\Bigl(\int_0^{\tau(y)}w(r)\,dr\Bigr)dy .
+\]
+Let $s > 0$. With $w(r) = (1 - \cos rs)/r$ the inner integral is $\Cin(s\,\tau(y))$, by the
+substitution $u = rs$. With $w(r) = \mathbf 1\{r > 1/s\}/r$ it is $\log^+(s\,\tau(y))$. So
+\[
+  \varphi(s) = \int_0^c \Cin\bigl(s\,\tau(y)\bigr)\,dy, \qquad
+  T(s) = \int_0^c \log^+\bigl(s\,\tau(y)\bigr)\,dy .
+\]
+Both are finite, and their integrands differ by $G(s\,\tau(y))$, which is bounded. Hence
+\begin{equation}\label{eq:profile-layer-cake}
+  \varphi(s) = T(s) + \int_0^c G\bigl(s\,\tau(y)\bigr)\,dy \qquad (s > 0) .
+\end{equation}
+This is an identity, with no remainder. It is where the monotonicity of $k$ enters the exponent.
+Monotonicity is also used for $k \le c$ and $k(r) \to 0$, in clause (1), and in the first term
+below.
+
+\emph{Clause (3), the sphere average.} Let $\rho > 0$ and write
+$\eta_1 := \langle e,\eta\rangle$ for $\eta \in S^{d-1}$. As $\varphi$ is even,
+$F_d(\rho e) = \int\varphi(\rho|\eta_1|)\,\bar\sigma(d\eta)$. The set $\{\eta_1 = 0\}$ is
+$\bar\sigma$-null: it is a great subsphere when $d \ge 2$ and empty when $d = 1$. By
+\ref{eq:profile-layer-cake} at $s = \rho|\eta_1|$,
+\begin{equation}\label{eq:profile-sphere}
+  F_d(\rho e) - T(\rho) = \int_{S^{d-1}}\bigl[T(\rho|\eta_1|) - T(\rho)\bigr]\,\bar\sigma(d\eta)
+   + \int_{S^{d-1}}\int_0^c G\bigl(\rho|\eta_1|\,\tau(y)\bigr)\,dy\,\bar\sigma(d\eta) ,
+\end{equation}
+where both integrals converge absolutely by the bounds that follow.
+
+\emph{The first term.} Let $0 < t \le 1$. Then
+$T(\rho) - T(\rho t) = \int_{1/\rho}^{1/(\rho t)}k(r)\,dr/r$ lies between
+$k(1/(\rho t))\log(1/t)$ and $c\log(1/t)$. So $-c\log(1/t) \le T(\rho t) - T(\rho) \le 0$ for
+every $\rho > 0$, and $T(\rho t) - T(\rho) \to c\log t$ as $\rho \to \infty$, because
+$k(0{+}) = c$. At $t = |\eta_1|$ the bound $c\,|\log|\eta_1||$ is $\bar\sigma$-integrable by
+clause (2). By dominated convergence the first term of \ref{eq:profile-sphere} tends to
+$c\lambda_d$ as $\rho \to \infty$, and it lies in $[c\lambda_d, 0]$ for every $\rho > 0$.
+
+\emph{The second term.} The integrand lies in $[-3, \tfrac{13}{4}]$. For every $y \in (0,c)$ and
+every $\eta$ with $\eta_1 \ne 0$, $\rho|\eta_1|\tau(y) \to \infty$ as $\rho \to \infty$, because
+$\tau(y) > 0$, so the integrand tends to $g_\infty$. The function
+$(\eta,y) \mapsto G(\rho|\eta_1|\tau(y))$ is Borel on $S^{d-1} \times (0,c)$ and bounded: $\tau$
+is Borel, being monotone, and $G$ is continuous on $[0,\infty)$. So the inner integral
+$\int_0^c G(\rho|\eta_1|\tau(y))\,dy$ is a Borel function of $\eta$, and it lies in
+$[-3c, \tfrac{13}{4}c]$ for every $\rho > 0$ and every $\eta$. For $\eta$ with $\eta_1 \ne 0$ it
+tends to $c\,g_\infty$ as $\rho \to \infty$, by bounded convergence on $(0,c)$. By bounded
+convergence for $\bar\sigma$, the second term tends to $c\,g_\infty$, and it lies in
+$[-3c, \tfrac{13}{4}c]$ for every $\rho > 0$.
+
+Adding the two, $F_d(\rho e) - T(\rho) \to c(\lambda_d + g_\infty) = c\varkappa_d$ as
+$\rho \to \infty$, and $c(\lambda_d - 3) \le F_d(\rho e) - T(\rho) \le \tfrac{13}{4}c$ for every
+$\rho > 0$. As $T(\rho) = \int_{1/\rho}^\infty k(r)\,dr/r$, this is the bound of clause (3) for
+every $\rho > 0$. For $\rho \ge 1$, \ref{eq:profile-tail} replaces $T(\rho)$ by
+$c\log\rho - \log K(1/\rho) + C_k$. This is the limit and the two-sided bound of clause (3) for
+$\rho \ge 1$. The
+quotient form follows by taking exponentials: the quotient is $\exp$ of minus the difference
+between $F_d(\rho e) - (c\log\rho - \log K(1/\rho) + C_k)$ and its limit.
+
+\emph{Clause (4).} $F_d$ is rotation invariant, since $\sigma_{d-1}$ is, so
+$F_d(\xi) = F_d(|\xi|e)$. Let $\rho = |\xi| \ge 1$ and write
+$F_d(\rho e) = c\log\rho - \log K(1/\rho) + C_k + \Delta(\rho)$. Then
+$\rho^{c}e^{-F_d(\rho e)} = e^{-C_k - \Delta(\rho)}K(1/\rho)$, and the two-sided bound of clause
+(3) on $\Delta(\rho)$ gives the display. By the display, $\rho^{c}e^{-F_d(\rho e)}$ is bounded on
+$[1,\infty)$ exactly when $K$ is bounded on $(0,1]$, which by clause (1) is the condition on the
+integral. In that case $K(1/\rho) \to K(0{+}) < \infty$ and $\Delta(\rho) \to c\varkappa_d$, which
+gives the limit.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:origin-rate-profile-d}]
+A density $p(x) = q(|x|)$ with $q$ nonincreasing exists by
+Proposition~\ref{prop:isotropic-radial-monotone}(2), as in the proof of Lemma~\ref{prop:origin-rate-d}. From here on
+$q$ is any nonincreasing function on $(0,\infty)$ such that $x \mapsto q(|x|)$ is a density of
+$\mu$. Let $e$ be a unit vector and write $\chi(\rho) := \widehat\mu(\rho e) = e^{-F_d(\rho e)}$
+for $\rho > 0$. Since $0 < c \le d < \infty$, Proposition~\ref{prop:isotropic-exponent-profile}(3) applies and
+gives $\chi(\rho)/(A\,\rho^{-c}K(1/\rho)) \to 1$ as $\rho \to \infty$. At $\rho = 1/s$,
+\begin{equation}\label{eq:profile-transform-at-s}
+  \frac{\widehat\mu(e/s)}{A\,s^{c}\,K(s)} \to 1 \qquad (s \downarrow 0) .
+\end{equation}
+
+\emph{Clause (1).} Let $c < d$. By Lemma~\ref{prop:origin-rate-d}(1),
+$q(s)/(R(d,c)\,s^{-d}\,\widehat\mu(e/s)) \to 1$ and
+$\mu(\{|x| \le s\})/(R(d,c)\,|S^{d-1}|\,c^{-1}\,\widehat\mu(e/s)) \to 1$. Multiplying each by
+\ref{eq:profile-transform-at-s} gives the two limits, with $Q = R(d,c)\,A$.
+
+\emph{Clause (2).} By clause (1), $q(s)\,s^{d-c}/(Q\,K(s)) \to 1$, and $Q > 0$. By
+Proposition~\ref{prop:isotropic-exponent-profile}(1), as $s \downarrow 0$ the factor $K(s)$ increases to the
+finite number $K(0{+}) \ge 1$ if $\int_0^1(c - k_d(u))\,du/u < \infty$, and $K(s) \to \infty$ if
+the integral diverges. In the second case $q(s)\,s^{d-c} \to \infty$, and no bound
+$q(s) \le C s^{c-d}$ holds near $0$. In the first case $q(s)\,s^{d-c} \to Q\,K(0{+})$, which is
+finite and positive, so there is $s_0 > 0$ with
+$q(s)\,s^{d-c} \le 2Q\,K(0{+})$ for $0 < s \le s_0$. For $s \ge s_0$, as $q$ is nonincreasing,
+$1 \ge \mu(\{|x| < s\}) \ge q(s)\,V_d\,s^{d}$, so
+$q(s)\,s^{d-c} \le s^{-c}/V_d \le s_0^{-c}/V_d$. So
+$C := \max\{2Q\,K(0{+}),\,s_0^{-c}/V_d\}$ serves for every $s > 0$.
+
+\emph{Clause (3), the truncated integral of the transform.} Let $c = d$. In polar coordinates the
+$I(s)$ of Lemma~\ref{prop:origin-rate-d}(2) is
+\[
+  I(s) = \int_{\{|\xi| \le 1/s\}}\widehat\mu(\xi)\,d\xi = |S^{d-1}|\,P(1/s), \qquad
+  P(R) := \int_0^R \chi(\rho)\,\rho^{d-1}\,d\rho .
+\]
+Put $f(\rho) := \chi(\rho)\,\rho^{d-1}$ and $h(\rho) := A\,K(1/\rho)/\rho$ for $\rho \ge 1$. Both
+are positive and continuous, and $f(\rho)/h(\rho) = \chi(\rho)\,\rho^{d}/(A\,K(1/\rho)) \to 1$
+as $\rho \to \infty$, by Proposition~\ref{prop:isotropic-exponent-profile}(3) with $c = d$. The substitution
+$y = 1/\rho$ gives, for $R \ge 1$,
+\[
+  H(R) := \int_1^R h(\rho)\,d\rho = A\int_{1/R}^{1}K(y)\,\frac{dy}{y} = A\,\mathcal{L}(1/R) ,
+\]
+and $H(R) \ge A\log R \to \infty$, because $K \ge 1$. Let $0 < \varepsilon < 1$ and choose
+$R_0 \ge 1$ with $|f - h| \le \varepsilon h$ on $[R_0,\infty)$. For $R \ge R_0$,
+\[
+  \bigl|P(R) - H(R)\bigr| \le P(1) + \int_1^{R_0}|f - h|\,d\rho + \varepsilon\,H(R) ,
+\]
+and $P(1) \le 1/d$ because $\chi \le 1$. Dividing by $H(R)$, which tends to infinity,
+$|P(R)/H(R) - 1| \le 2\varepsilon$ for all large $R$. So $P(R)/(A\,\mathcal{L}(1/R)) \to 1$ as
+$R \to \infty$, that is
+\[
+  \frac{I(s)}{|S^{d-1}|\,A\,\mathcal{L}(s)} \to 1 \qquad (s \downarrow 0) .
+\]
+
+\emph{Clause (3), the two limits.} By Lemma~\ref{prop:origin-rate-d}(2),
+$q(s)/((2\pi)^{-d}I(s)) \to 1$ and $\mu(\{|x| \le s\})/((2\pi)^{-d}V_d\,s^{d}\,I(s)) \to 1$.
+Multiplying each by the last display gives the two limits, with
+$B = (2\pi)^{-d}|S^{d-1}|A$.
+
+\emph{Clause (3), the logarithm.} Let $0 < s \le 1$. On $(s,1)$, $1 \le K(y) \le K(s)$, so
+$\log(1/s) \le \mathcal{L}(s) \le K(s)\log(1/s)$. Let $0 < y_0 < 1$. For $0 < s < y_0$,
+$\mathcal{L}(s) \ge \int_s^{y_0}K(y)\,dy/y \ge K(y_0)\log(y_0/s)$, and
+$\log(y_0/s)/\log(1/s) \to 1$ as $s \downarrow 0$. So for every number $\kappa < K(y_0)$,
+$\mathcal{L}(s)/\log(1/s) \ge \kappa$ for all small $s$. Now use
+Proposition~\ref{prop:isotropic-exponent-profile}(1) at $c = d$. If $\int_0^1(d - k_d(u))\,du/u < \infty$,
+then $K(y_0)$ increases to the finite number $K(0{+})$ as $y_0 \downarrow 0$, so the lower bound
+holds for every $\kappa < K(0{+})$; and $\mathcal{L}(s) \le K(s)\log(1/s) \le K(0{+})\log(1/s)$.
+Hence $\mathcal{L}(s)/\log(1/s) \to K(0{+})$, and with the first limit of the clause
+$q(s)/\log(1/s) \to B\,K(0{+})$, which is finite and positive. If the integral diverges, then
+$K(y_0) \to \infty$ as $y_0 \downarrow 0$, so the lower bound holds for every real $\kappa$:
+$\mathcal{L}(s)/\log(1/s) \to \infty$, and with the first limit $q(s)/\log(1/s) \to \infty$,
+because $B > 0$.
+\end{proof}
+
+% Q-0448, the joining step: the proof of Proposition prop:isotropic-stages, in a file of its
+% own. It stood in section A.4 of the paper (appendix-isotropic.tex) while the proposition was
+% proved in print only; Lean checks it since Q-0447.
+\input{proof-stages}
+
+\subsection{The dimension filtration}\label{supp:proofs-filtration}
+
+The subsection has the proof of the lemma on the shadow, then the separating family: three
+lemmas on its critical values, the proofs of these and of the lemma on a delay datum, the
+top of the filtration, and the proof of Theorem~\ref{thm:separating-family-critical-values}. It
+ends with a second proof of Proposition~\ref{prop:profile-one-dimension-down}(3).
+
+\begin{proof}[Proof of Lemma~\ref{lem:shadow-polar-profile}]
+\emph{The integral over the last coordinate.} Let $h : (0,\infty) \to [0,\infty)$ be Borel and
+put $\bar h(r) := C_d\int_{\RR}h(r\sqrt{1+u^2})\,(1+u^2)^{-(d+1)/2}\,du \in [0,\infty]$ for
+$r > 0$. Let $g \ge 0$ be Borel on $\RR^d$ with $g(0) = 0$, and write $z = (x,y)$ with
+$x \in \RR^d$ and $y \in \RR$. By Tonelli's theorem,
+\[
+  \int_{\RR^{d+1}} g(x)\,\frac{h(|z|)}{|S^{d}|\,|z|^{d+1}}\,dz
+   = \int_{\RR^d} g(x)\Bigl[\int_{\RR}
+       \frac{h\bigl(\sqrt{|x|^2+y^2}\bigr)}{|S^{d}|\,(|x|^2+y^2)^{(d+1)/2}}\,dy\Bigr]dx .
+\]
+For $x \ne 0$ put $r = |x|$ and substitute $y = ru$. The inner integral becomes
+\[
+  (|S^{d}|\,r^{d})^{-1}\int_{\RR}h(r\sqrt{1+u^2})\,(1+u^2)^{-(d+1)/2}\,du =
+  \bar h(r)\,(|S^{d-1}|\,r^{d})^{-1} .
+\]
+As $g(0) = 0$,
+\begin{equation}\label{eq:shadow-identity}
+  \int_{\RR^{d+1}} g(\Pi z)\,\frac{h(|z|)}{|S^{d}|\,|z|^{d+1}}\,dz
+   = \int_{\RR^d} g(x)\,\frac{\bar h(|x|)}{|S^{d-1}|\,|x|^{d}}\,dx ,
+\end{equation}
+both sides in $[0,\infty]$.
+
+\emph{Clause (1).} Take $h = \mathbf 1_{(1,2)}$ and $g = 1$ off the origin in
+\ref{eq:shadow-identity}. In polar coordinates of $\RR^{d+1}$ the left side is
+$\int_1^2 dt/t = \log 2$; the set $\{\Pi z = 0\}$ is a line, which is null because $d + 1 \ge 2$.
+In polar coordinates of $\RR^d$, and by Tonelli's theorem, the right side is
+\[
+\begin{aligned}
+  \int_0^\infty \bar h(r)\,\frac{dr}{r}
+   &= C_d\int_{\RR}(1+u^2)^{-(d+1)/2}\Bigl[\int_0^\infty
+       \mathbf 1_{(1,2)}\bigl(r\sqrt{1+u^2}\bigr)\frac{dr}{r}\Bigr]du \\
+   &= C_d\int_{\RR}(1+u^2)^{-(d+1)/2}\,du\cdot\log 2 ,
+\end{aligned}
+\]
+the inner integral being over an interval whose endpoints have the ratio $2$. So
+$C_d\int_{\RR}(1+u^2)^{-(d+1)/2}du = 1$. As $k'$ is nonincreasing and nonnegative,
+$0 \le k'(r\sqrt{1+u^2}) \le k'(r)$, so $0 \le \bar k(r) \le k'(r) < \infty$.
+
+\emph{Clause (2).} For each $u$, $r \mapsto k'(r\sqrt{1+u^2})$ is nonincreasing, so $\bar k$ is.
+Let $r_0 > 0$. A nonincreasing function has at most countably many discontinuities, and for each
+of them, $t$, at most two real $u$ have $r_0\sqrt{1+u^2} = t$. So for all $u$ outside a countable
+set, $k'(r\sqrt{1+u^2}) \to k'(r_0\sqrt{1+u^2})$ as $r \to r_0$. For $r \ge r_0/2$ the integrand
+of $\bar k(r)$ is at most $k'(r_0/2)\,(1+u^2)^{-(d+1)/2}$, which is integrable. By dominated
+convergence $\bar k(r) \to \bar k(r_0)$. As $r \downarrow 0$, $k'(r\sqrt{1+u^2})$ increases to
+$k'(0{+})$ for every $u$, so by monotone convergence and clause (1),
+$\bar k(r) \to k'(0{+})$, in $[0,\infty]$.
+
+\emph{Clause (3).} By Definition~\ref{def:isotropic-origin-datum}, $\nu'$ has the density
+$k'(|z|)\,(|S^{d}|\,|z|^{d+1})^{-1}$ on $\RR^{d+1} \setminus \{0\}$. Let $\bar\nu$ be the measure
+on $\RR^d \setminus \{0\}$ with density $\bar k(|x|)\,(|S^{d-1}|\,|x|^{d})^{-1}$. Then
+\ref{eq:shadow-identity} with $h = k'$ reads $\int g(\Pi z)\,\nu'(dz) = \int g\,d\bar\nu$ for
+every nonnegative Borel $g$ vanishing at the origin. The set $\{z \ne 0 : \Pi z = 0\}$ lies in a
+line, which is Lebesgue-null in $\RR^{d+1}$ because $d + 1 \ge 2$, and $\nu'$ has a density. So
+$\nu'$ gives it the mass $0$, and the image of $\nu'$ under $\Pi$ gives the origin no mass. Take
+$g(x) = |x|^2 \wedge 1$. As
+$|\Pi z| \le |z|$,
+\[
+\begin{aligned}
+  \int_0^1 \bar k(r)\,r\,dr + \int_1^\infty \bar k(r)\,\frac{dr}{r}
+   &= \int_{\RR^d}\bigl(|x|^2 \wedge 1\bigr)\,\bar\nu(dx)
+   \le \int_{\RR^{d+1}}\bigl(|z|^2 \wedge 1\bigr)\,\nu'(dz) \\
+   &= \int_0^1 k'(r)\,r\,dr + \int_1^\infty k'(r)\,\frac{dr}{r} < \infty ,
+\end{aligned}
+\]
+the first equality by polar coordinates in $\RR^d$ and the last by
+\ref{eq:polar-decomposition} in dimension $d + 1$. With clauses (1) and (2), $\bar k$ is finite,
+nonnegative and nonincreasing and satisfies the two conditions of
+Definition~\ref{def:isotropic-origin-datum}. So $(a,\bar k)$ is an isotropic origin datum in dimension $d$,
+and its \Levy{} measure is $\bar\nu$. For $\xi \in \RR^d$ take $g(x) = 1 - \cos\langle\xi,x\rangle$.
+Since $\langle(\xi,0),z\rangle = \langle\xi,\Pi z\rangle$ and $|(\xi,0)| = |\xi|$,
+\[
+  F'\bigl((\xi,0)\bigr) = \tfrac12 a|\xi|^2
+     + \int_{\RR^{d+1}}\bigl(1 - \cos\langle\xi,\Pi z\rangle\bigr)\,\nu'(dz)
+   = \tfrac12 a|\xi|^2 + \int_{\RR^d}\bigl(1 - \cos\langle\xi,x\rangle\bigr)\,\bar\nu(dx) ,
+\]
+which is the exponent \ref{eq:isotropic-exponent} of $(a,\bar k)$ at $\xi$. If
+$F'(\zeta) = F(|\zeta|)$, the left side is $F(|\xi|)$.
+\end{proof}
+
+% Q-0414, round 3: the lemmas on which the proof of the theorem on the separating family rests.
+Lemmas~\ref{lem:threshold-monotone} and~\ref{lem:threshold-limit} give the strict decrease of the
+critical values $w_d$ and bounds of their order, and Lemma~\ref{lem:threshold-asymptotic} gives
+their limit.
+
+% shared with blueprint lem:threshold-monotone
+\begin{lemma}[the critical values are strictly decreasing]\label{lem:threshold-monotone}
+For a real parameter $d \ge 1$ put $m = (d+1)/2$, $\lambda_d = 2^{-d/2}$ and
+$h_d(z) = z^m(e^{-z} - \lambda_d e^{-z/2})$, and let $M_d = \sup_{z>0}h_d(z)$ as in
+\ref{eq:threshold-constant}. Then $M_d \in (0,\infty)$ and the supremum is attained at a point of
+$(0,d\log 2)$. Consequently $w_d = \Gamma(m)/(2M_d)$ is a well-defined positive number, and when
+$d$ is an integer, $k^{(w)}_d$ is nonincreasing on $(0,\infty)$ exactly when $w \le w_d$. Moreover
+\[
+  M_{d+1} > \sqrt{m}\;M_d \qquad\text{and}\qquad w_{d+1} < w_d
+\]
+for every $d \ge 1$. In particular $w_1 > w_2 > w_3 > \dots > 0$, so
+$(w_{d+1}, w_d\,]$ is a nonempty interval for every integer $d \ge 1$.
+\end{lemma}
+
+% shared with blueprint lem:threshold-limit
+\begin{lemma}[the critical values tend to $0$ at the rate $d^{-1/2}$]\label{lem:threshold-limit}
+For a real parameter $d \ge 1$ let $m$, $h_d$, $M_d$ and $w_d = \Gamma(m)/(2M_d)$ be as in
+Lemma~\ref{lem:threshold-monotone}, and put
+\[
+  \varepsilon_d := 2^{-d/2}e^{m/2} = e^{1/4}\Bigl(\frac e4\Bigr)^{d/4},
+  \qquad K := \sqrt{\pi/2} + \sqrt\pi + 4 .
+\]
+Then for every $d \ge 1$
+\[
+  w_d \;\ge\; \frac{e^{-1/2}}{2\sqrt m},
+\]
+and for every $d \ge 1$ with $\varepsilon_d < 1$
+\[
+  w_d \;\le\; \frac{K}{2(1-\varepsilon_d)\sqrt m} .
+\]
+Since $e < 4$, $\varepsilon_d$ decreases strictly to $0$ as $d \to \infty$. Hence
+$w_d \to 0$, and $w_d$ is of exact order $d^{-1/2}$: $\sqrt m\,w_d \ge e^{-1/2}/2$ for every
+$d \ge 1$, and $\sqrt m\,w_d \le K$ for every $d$ with $\varepsilon_d \le \tfrac12$, which is every
+large $d$. In particular, for every fixed $w > 0$ there is a $D$ with $w > w_d$ for all
+$d \ge D$.
+\end{lemma}
+
+Neither constant of the lemma is the limit of $\sqrt m\,w_d$. The next lemma gives it.
+
+% shared with blueprint lem:threshold-asymptotic+22be5066299c
+\begin{lemma}[the limit of the critical values]\label{lem:threshold-asymptotic}
+For a real parameter $d \ge 1$ let $m = (d+1)/2$, $M_d$, $w_d = \Gamma(m)/(2M_d)$ and
+$\varepsilon_d = 2^{-d/2}e^{m/2}$ be as in Lemma~\ref{lem:threshold-limit}, and put
+\[
+  S_m := \Gamma(m)\,m^{1/2-m}\,e^{m} .
+\]
+\begin{enumerate}
+\item \emph{(Stirling's formula.)} $S_m \to \sqrt{2\pi}$ as $m \to \infty$ through the real
+numbers.
+\item \emph{(The critical value against the Gamma function.)} For every $d \ge 1$,
+\[
+  \sqrt m\,w_d \;\ge\; \tfrac12\,S_m ,
+\]
+and for every $d \ge 1$ with $\varepsilon_d < 1$,
+\[
+  \sqrt m\,w_d \;\le\; \frac{S_m}{2\,(1-\varepsilon_d)} .
+\]
+\item \emph{(The limit.)} As $d \to \infty$ through the real numbers,
+\[
+  \sqrt m\,w_d \to \sqrt{\pi/2} \qquad\text{and}\qquad \sqrt d\,w_d \to \sqrt\pi .
+\]
+\end{enumerate}
+\end{lemma}
+
+% Computed values: records/affine/reviews/verify-round1-scripts/a_critical_values-output.txt.
+The limit is approached slowly, and not monotonically. Computed values of $\sqrt d\,w_d$ are
+$12.61$ at $d = 1$ and $2.056$ at $d = 20$, against $\sqrt\pi \approx 1.7725$. They fall below
+$\sqrt\pi$ between $d = 55$ and $d = 56$, are least at $d = 81$, where the value is $1.7661$, and
+increase from there on as far as they were computed, to $d = 300$. The statements are
+independent of these values.
+
+\begin{proof}[Proof of Lemma~\ref{lem:threshold-monotone}]
+\emph{The closed form and the criterion.} \prog{B}{App.~A}, restated (the paragraph \emph{the polar
+profiles in closed form}, carried out there for every parameter and every integer $d \ge 1$). Let
+$d \ge 1$ be an integer and $w > 0$, and write
+$P(s,x) = \Gamma(s)^{-1}\int_0^x v^{s-1}e^{-v}dv$ for the regularized lower incomplete gamma
+function. Split \ref{eq:polar-profile-d} at the two summands of $k^{(w)}_{\mathrm I}$. For the
+power, $k_{\mathrm I}(r^2/2v) = (r^2/2v)^{-1/2}$ turns the integral into a Gamma integral and
+gives $2^{3/2}r^{-1}\Gamma(m)/\Gamma(d/2)$. For the bump,
+$\mathbf{1}_{[1,2]}(r^2/2v) = \mathbf{1}_{[r^2/4,\,r^2/2]}(v)$. Hence \prog{B}{(A.1)}:
+\begin{equation}\label{eq:witness-polar}
+  k^{(w)}_d(r) = \frac{2^{3/2}\,\Gamma(m)}{\Gamma(d/2)}\,\frac1r
+   + 2w\Bigl[P\Bigl(\frac d2,\frac{r^2}2\Bigr) - P\Bigl(\frac d2,\frac{r^2}4\Bigr)\Bigr],
+   \qquad r > 0 ,
+\end{equation}
+a smooth function on $(0,\infty)$. Since $\partial_x P(s,x) = x^{s-1}e^{-x}/\Gamma(s)$, the
+derivative of $P(d/2, r^2/2b)$ in $r$ is $2\,(r\,\Gamma(d/2))^{-1}(r^2/2b)^{d/2}e^{-r^2/2b}$ for
+$b > 0$. With $b = 1$ and $b = 2$, and $z = r^2/2$,
+\[
+  r^2\,\Gamma(d/2)\,\frac{d}{dr}k^{(w)}_d(r)
+   = -2^{3/2}\Gamma(m) + 4wr\Bigl(z^{d/2}e^{-z} - \bigl(\tfrac z2\bigr)^{d/2}e^{-z/2}\Bigr) .
+\]
+As $r = \sqrt{2z}$, the last term is $4\sqrt2\,w\,z^m\bigl(e^{-z} - 2^{-d/2}e^{-z/2}\bigr)$. So the
+derivative is nonpositive at $r$ if and only if \prog{B}{(A.2)} holds:
+\begin{equation}\label{eq:threshold-criterion}
+  w\,z^m\bigl(e^{-z} - 2^{-d/2}e^{-z/2}\bigr) \le \tfrac12\Gamma(m),
+  \qquad z = \tfrac12 r^2 .
+\end{equation}
+
+\emph{The supremum, and the equivalence.} $h_d$ is smooth on $(0,\infty)$ with $h_d(0{+}) = 0$,
+and $e^{-z} - \lambda_d e^{-z/2} > 0$ exactly when $e^{-z/2} > 2^{-d/2}$, that is exactly on
+$(0, d\log 2)$, an interval that is nonempty because $d \ge 1$. So $h_d > 0$ somewhere,
+$h_d \le 0$ on $[d\log 2,\infty)$, and $h_d(z) \le z^me^{-z} \to 0$ as $z \to \infty$. A positive
+continuous function vanishing at both ends of $(0,\infty)$ attains its supremum, so
+$M_d = h_d(z^*) \in (0,\infty)$ for some $z^* \in (0, d\log 2)$. For an integer $d$,
+\ref{eq:threshold-criterion} reads $w\,h_d(z) \le \tfrac12\Gamma(m)$ at $z = r^2/2$. So the
+criterion holds at every $r > 0$ exactly when $w M_d \le \tfrac12\Gamma(m)$, that is exactly when
+$w \le w_d$. A differentiable function on $(0,\infty)$ is nonincreasing exactly when its
+derivative is nonpositive throughout, which settles the equivalence for $k^{(w)}_d$.
+
+\emph{The first-order condition.} Let $z^* \in (0,d\log 2)$ be a maximizer and put
+$q := \lambda_d e^{z^*/2}$, so that $\lambda_d e^{-z^*/2} = q\,e^{-z^*}$. Since $z^* < d\log 2$,
+$q \in (0,1)$. Then $M_d = (z^*)^m e^{-z^*}(1-q) > 0$. The maximizer is interior, so
+$h_d'(z^*) = 0$, where
+\[
+  h_d'(z) = m z^{m-1}\bigl(e^{-z} - \lambda_d e^{-z/2}\bigr)
+    + z^m\bigl(-e^{-z} + \tfrac12\lambda_d e^{-z/2}\bigr) .
+\]
+Dividing $h_d'(z^*) = 0$ by $(z^*)^{m-1}e^{-z^*} > 0$ turns it into $m(1-q) = z^*(1 - q/2)$. As
+$1 - q/2 > 0$,
+\[
+  z^* = m\,\frac{1-q}{1-q/2} \qquad\text{and}\qquad
+  \sqrt{z^*} = \sqrt{m}\,\sqrt{\frac{1-q}{1-q/2}} .
+\]
+
+\emph{Testing the next dimension at that point.} Since
+$\lambda_{d+1} = 2^{-1/2}\lambda_d$ and $m_{d+1} = m + \tfrac12$,
+\[
+  h_{d+1}(z^*) = (z^*)^{m+1/2}\bigl(e^{-z^*} - 2^{-1/2}q\,e^{-z^*}\bigr)
+   = \sqrt{z^*}\,\bigl(1 - q/\sqrt2\bigr)\,(z^*)^m e^{-z^*}
+   = \sqrt{z^*}\,\frac{1 - q/\sqrt2}{1-q}\,M_d ,
+\]
+so that, substituting for $\sqrt{z^*}$,
+\[
+  M_{d+1} \;\ge\; h_{d+1}(z^*)
+   \;=\; \sqrt{m}\,M_d\,\frac{1 - q/\sqrt2}{\sqrt{(1-q)(1-q/2)}} .
+\]
+The last fraction exceeds $1$, because its numerator and denominator are positive and
+\[
+  \bigl(1 - q/\sqrt2\bigr)^2 - (1-q)\bigl(1-q/2\bigr)
+   = \Bigl(1 - \sqrt2\,q + \frac{q^2}{2}\Bigr)
+     - \Bigl(1 - \frac32 q + \frac{q^2}{2}\Bigr)
+   = \Bigl(\frac32 - \sqrt2\Bigr)q > 0
+\]
+for $q > 0$, because the constant $\tfrac32 - \sqrt2 = (1 - 2^{-1/2})^2$ is positive. (It is
+the reciprocal of $6 + 4\sqrt2$.) Hence $M_{d+1} > \sqrt{m}\,M_d$.
+
+\emph{The Gamma factor.} $\Gamma$ is log-convex on $(0,\infty)$: for $x,y > 0$ and
+$\theta \in (0,1)$, H\"older's inequality applied to
+$t^{\theta x + (1-\theta)y - 1}e^{-t} = (t^{x-1}e^{-t})^\theta (t^{y-1}e^{-t})^{1-\theta}$ with
+exponents $1/\theta$ and $1/(1-\theta)$ gives
+$\Gamma(\theta x + (1-\theta)y) \le \Gamma(x)^\theta\Gamma(y)^{1-\theta}$. At
+$x = m$, $y = m+1$, $\theta = \tfrac12$ this is
+$\Gamma(m + \tfrac12) \le \Gamma(m)^{1/2}\Gamma(m+1)^{1/2} = \sqrt{m}\,\Gamma(m)$, by
+$\Gamma(m+1) = m\Gamma(m)$. Therefore
+\[
+  \frac{1}{2w_{d+1}} = \frac{M_{d+1}}{\Gamma(m + \frac12)}
+   > \frac{\sqrt m\,M_d}{\Gamma(m+\frac12)}
+   \ge \frac{\sqrt m\,M_d}{\sqrt m\,\Gamma(m)} = \frac{1}{2w_d} ,
+\]
+which is $w_{d+1} < w_d$. Every $w_d$ is positive, so the chain $w_1 > w_2 > \dots > 0$ and the
+nonemptiness of $(w_{d+1},w_d\,]$ follow.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:threshold-limit}]
+\emph{Stirling's bounds.} Let $m \ge 1$ and $\varphi(u) := u - \log(1+u)$ for $u > -1$, so that
+$\varphi(0) = 0$ and $\varphi'(u) = u/(1+u)$. The substitution $t = m(1+u)$ in
+$\Gamma(m+1) = \int_0^\infty t^m e^{-t}\,dt$ gives
+\[
+  \Gamma(m+1) = m^{m+1}e^{-m}\int_{-1}^\infty e^{-m\varphi(u)}\,du ,
+  \qquad\text{so}\qquad
+  \Gamma(m) = m^m e^{-m}\,I_m ,\quad I_m := \int_{-1}^\infty e^{-m\varphi(u)}\,du ,
+\]
+by $\Gamma(m+1) = m\Gamma(m)$. Four comparisons for $\varphi$ follow by comparing derivatives and
+integrating from $0$. Put $\psi(u) := u^2/(2(1+u))$ for $u \ge 0$.
+\begin{itemize}
+\item On $(-1,0]$, $\varphi(u) \ge u^2/2$: there $\varphi'(s) = s/(1+s) \le s$, because
+$s \le 0 < 1+s \le 1$. Integrate over $[u,0]$.
+\item On $[0,\infty)$, $\varphi(u) \ge \psi(u)$: $\psi(0) = 0$ and
+$\psi'(s) = (s^2+2s)/(2(1+s)^2) \le (2s^2+2s)/(2(1+s)^2) = \varphi'(s)$.
+\item $\psi(u) \ge u^2/4$ on $[0,1]$, since $1+u \le 2$ there, and $\psi(u) \ge u/4$ on
+$[1,\infty)$, since $u/(1+u) \ge \tfrac12$ there.
+\item On $[0,\infty)$, $\varphi(u) \le u^2/2$, because $\varphi'(s) \le s$ there.
+\end{itemize}
+With $\int_0^\infty e^{-as^2}ds = \tfrac12\sqrt{\pi/a}$ for $a > 0$, the lower bounds for
+$\varphi$, on $(-1,0]$, on $[0,1]$ and on $[1,\infty)$, give
+\[
+  I_m \le \int_{-\infty}^0 e^{-mu^2/2}\,du + \int_0^\infty e^{-mu^2/4}\,du
+   + \int_1^\infty e^{-mu/4}\,du
+  = \sqrt{\frac{\pi}{2m}} + \sqrt{\frac{\pi}{m}} + \frac4m e^{-m/4}
+  \le \frac{K}{\sqrt m} ,
+\]
+using $4/m \le 4/\sqrt m$ for $m \ge 1$. The integrand is positive and $1/\sqrt m \le 1$, so the
+upper bound $\varphi(u) \le u^2/2$ gives
+\[
+  I_m \ge \int_0^{1/\sqrt m} e^{-mu^2/2}\,du \ge \frac{1}{\sqrt m}\,e^{-1/2} .
+\]
+So $e^{-1/2}\,m^{m-1/2}e^{-m} \le \Gamma(m) \le K\,m^{m-1/2}e^{-m}$ for every $m \ge 1$, and
+$m = (d+1)/2 \ge 1$ because $d \ge 1$.
+
+\emph{$M_d$ from above.} Since $2^{-d/2}e^{-z/2} > 0$, $h_d(z) < z^m e^{-z}$, and
+$z \mapsto z^m e^{-z}$ has derivative $z^{m-1}e^{-z}(m - z)$, so it is largest at $z = m$. Hence
+$M_d \le m^m e^{-m}$, and by Lemma~\ref{lem:threshold-monotone} $M_d > 0$, so
+\[
+  w_d = \frac{\Gamma(m)}{2M_d} \ge \frac{e^{-1/2}\,m^{m-1/2}e^{-m}}{2\,m^m e^{-m}}
+   = \frac{e^{-1/2}}{2\sqrt m} .
+\]
+
+\emph{$M_d$ from below.} Evaluating at $z = m$,
+\[
+  M_d \ge h_d(m) = m^m\bigl(e^{-m} - 2^{-d/2}e^{-m/2}\bigr) = m^m e^{-m}\,(1 - \varepsilon_d) ,
+\]
+and $\varepsilon_d = 2^{-d/2}e^{(d+1)/4} = e^{1/4}(e/4)^{d/4}$. When $\varepsilon_d < 1$ this is
+positive, and
+\[
+  w_d = \frac{\Gamma(m)}{2M_d} \le \frac{K\,m^{m-1/2}e^{-m}}{2\,m^m e^{-m}(1-\varepsilon_d)}
+   = \frac{K}{2(1-\varepsilon_d)\sqrt m} .
+\]
+
+\emph{The limit.} Since $e < 4$, $e/4 \in (0,1)$ and $\varepsilon_d$ decreases strictly to $0$.
+In particular $\varepsilon_d \le \tfrac12$ for all large $d$, and there the upper bound reads
+$\sqrt m\,w_d \le K$. Since $m = (d+1)/2 \to \infty$, $w_d \to 0$ follows. For fixed $w > 0$ the
+upper bound falls below $w$ from some $D$ on, and so does $w_d$.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:threshold-asymptotic}]
+From the proof of Lemma~\ref{lem:threshold-limit}: with $\varphi(u) := u - \log(1+u)$ for $u > -1$,
+\[
+  \Gamma(m) = m^m e^{-m}\,I_m , \qquad I_m := \int_{-1}^\infty e^{-m\varphi(u)}\,du ,
+\]
+so that $S_m = \sqrt m\,I_m$. Also $\varphi(u) \ge u^2/2$ on $(-1,0]$, $\varphi(u) \ge u^2/4$ on
+$[0,1]$ and $\varphi(u) \ge u/4$ on $[1,\infty)$. And $0 < M_d \le m^m e^{-m}$ for every
+$d \ge 1$, $M_d \ge m^m e^{-m}(1 - \varepsilon_d)$, and $\varepsilon_d \to 0$ as $d \to \infty$.
+
+\emph{Clause (1).} The substitution $u = v/\sqrt m$ gives
+\[
+  S_m = \sqrt m\,I_m = \int_{\RR} f_m(v)\,dv ,
+\]
+where $f_m(v) := e^{-m\varphi(v/\sqrt m)}$ for $v > -\sqrt m$ and $f_m(v) := 0$ for
+$v \le -\sqrt m$.
+\emph{The pointwise limit.} Since $\varphi'(s) = s/(1+s)$ and $\varphi(0) = 0$,
+$\varphi(u) - \tfrac12 u^2 = -\int_0^u s^2/(1+s)\,ds$. For $|u| < 1$ the denominator is at least
+$1 - |u|$ on the interval of integration, so
+\[
+  \bigl|\varphi(u) - \tfrac12 u^2\bigr| \le \frac{|u|^3}{3\,(1 - |u|)} .
+\]
+Fix a real $v$. For $m > v^2$, the point $u = v/\sqrt m$ has $|u| < 1$, so $v > -\sqrt m$ and
+\[
+  \bigl|m\,\varphi(v/\sqrt m) - \tfrac12 v^2\bigr|
+   \le \frac{|v|^3}{3\sqrt m\,\bigl(1 - |v|/\sqrt m\bigr)} ,
+\]
+which tends to $0$ as $m \to \infty$. Hence $f_m(v) \to e^{-v^2/2}$ for every real $v$.
+\emph{The domination.} Let $m \ge 1$ and $v > -\sqrt m$, and apply the three comparisons at
+$u = v/\sqrt m$. For $-\sqrt m < v \le 0$, $m\varphi(u) \ge v^2/2$. For $0 \le v \le \sqrt m$,
+$m\varphi(u) \ge v^2/4$. For $v \ge \sqrt m$, $m\varphi(u) \ge \sqrt m\,v/4 \ge v/4$. So
+\[
+  0 \le f_m(v) \le g(v) := e^{-v^2/4} + e^{-|v|/4} \qquad (v \in \RR,\ m \ge 1),
+\]
+and $g$ is integrable on $\RR$. \emph{The limit.} By dominated convergence, along every sequence
+$m_n \to \infty$, $S_{m_n} \to \int_{\RR}e^{-v^2/2}\,dv = \sqrt{2\pi}$. So $S_m \to \sqrt{2\pi}$ as
+$m \to \infty$.
+
+\emph{Clause (2).} $w_d = \Gamma(m)/(2M_d) = m^m e^{-m}I_m/(2M_d)$. As $0 < M_d \le m^m e^{-m}$,
+$w_d \ge I_m/2$, that is $\sqrt m\,w_d \ge S_m/2$. If $\varepsilon_d < 1$, then
+$M_d \ge m^m e^{-m}(1 - \varepsilon_d) > 0$ gives $w_d \le I_m/(2(1 - \varepsilon_d))$.
+
+\emph{Clause (3).} As $d \to \infty$, $m = (d+1)/2 \to \infty$ and $\varepsilon_d \to 0$, so
+$\varepsilon_d < 1$ for all large $d$, and both sides of clause (2) tend to $\sqrt{2\pi}/2 =
+\sqrt{\pi/2}$ by clause (1). Hence $\sqrt m\,w_d \to \sqrt{\pi/2}$. Finally
+$\sqrt d\,w_d = \sqrt{d/m}\,\sqrt m\,w_d$ and $d/m = 2d/(d+1) \to 2$, so
+$\sqrt d\,w_d \to \sqrt2\,\sqrt{\pi/2} = \sqrt\pi$.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:delay-polar-profile}]
+For $u > 0$ let $g_u(x) = (2\pi u)^{-d/2}e^{-|x|^2/2u}$ be the heat kernel of
+Lemma~\ref{lem:positive-transform-origin}. It is even and its transform is $e^{-u|\xi|^2/2}$, so
+\[
+  1 - e^{-u|\xi|^2/2} = \int_{\RR^d}\bigl(1 - \cos\langle\xi,x\rangle\bigr)\,g_u(x)\,dx .
+\]
+Integrate against $k_{\mathrm I}(u)\,du/u$ and exchange the integrals by Tonelli's theorem, which
+applies because the integrand is nonnegative:
+\[
+  F_{\mathrm I}\bigl(\tfrac12|\xi|^2\bigr) - \tfrac12 b_0|\xi|^2
+   = \int_{\RR^d}\bigl(1 - \cos\langle\xi,x\rangle\bigr)\,f(x)\,dx ,
+  \qquad f(x) := \int_0^\infty g_u(x)\,k_{\mathrm I}(u)\,\frac{du}{u} ,
+\]
+with $f$ measurable and valued in $[0,\infty]$. Fix $x \ne 0$ and put $r = |x|$. Under the
+substitution $u = r^2/2v$, $du/u$ becomes $dv/v$ with the orientation reversed, and
+$g_u(x) = \pi^{-d/2}r^{-d}v^{d/2}e^{-v}$. So, by \ref{eq:polar-profile-d} and
+$|S^{d-1}| = 2\pi^{d/2}/\Gamma(d/2)$,
+\[
+  f(x) = \pi^{-d/2}r^{-d}\int_0^\infty v^{d/2-1}e^{-v}\,k_{\mathrm I}\Bigl(\frac{r^2}{2v}\Bigr)dv
+   = \frac{k_d(r)}{|S^{d-1}|\,r^d} .
+\]
+This is the identity of exponents. The value $k_d(r)$ is finite. For fixed $x \ne 0$ the factor
+$g_u(x)/u$ is bounded for $u \in (0,1]$, because $e^{-r^2/2u}$ decays faster than every power of
+$1/u$ grows, and $g_u(x) \le (2\pi)^{-d/2}$ for $u \ge 1$. The two conditions on $k_{\mathrm I}$
+then bound the integral defining $f(x)$ over $(0,1]$ and over $[1,\infty)$. Measurability of $k_d$
+is Tonelli's theorem again. For the integrability conditions, $\int|x|^2g_u(x)\,dx = du$ and
+$\int g_u = 1$ give $\int(|x|^2 \wedge 1)\,g_u(x)\,dx \le \min\{du, 1\}$. By Tonelli's theorem
+\[
+  \int_{\RR^d}(|x|^2 \wedge 1)\,f(x)\,dx \le d\int_0^1 k_{\mathrm I}(u)\,du
+   + \int_1^\infty k_{\mathrm I}(u)\,\frac{du}{u} < \infty ,
+\]
+and in polar coordinates the left side is $\int_0^1 k_d(r)\,r\,dr + \int_1^\infty k_d(r)\,dr/r$.
+If $k_d$ is also nonincreasing, $(b_0,k_d)$ satisfies Definition~\ref{def:isotropic-origin-datum}. Its
+\Levy{} measure has the density $f$, and its exponent \ref{eq:isotropic-exponent} is
+$F_{\mathrm I}(\tfrac12|\cdot|^2)$ by the identity above.
+\end{proof}
+
+% Q-0448 (the author's decision of 2026-10-13, on review D of the second external round;
+% records/affine/reviews/VERIFY-round2-mathematics.md, items 15 and 16): Theorem
+% thm:filtration-strict is not printed. What it had and no other printed statement has is the
+% bottom of the chain, the blueprint node lem:filtration-top, printed here verbatim. Its proof
+% is the text that stood as the last part of the proof of the theorem since Q-0424: the two
+% inclusions, with the three steps (a), (b) and (c) stated and proved in full, where the proof
+% of record cites three child nodes that this paper does not state (lem:lk-negative-definite,
+% lem:bernstein-triplet-unique, lem:dilation-decreasing-profile). It was read against the proof
+% of record step by step (the first inclusion; Steps 1 to 6 of the second), and the marker is
+% pinned for that reason.
+% Q-0450 (the scope audit of 2026-10-13, mismatch 15): "the top of the filtration", the words of
+% the lemma's title, where the prose here, in section 2.6 and in Table tab:trust-base had "the
+% bottom of the chain".
+The top of the filtration, $\mathcal{A}_\infty = \mathcal{S}$, is restated from the cone paper as
+Proposition~\ref{prop:line-filtration}(3). The formal development proves it, as the next lemma,
+from Schoenberg's radial theorem, \ledger{A10} (Theorem~\ref{thm:cited-A10}).
+
+% shared with blueprint lem:filtration-top+9701404270b6
+\begin{lemma}[the top of the filtration is the subordinated slice]\label{lem:filtration-top}
+In the notation of Definition~\ref{def:filtration-thresholds}, $\mathcal{A}_\infty = \mathcal{S}$.
+\end{lemma}
+
+% A paragraph of paper prose stands between the statement and its proof.
+The route is that of the proof of \prog{B}{Prop.~4.9(4)} in the cone paper, which applies the
+same theorem to the same two functions. Three steps, marked (a), (b) and (c), stand in the place
+of three facts which that proof cites. Each is stated and proved after the two inclusions.
+
+\begin{proof}[Proof of Lemma~\ref{lem:filtration-top}]
+For
+$\mathcal{S} \subseteq \mathcal{A}_\infty$, let $F = F_{\mathrm I}(\cdot^2/2)$ with $F_{\mathrm I}$
+causally admissible. $F$ is admissible by \restated{B}{Lem.~4.2}{prop:line-bridge}, and since the delay profile of
+$F_{\mathrm I}$ is nonincreasing, so is its polar profile \ref{eq:polar-profile-d} in every
+dimension $d$; Lemma~\ref{lem:delay-polar-profile} and Proposition~\ref{prop:isotropic-polar-reading}(1), in its
+converse direction, then put $F$ in $\mathcal{A}_d$.
+
+For $\mathcal{A}_\infty \subseteq \mathcal{S}$, let $F \in \mathcal{A}_\infty$. Being admissible,
+$F$ is continuous and nonnegative on $[0,\infty)$, with $F(0) = 0$. Put
+$f(\sigma) = F(\sqrt{2\sigma})$ and, for $0 < c \le 1$, $g_c(\sigma) = f(\sigma) - f(c^2\sigma)$.
+Fix a dimension $d \ge 1$. Proposition~\ref{prop:isotropic-polar-reading}(1), in its forward
+direction, gives an isotropic origin datum $(a_d, k_d)$ in dimension $d$ with
+\[
+  F(|\eta|) = \tfrac12 a_d|\eta|^2 + \int_{\RR^d}\bigl(1 - \cos\langle\eta,x\rangle\bigr)\,\nu_d(dx) ,
+\]
+where $\nu_d$ is its \Levy{} measure, of density $k_d(|x|)/(|S^{d-1}|\,|x|^d)$. The image
+$(c\,\cdot)_*\nu_d$ of $\nu_d$ under $x \mapsto cx$ has the density
+$k_d(|x|/c)/(|S^{d-1}|\,|x|^d)$, so $(c\,\cdot)_*\nu_d \le \nu_d$, because $k_d$ is nonincreasing.
+And $F(c|\eta|) = \tfrac12 a_dc^2|\eta|^2 + \int(1 - \cos\langle\eta,x\rangle)\,(c\,\cdot)_*\nu_d(dx)$.
+By step (a), $\eta \mapsto F(|\eta|)$ and $\eta \mapsto F(|\eta|) - F(c|\eta|)$ are negative
+definite on $\RR^d$. So are $\xi \mapsto f(|\xi|^2)$ and $\xi \mapsto g_c(|\xi|^2)$, which are
+these two functions at the point $\sqrt2\,\xi$. They are continuous, and in dimension $0$ they
+vanish. Also $f \ge 0$, and $g_c \ge 0$: for a function $g$ with $g(0) = 0$, the inequality of
+\ledger{A10} with one point $\xi_1$, $|\xi_1|^2 = \sigma$, and $c_1 = 1$ reads $2g(\sigma) \ge 0$.
+So \ledger{A10} applies to $f$ and to each $g_c$. It gives $a, b \ge 0$ and a measure $m$ on
+$(0,\infty)$ with $\int(1 \wedge t)\,m(dt) < \infty$ and
+$f(\sigma) = a + b\sigma + \int(1 - e^{-\sigma t})\,m(dt)$ for $\sigma > 0$, and likewise
+$a_c$, $b_c$ and $m_c$ for $g_c$. Here $a = 0$, since $a \le f(\sigma)$ and
+$f(\sigma) \to F(0) = 0$ as $\sigma \downarrow 0$. Let $D_\lambda m$ be the image of $m$ under
+$t \mapsto \lambda t$, so that
+$f(c^2\sigma) = bc^2\sigma + \int(1 - e^{-\sigma t})\,D_{c^2}m(dt)$. Then
+$f = f(c^2\,\cdot) + g_c$ reads
+\[
+  b\sigma + \int\bigl(1 - e^{-\sigma t}\bigr)\,m(dt)
+  = a_c + (bc^2 + b_c)\,\sigma + \int\bigl(1 - e^{-\sigma t}\bigr)\,(D_{c^2}m + m_c)(dt)
+  \qquad (\sigma > 0),
+\]
+with both sides finite. By step (b), $m = D_{c^2}m + m_c$, so $D_{c^2}m \le m$. As $c$ ranges over
+$(0,1]$, so does $c^2$: $D_\lambda m \le m$ for every $\lambda \in (0,1]$. Since
+$\int(1 \wedge t^2)\,m(dt) \le \int(1 \wedge t)\,m(dt) < \infty$, step (c) gives
+$m(dt) = k(t)\,t^{-1}dt$ with $k \ge 0$ nonincreasing. The integrals $\int_0^1 k(t)\,dt$ and
+$\int_1^\infty k(t)\,t^{-1}dt$ are at most $\int(1 \wedge t)\,m(dt)$. So the function
+$F_{\mathrm I}$ with drift $b$ and delay profile $k$ is causally admissible, and
+$F_{\mathrm I} = f$ on $(0,\infty)$. Hence $F = F_{\mathrm I}(\cdot^2/2)$, and $F \in \mathcal{S}$.
+
+\emph{Step (a): a \Levy--Khintchine form, and the difference of two with ordered data, is negative
+definite.} Let $\alpha' \le \alpha$ be real numbers, and let $L' \le L$ be measures on $\RR^d$ such
+that $\int_{\RR^d}(1 - \cos\langle\eta,x\rangle)\,L(dx) < \infty$ for every $\eta \in \RR^d$. Put
+\[
+  \psi(\eta) = \alpha|\eta|^2 + \int_{\RR^d}\bigl(1 - \cos\langle\eta,x\rangle\bigr)\,L(dx),
+  \qquad
+  \psi'(\eta) = \alpha'|\eta|^2 + \int_{\RR^d}\bigl(1 - \cos\langle\eta,x\rangle\bigr)\,L'(dx),
+\]
+and $\phi = \psi - \psi'$. Then for every $n$, all $\eta_1, \dots, \eta_n \in \RR^d$ and all
+$c_1, \dots, c_n \in \CC$,
+\[
+  \sum_{j,k=1}^n \bigl(\phi(\eta_j) + \phi(\eta_k) - \phi(\eta_j - \eta_k)\bigr)\,c_j\,\overline{c_k}
+  \ge 0 .
+\]
+The route uses this with $(\alpha, L) = (\tfrac12 a_d, \nu_d)$, and with $(\alpha', L') = (0, 0)$
+for $F(|\eta|)$ and $(\alpha', L') = (\tfrac12 a_dc^2, (c\,\cdot)_*\nu_d)$ for
+$F(|\eta|) - F(c|\eta|)$. For the proof,
+first let the coefficients be real, $a_1, \dots, a_n \in \RR$. Write $\theta_j = \langle\eta_j,x\rangle$.
+Since $\cos(\theta_j - \theta_k) = \cos\theta_j\cos\theta_k + \sin\theta_j\sin\theta_k$,
+\[
+  (1 - \cos\theta_j) + (1 - \cos\theta_k) - \bigl(1 - \cos(\theta_j - \theta_k)\bigr)
+  = (1 - \cos\theta_j)(1 - \cos\theta_k) + \sin\theta_j\sin\theta_k ,
+\]
+and $|\eta_j|^2 + |\eta_k|^2 - |\eta_j - \eta_k|^2 = 2\langle\eta_j,\eta_k\rangle$. Each function
+$x \mapsto 1 - \cos\langle\eta,x\rangle$ is integrable for $L$ by hypothesis, so the integrals may be
+added, and
+\[
+  \sum_{j,k=1}^n a_j a_k\bigl(\psi(\eta_j) + \psi(\eta_k) - \psi(\eta_j - \eta_k)\bigr)
+  = 2\alpha\Bigl|\sum_j a_j\eta_j\Bigr|^2 + \int_{\RR^d} P_a(x)\,L(dx),
+\]
+where
+\[
+  P_a(x) = \Bigl(\sum_j a_j\bigl(1 - \cos\langle\eta_j,x\rangle\bigr)\Bigr)^2
+  + \Bigl(\sum_j a_j\sin\langle\eta_j,x\rangle\Bigr)^2 \ \ge\ 0 .
+\]
+$P_a$ is integrable for $L$, being a finite combination of the integrable functions above. Since
+$L' \le L$, every function integrable for $L$ is integrable for $L'$, so the same identity holds
+for $\psi'$, with $\alpha'$ and $L'$; and $\int P_a\,dL' \le \int P_a\,dL$, $P_a$ being nonnegative.
+Subtracting,
+\[
+  \sum_{j,k} a_j a_k\bigl(\phi(\eta_j) + \phi(\eta_k) - \phi(\eta_j - \eta_k)\bigr)
+  = 2(\alpha - \alpha')\Bigl|\sum_j a_j\eta_j\Bigr|^2
+  + \int P_a\,dL - \int P_a\,dL' \ \ge\ 0 .
+\]
+Now let the $c_j$ be complex. The matrix $K_{jk} = \phi(\eta_j) + \phi(\eta_k) - \phi(\eta_j -
+\eta_k)$ is real and symmetric, because $\phi$ is even. Writing $c_j = a_j + ib_j$,
+\[
+  \sum_{j,k} K_{jk}\,c_j\overline{c_k}
+  = \sum_{j,k} K_{jk}(a_ja_k + b_jb_k) + i\sum_{j,k} K_{jk}(b_ja_k - a_jb_k) .
+\]
+The imaginary part vanishes, since exchanging $j$ and $k$ changes its sign and leaves $K$ unchanged,
+and the real part is the sum of the two real cases just treated, so it is nonnegative.
+
+\emph{Step (b): the representation is unique.} Let $a, b, a', b' \ge 0$ and let $m, m'$ be measures
+on $(0,\infty)$ such that, for every $\sigma > 0$,
+\[
+  a + b\sigma + \int_{(0,\infty)}\bigl(1 - e^{-\sigma t}\bigr)\,m(dt)
+  = a' + b'\sigma + \int_{(0,\infty)}\bigl(1 - e^{-\sigma t}\bigr)\,m'(dt) < \infty .
+\]
+Then $a = a'$, $b = b'$ and $m = m'$. For the representations of \ledger{A10} this is the last
+sentence of Theorem~3.2 of \sscite{schilling2012bernstein} (p.~21), which \ledger{A10} leaves out.
+For the proof, write $G(\sigma)$ for the common value. For $t > 0$ and $\sigma > 0$,
+\[
+  \bigl(1 - e^{-\sigma t}\bigr) + \bigl(1 - e^{-(\sigma+2)t}\bigr)
+  + e^{-\sigma t}\bigl(1 - e^{-t}\bigr)^2 = 2\bigl(1 - e^{-(\sigma+1)t}\bigr),
+\]
+as expanding the square shows, and $b\sigma + b(\sigma + 2) = 2b(\sigma + 1)$. Integrating against
+$m$, every term being nonnegative,
+\[
+  G(\sigma) + G(\sigma + 2) + \int_{(0,\infty)} e^{-\sigma t}\bigl(1 - e^{-t}\bigr)^2\,m(dt)
+  = 2G(\sigma + 1),
+\]
+and the same with $a'$, $b'$ and $m'$. All the values of $G$ are finite, so the measures
+$n(dt) = (1 - e^{-t})^2\,m(dt)$ and $n'(dt) = (1 - e^{-t})^2\,m'(dt)$ on $(0,\infty)$ have the same
+Laplace transform $\int e^{-\sigma t}\,n(dt) = 2G(\sigma+1) - G(\sigma) - G(\sigma+2)$ at every
+$\sigma > 0$, and it is finite. Such a transform determines the measure: $n_1(dt) := e^{-t}\,n(dt)$
+is finite, its image under $t \mapsto e^{-t}$ is a finite measure on $(0,1)$ whose $k$-th moment is
+$\int e^{-(k+1)t}\,n(dt)$, and likewise for $n'$; so the two images have the same moments, finite
+measures on $[0,1]$ are determined by their moments (by the Weierstrass approximation theorem), and
+$n_1 = n'_1$, so $n = n'$. The density $(1 - e^{-t})^2$ is positive and finite on
+$(0,\infty)$, so dividing by it gives $m = m'$. Then the two integrals in the hypothesis are equal
+and finite, so $a + b\sigma = a' + b'\sigma$ for every $\sigma > 0$; at $\sigma = 1$ and $\sigma = 2$
+this gives $b = b'$ and $a = a'$.
+
+\emph{Step (c): a measure that decreases under dilation has a nonincreasing profile.} Let $m$ be a
+measure on $(0,\infty)$ with $\int_{(0,\infty)}(1 \wedge t^2)\,m(dt) < \infty$, and suppose that
+its image $D_\lambda m$ under $t \mapsto \lambda t$ is at most $m$ for every $\lambda \in (0,1]$.
+Then $m(dt) = k(t)\,t^{-1}dt$ for a nonincreasing $k : (0,\infty) \to [0,\infty)$. This is the
+step from the dilation inequality to the profile in the proof of \prog{V}{Lem.~7.1}, where it is
+not a numbered statement. For the proof,
+let $\tilde m$ be the image of $m$ under $\log$, a measure on $\RR$. Its rays are finite:
+$\tilde m((\theta,\infty)) = m((e^\theta,\infty)) < \infty$, by $\int(1 \wedge t^2)\,m(dt) <
+\infty$. Dilation by $\lambda = e^{-h}$, $h > 0$, becomes translation by $-h$, so the hypothesis
+reads $\tilde m(A + h) \le \tilde m(A)$ for every Borel $A$ and every $h > 0$: $\tilde m$
+decreases under every right shift. Put
+\[
+  \varphi(\theta) := \sup_{n \ge 0}\, 2^n\,\tilde m\bigl((\theta,\theta + 2^{-n}]\bigr) \in [0,\infty] .
+\]
+Each term is nonincreasing in $\theta$, by the shift property, and the sequence is nondecreasing in
+$n$, because splitting $(\theta,\theta+2\delta]$ at its midpoint and shifting the right half gives
+$\tilde m((\theta,\theta+2\delta]) \le 2\,\tilde m((\theta,\theta+\delta])$; so $\varphi$ is
+nonincreasing. For $a < b$, monotone convergence and Tonelli's theorem give
+$\int_a^b \varphi = \lim_n 2^n\int|(a,b] \cap [x - 2^{-n}, x)|\,\tilde m(dx)$, which lies between
+$\tilde m((a + 2^{-n}, b])$ and $\tilde m((a, b + 2^{-n}])$; both tend to $\tilde m((a,b])$, the
+second because the rays are finite. So $\tilde m(d\theta) = \varphi(\theta)\,d\theta$. And $\varphi$
+is finite at every point: $\varphi(\theta) = \infty$ would force $\varphi = \infty$ on
+$(\theta - 1, \theta]$, $\varphi$ being nonincreasing, and so
+$\tilde m((\theta - 1,\theta]) = \infty$, which the finite rays exclude.
+Returning to $t = e^\theta$, $m(dt) = k(t)\,t^{-1}dt$ with $k(t) := \varphi(\log t)$, finite,
+nonnegative and nonincreasing.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:separating-family-critical-values}]
+\emph{Clause (1), $w \le w_D$ gives membership.} Lemma~\ref{lem:delay-polar-profile} applies to
+$D^{(w)}$ in dimension $D$, since it reads no monotonicity. It gives that the polar profile
+$k^{(w)}_D$ is finite and satisfies the two conditions of Definition~\ref{def:isotropic-origin-datum}, and
+that
+\[
+  F^{(w)}(|\xi|) = \int_{\RR^D}\bigl(1 - \cos\langle\xi,x\rangle\bigr)\,
+     \frac{k^{(w)}_D(|x|)}{|S^{D-1}|\,|x|^D}\,dx , \qquad \xi \in \RR^D .
+\]
+If $w \le w_D$, $k^{(w)}_D$ is nonincreasing (Lemma~\ref{lem:threshold-monotone}). So
+$(0,k^{(w)}_D)$ is an isotropic origin datum in dimension $D$ with exponent
+$\xi \mapsto F^{(w)}(|\xi|)$, and $F^{(w)} \in \mathcal{A}_D$ by
+Proposition~\ref{prop:isotropic-polar-reading}(2).
+
+\emph{Clause (1), $w > w_D$ excludes it.} Let $w > w_D$ and suppose
+$F^{(w)} \in \mathcal{A}_D$. By Proposition~\ref{prop:isotropic-polar-reading}(2),
+$\xi \mapsto F^{(w)}(|\xi|)$ is the exponent of an isotropic origin datum $(a,k_D)$ in dimension
+$D$, with \Levy{} measure $\nu_D$ and $k_D$ nonincreasing. Let $\nu'$ be the measure on
+$\RR^D \setminus \{0\}$ with density $k^{(w)}_D(|x|)\,(|S^{D-1}|\,|x|^D)^{-1}$. By polar
+coordinates in $\RR^D$, which need no monotonicity of $k^{(w)}_D$, and the two integrability
+conditions,
+\[
+  \int\bigl(|x|^2 \wedge 1\bigr)\,\nu'(dx)
+   = \int_0^1 k^{(w)}_D(r)\,r\,dr + \int_1^\infty k^{(w)}_D(r)\,\frac{dr}{r} < \infty ,
+\]
+and by the display $F^{(w)}(|\xi|) = \int(1 - \cos\langle\xi,x\rangle)\,\nu'(dx)$. By
+\ledger{A3}(iii) there are
+infinitely divisible laws with the triplets $(0,\nu',0)$ and $(aI,\nu_D,0)$. Both \Levy{}
+measures are symmetric, so the odd parts of the integrands integrate to $0$, and both laws have
+the characteristic function $e^{-F^{(w)}(|\xi|)}$. So they are one law, and by the uniqueness
+of the triplet, \ledger{A3}(ii), $a = 0$ and $\nu' = \nu_D$. The two radial densities then agree
+almost everywhere on $\RR^D$, so $k^{(w)}_D = k_D$ almost everywhere on $(0,\infty)$, by polar
+coordinates. On the other hand $M_D$ is attained at some $z^* > 0$
+(Lemma~\ref{lem:threshold-monotone}), and $w > w_D$ means $w\,M_D > \tfrac12\Gamma(m)$. So the
+criterion of Lemma~\ref{lem:threshold-monotone} fails at $z^*$: the smooth function $k^{(w)}_D$ has a
+positive derivative at $r_0 = \sqrt{2z^*}$, and is continuous and strictly increasing on an
+interval around $r_0$. Take $r < s$ in that interval. Points $u_n \downarrow r$ and
+$v_n \uparrow s$ at which $k^{(w)}_D = k_D$ give
+$k^{(w)}_D(u_n) = k_D(u_n) \ge k_D(v_n) = k^{(w)}_D(v_n)$, and by continuity
+$k^{(w)}_D(r) \ge k^{(w)}_D(s)$, a contradiction. So $F^{(w)} \notin \mathcal{A}_D$.
+
+\emph{Clause (2).} This is Lemma~\ref{lem:threshold-monotone}: $w_{d+1} < w_d$ for every $d \ge 1$,
+and every $w_d$ is positive.
+
+\emph{Clause (3).} By Lemma~\ref{lem:threshold-asymptotic}(3), $\sqrt d\,w_d \to \sqrt\pi$ as
+$d \to \infty$ through the real numbers, hence through the integers.
+
+\emph{Clause (4).} The critical values decrease strictly
+(Lemma~\ref{lem:threshold-monotone}). Let $w \in (w_{d+1}, w_d\,]$. For $D \le d$,
+$w_D \ge w_d \ge w$. For $D \ge d + 1$, $w_D \le w_{d+1} < w$. If $w > w_1$, then $w > w_D$ for
+every $D$. Finally $w_D \to 0$ (Lemma~\ref{lem:threshold-limit}), so for $w \in (0,w_1]$ there is a
+largest integer $d \ge 1$ with $w_d \ge w$, and it is the one $d$ with
+$w \in (w_{d+1}, w_d\,]$.
+With clause (1), this gives the first three sentences of the clause. For the last, let $d \ge 1$
+be an integer. The interval $(w_{d+1}, w_d\,]$ is nonempty by clause (2), and for $w$ in it
+$F^{(w)} \in \mathcal{A}_d \setminus \mathcal{A}_{d+1}$. The inclusion
+$\mathcal{A}_{d+1} \subseteq \mathcal{A}_d$ is part of Proposition~\ref{prop:profile-one-dimension-down}(1).
+\end{proof}
+
+% Q-0448 (the author's decision of 2026-10-13; VERIFY-round2-mathematics.md, item 16): the
+% blueprint node thm:no-cin-ray-in-the-plane is not printed as a theorem, being clause (3) of
+% Proposition prop:profile-one-dimension-down. Its proof of record is kept, verbatim, as a
+% second proof of that clause. The heading carries no \ref, so that `linkage check` does not
+% take it for the proof of the proposition; with no marker the text below is not compared with
+% the blueprint (it was verbatim at the commit of this item). The node stays at the blueprint
+% and in Lean (no_cin_ray_in_the_plane, cin_ray_scaled).
+\paragraph{A second proof of Proposition~\ref{prop:profile-one-dimension-down}(3).} The clause
+says that for $\tau > 0$ and $b > 0$ the $\Cin$ ray $F(\omega) = b\,\Cin(\tau|\omega|)$, the
+admissible exponent with Gaussian coefficient $0$ and folded profile
+$b\,\mathbf{1}_{(0,\tau)}$ (Proposition~\ref{prop:line-extreme-rays}), belongs to no
+$\mathcal{A}_d$ with $d \ge 2$. The proof above takes it from clause (2) and the nesting of the
+classes. The proof below projects from $\RR^d$ to the line in one step, compares the shadow on
+the line of a datum in dimension $d$ with the step, and does not use the nesting. It is the
+route of the formal statement \texttt{no\_cin\_ray\_in\_the\_plane}.
+
+\begin{proof}[Second proof of clause (3)]
+Let $d \ge 2$ and suppose $F \in \mathcal{A}_d$: then $\xi \mapsto F(|\xi|)$ is the exponent of a
+self-decomposable law on $\RR^d$.
+
+\emph{The datum.} By Proposition~\ref{prop:isotropic-polar-reading}(1), in its forward direction,
+$\xi \mapsto F(|\xi|)$ is the exponent $F_d$ of an isotropic origin datum $(a,k_d)$ in dimension
+$d$. Write $\nu := \nu_d$ for its \Levy{} measure. By \ref{eq:isotropic-exponent},
+\begin{equation}\label{eq:cin-ray-exponent}
+  F(|\xi|) = \tfrac12 a|\xi|^2
+   + \int_{\RR^d}\bigl(1 - \cos\langle\xi,x\rangle\bigr)\,\nu(dx), \qquad \xi \in \RR^d ,
+\end{equation}
+and $\nu$ is rotation invariant, with the radial density
+$f_d(r) = k_d(r)\bigl(|S^{d-1}|r^d\bigr)^{-1}$, where $k_d$ is nonincreasing and finite at every
+$r > 0$ (Definition~\ref{def:isotropic-origin-datum}).
+
+\emph{The shadow on a line.} Let $\Pi(x) = x_1$ and let $\bar\nu$ be the image of $\nu$ under
+$\Pi$, restricted to $\RR \setminus \{0\}$. Since $|x_1| \le |x|$,
+$\int(1 \wedge y^2)\,\bar\nu(dy) \le \int(1 \wedge |x|^2)\,\nu(dx) < \infty$, so $\bar\nu$ is a
+\Levy{} measure on $\RR$. It is symmetric, because $\nu$ is invariant under $x \mapsto -x$. Take
+$\xi = (\omega,0,\dots,0)$ in \ref{eq:cin-ray-exponent}. The integrand vanishes where $x_1 = 0$,
+so
+\[
+  \tfrac12 a\omega^2 + \int_{\RR}\bigl(1 - \cos(\omega y)\bigr)\,\bar\nu(dy) = b\,\Cin(\tau|\omega|),
+  \qquad \omega \in \RR .
+\]
+The right side is the exponent of the datum $(0, b\,\mathbf{1}_{(0,\tau)})$ in dimension $1$, whose
+\Levy{} measure is $\nu_1(dy) := b\,\mathbf{1}_{\{0<|y|<\tau\}}\,(2|y|)^{-1}dy$, read through
+\ref{eq:polar-decomposition} at $d = 1$: there $S^0 = \{\pm1\}$ and
+$\int_{\RR}(1 - \cos\omega y)\,\nu_1(dy) = b\int_0^\tau(1-\cos\omega r)\,dr/r = b\,\Cin(\tau|\omega|)$,
+which is \restated{B}{Lem.~3.1}{prop:line-extreme-rays} scaled by $b$. As $\bar\nu$ is symmetric, the exponent of the triplet
+$(a,\bar\nu,0)$ reduces to the left side, so by \ledger{A3}(iii) the law with that triplet has
+characteristic function $e^{-b\Cin(\tau|\omega|)}$, the same as the law of the datum, whose triplet
+is $(0,\nu_1,0)$. By the uniqueness in \ledger{A3}(ii), $a = 0$ and $\bar\nu = \nu_1$.
+
+\emph{The shadow determines the support.} As $\nu_1$ does not charge $\{|y| > \tau\}$,
+$\nu(\{x : |x_1| > \tau\}) = \bar\nu(\{|y| > \tau\}) = 0$. A reflection carrying $e_1$ to a unit
+vector $u$ preserves $\nu$, so $\nu(\{x : |\langle u,x\rangle| > \tau\}) = 0$ for every unit $u$.
+Take a dense sequence $(u_n)$ in $S^{d-1}$. If $|x| > \tau$, some $u_n$ has
+$|u_n - x/|x|| < (|x|-\tau)/|x|$, and then $\langle u_n,x\rangle \ge |x| - |u_n - x/|x||\,|x| >
+\tau$. So $\{|x| > \tau\}$ is covered by countably many null slabs, and
+$\nu(\{|x| > \tau\}) = 0$. By Lemma~\ref{lem:polar-decomposition} the image of $\nu$ under
+$x \mapsto |x|$ is $k_d(r)\,dr/r$ on $(0,\infty)$, so $k_d = 0$ almost everywhere on
+$(\tau,\infty)$, and since $k_d$ is nonincreasing and nonnegative, $k_d(r) = 0$ for every
+$r > \tau$.
+
+\emph{The edge.} Let $0 < \varepsilon \le \tfrac12$ and consider the slab
+$S_\varepsilon = \{x : \tau(1-\varepsilon) < |x_1| < \tau\}$. By \ref{eq:polar-decomposition},
+\[
+  \nu(S_\varepsilon) = \frac{1}{|S^{d-1}|}\int_{S^{d-1}}\sigma_{d-1}(d\eta)\int_0^\infty
+    \mathbf 1_{S_\varepsilon}(r\eta)\,k_d(r)\,\frac{dr}{r} .
+\]
+A point $r\eta$ of $S_\varepsilon$ with $k_d(r) \ne 0$ has $r \le \tau$, by the previous step, so
+$r \ge r|\eta_1| > \tau(1-\varepsilon)$, and $|\eta_1| > \tau(1-\varepsilon)/r \ge 1-\varepsilon$:
+$\eta$ lies in the cap $K_\varepsilon = \{\eta : |\eta_1| > 1-\varepsilon\}$ and
+$r \in (\tau(1-\varepsilon), \tau]$, an interval of length $\tau\varepsilon$ on which
+$k_d(r)/r \le M := 2k_d(\tau/2)/\tau$. Hence
+\[
+  \nu(S_\varepsilon) \le \frac{\sigma_{d-1}(K_\varepsilon)}{|S^{d-1}|}\,M\,\tau\varepsilon .
+\]
+On the other side, $\nu(S_\varepsilon) \ge \bar\nu(\{\tau(1-\varepsilon) < |y| < \tau\}) =
+\nu_1(\{\tau(1-\varepsilon) < |y| < \tau\}) = b\int_{\tau(1-\varepsilon)}^\tau dr/r \ge
+(b/\tau)\,\tau\varepsilon$. Dividing by $\tau\varepsilon$,
+$b/\tau \le M\,\sigma_{d-1}(K_\varepsilon)/|S^{d-1}|$ for every $\varepsilon \in (0,\tfrac12]$.
+As $\varepsilon \downarrow 0$ the caps decrease to the two poles $\{|\eta_1| = 1\} = \{\pm e_1\}$,
+which lie on the great subsphere $\{\eta_2 = 0\}$ because $d \ge 2$, and which are therefore
+$\sigma_{d-1}$-null (a great subsphere is null, the cone over it lying in a hyperplane). So $\sigma_{d-1}(K_\varepsilon) \to 0$, and $b/\tau \le 0$, a contradiction.
+Hence $F \notin \mathcal{A}_d$.
+\end{proof}

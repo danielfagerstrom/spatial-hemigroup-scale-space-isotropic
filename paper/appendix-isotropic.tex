@@ -1,0 +1,1363 @@
+% Appendix A --- deferred proofs of section 3. Moved out of section 3 (Q-0291, the author's decision
+% of 2026-10-04 to shorten sections 3 and 4 by moving material to appendices, as Q-0290 did for
+% section 5; records/affine/move-sections-3-4-to-appendices*.py, three passes). The proofs are
+% unchanged but for their headings, in main-text order: lem:radial-marginal,
+% lem:isotropic-marginal-family, the sufficiency and uniqueness halves of
+% thm:isotropic-classification, prop:isotropic-polar-reading, prop:isotropic-bridge (3.2);
+% lem:positive-transform-origin, lem:isotropic-exponent-log, thm:origin-boundedness-d (3.3);
+% lem:threshold-monotone, lem:threshold-limit, thm:filtration-strict, thm:no-cin-ray-in-the-plane
+% (3.4). Every statement stays in section 3, which keeps the necessity half of
+% thm:isotropic-classification: the reduction to the line.
+%
+% Q-0310 (the whole-paper review's notation flags; records/affine/
+% REVIEW-paper-whole-fixes-paper-iso.md), in the proofs only: the contraction ratio of
+% self-decomposability is lambda (it was c, which is the profile at the origin); the
+% sphere-averaged profile is \bar k (K is the constant of lem:threshold-limit and the Bessel
+% function); the unit vector of lem:isotropic-exponent-log's proof is \widehat\xi (theta is the
+% Matern range); the shadow measure of thm:no-cin-ray-in-the-plane's proof is \bar\nu (m is
+% (d+1)/2); "profile" is qualified. The gauge ratio c of the uniqueness proof matches the shared
+% statement and is owed at the blueprint (records/affine/GATE-paper-iso.md).
+%
+% Q-0311 (the blind review records/affine/REVIEW-paper-iso.md, flag 3): the three proofs that were
+% sketches (lem:isotropic-exponent-log, thm:origin-boundedness-d, lem:threshold-limit) are now the
+% blueprint's proofs of record in full (blueprint/src/parts/03-isotropic.tex), transcribed with the
+% paper's conventions: "Lemma~\ref" for a bare \ref, the cited facts by their paper names C1-C4,
+% the unit vector \widehat\xi for the blueprint's theta (the Matern range), the radius r of the
+% punctured balls in clause (3) for the blueprint's eta (the sphere variable), y for the dummy
+% variable of clause (4), and C_k defined in clause (3), where the blueprint uses it for the delay
+% profile's tail without a definition. No proof of the paper is a sketch now. The remark on
+% 3/2 - sqrt 2 moved here from section 3.4, after its proof (flag 31).
+%
+% Q-0316 (pass 2, the blind register review REVIEW-register-paper-iso.md, Appendix A flags 1-25):
+% the proof-zone flags were fixed at the blueprint's proofs of record, and every proof here is
+% re-transcribed from them verbatim by records/affine/transcribe-proofs-q0316.py (the cited facts
+% through \ledger, which macros.tex prints as C1-C5). Two proofs are new: those of
+% prop:isotropic-radial-monotone and lem:delay-polar-profile (the witness's membership, flag 1).
+% The remark after lem:threshold-monotone is paper prose (flag 22), shortened.
+%
+% Q-0328: the proof of record of prop:origin-lower-bound-d, verbatim (records/affine/
+% transcribe-q0328-origin-lower-bound.py), after that of thm:origin-boundedness-d. Its register was
+% brought to the Q-0316 pass's at the blueprint first (seven participial clauses and two semicolons
+% made sentences, no step changed).
+%
+% Q-0406 (pass 6, the author's review of section 3; records/affine/REVIEW-author-paper-iso.md):
+% A.1 is the proof of the one lemma on operators and kernels, in both directions, from the two
+% proofs of record (the comment above it says how). Item 5 of the brief: a place of the line paper
+% or the cone paper that section 2 restates is cited at the restatement, through \restated and
+% \restatedp (macros.tex; the blueprint changed by the same markup, so the proofs stay verbatim);
+% the proof of prop:isotropic-bridge drops a restatement that section 2 gives, and is pinned. Not
+% touched: the proof of thm:filtration-strict, which Q-0381 is rewriting on another branch (its
+% [B, Prop. 4.9(1)] and (4) are Proposition prop:line-filtration(1) and (3) and are owed).
+
+% Q-0448 (the split into a paper and a supplement; the author's decision of 2026-10-13, option
+% (b) of records/affine/reviews/VERIFY-round2-length-and-exposition.md, section 3): this file is
+% Appendix A of the paper. It keeps the notation, the sources, the proofs of the classification,
+% the statements that the main text names and that are proved in the supplement, and the
+% statements that Lean did not check, with their proofs. The proofs that Lean checked are in
+% supp-proofs.tex, each cut from this file unchanged (records/affine/split_q0448.py).
+% `linkage check` reads every .tex file of the directory and matches a proof to its statement
+% by the \ref of its heading, so a proof in the supplement is still compared with the blueprint.
+% One rule decides the place of a proof: checked by Lean, the supplement; proved in print only,
+% here. Two exceptions, both in print: the proofs of the classification (short, and the result
+% the paper is about), and the proof of Proposition prop:profile-one-dimension-down (half a
+% page, and the corollary proved in print reads it).
+% A statement that changes status moves by one edit of the lists of section 1.1 and by moving
+% its proof between this file and supp-proofs.tex.
+\section{Notation, sources, and the proofs given in print}\label{app:isotropic-proofs}
+
+This appendix has the notation (Table~\ref{tab:notation}), the sources of the statements
+(\S\ref{sec:isotropic-sources}), the proofs of the classification
+(\S\ref{app:classification-proofs}), five statements that the main text names and does not state
+(\S\ref{app:further-statements}), and the proofs of the statements that are proved in print
+only (\S\ref{app:print-proofs}). The proofs that Lean checked are in \suppl, except those of the
+classification and that of Proposition~\ref{prop:profile-one-dimension-down}, which is in
+\S\ref{app:print-proofs}.
+% Q-0448, the blind draft review of the split (flag 4): the sentence that says how the numbers
+% of the supplement read (\supplnumbers) is in "Plan of the paper", before the first S-number.
+
+% Q-0428: the notation table of section 2.7, moved here as it stood (its rows for the new symbols were
+% added in the same item).
+% Q-0310: the notation table the brief asks for at the end of section 2 (review flag 25 and the clash
+% map; records/affine/REVIEW-paper-whole-fixes-paper-iso.md). Paper-only; every row was checked
+% against its first use. The second roles named are in shared statements and are owed at the
+% blueprint (records/affine/GATE-paper-iso.md; Q-0311 added lambda_d, t and a, review flag 26).
+% Q-0430: a longtable, as Table tab:in-print now is (sources.tex). As a float it could not stand
+% on the appendix's first page and came out after that table, which is no float any more, so
+% that Table 2 was printed before Table 1. Its rows and its caption are unchanged; N is the
+% column p in the size of the table's text (main.tex).
+{\renewcommand{\arraystretch}{0.88}
+\begin{longtable}{@{}N{0.2\textwidth}N{0.76\textwidth}@{}}
+\toprule
+symbol & role \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\bottomrule
+\addlinespace
+\caption{Notation of \S\ref{sec:isotropic} and Appendix~\ref{app:isotropic-proofs}.}
+\label{tab:notation}
+\endlastfoot
+$\xi$, $\omega$ & frequency on $\RR^d$, on the line \\
+$s \le t$, $\chi$, $S_\lambda$ & scales; a gauge; the action of a dilation on the scales \\
+$\lambda$, $\rho_\lambda$; $\lambda_d$ & a dilation factor; for $\lambda \in (0,1)$ in
+  \ref{eq:self-decomposable}, the contraction ratio, and $\rho_\lambda$ the residual; the number
+  $2^{-d/2}$ in Lemma~\ref{lem:threshold-monotone}, and the mean of $\log|\langle e,\eta\rangle|$
+  over the sphere in Proposition~\ref{prop:isotropic-exponent-profile} (in C2, $\lambda$ is a
+  measure on the sphere) \\
+$\Phi_{s,t}$; $T_a$, $R_Q$, $D_\lambda$ & the operators of a family; on $L^1(\RR^d)$, the
+  translation by $a$, the action of $Q \in \Orth(d)$ and the dilation by $\lambda$
+  (Definition~\ref{def:isotropic-operator-family}; on the line $\tau_a$, $R$ and $D_\lambda$) \\
+$\mu_{s,t}$; $\nu_{s,t}$, $\kappa_{s,t}$ & the kernels of a family on $\RR^d$; kernels on the line \\
+$x$; $\mu^{\mathrm I}_{x,y}$ & a point of $\RR^d$ or of $\RR$; in $\mu^{\mathrm I}_{x,y}$, $x \le y$
+  are scales of a time-causal family \\
+$u_K$, $\Lambda$ & in C5, the uniform law on a convex set $K$, and the mixing measure \\
+$F$, $F_d$, $F_{\mathrm I}$ & an exponent on the line \ref{eq:admissible-line}; the exponent of an
+  isotropic origin datum on $\RR^d$; a causally admissible exponent \\
+$a_{\mathrm V}$, $a$, $b_0$ & the Gaussian coefficient on the line; that of an isotropic origin datum,
+  $a_{\mathrm V} = \tfrac12 a$ (in Lemma~\ref{lem:isotropic-exponent-log}(2), a dilation factor);
+  the drift of a delay datum \\
+$k$, $k_d$, $k_{\mathrm I}$ & the folded profile; the polar profile, the radial \Levy{} density times
+  $|S^{d-1}|\,r^d$; the delay profile \\
+$c$ & the profile at the origin, $k_d(0{+})$, and $k(0{+})$ on the line; in the uniqueness clause of
+  Theorem~\ref{thm:isotropic-classification}, the ratio of two gauges \\
+$\nu_d$, $f_d$; $p$, $q$ & the \Levy{} measure of an isotropic origin datum, and its radial
+  density; the density of a kernel and its radial form, $p(x) = q(|x|)$ \\
+$K$, $C_k$, $\varkappa_d$ & the slowly varying factor of the rate, the integral of the
+  polar profile beyond radius $1$, and a constant of the dimension
+  (Proposition~\ref{prop:isotropic-exponent-profile}); $K_\nu$ is a Bessel function, and in
+  Lemma~\ref{lem:threshold-limit} $K$ is a number \\
+$A$, $Q$, $B$; $R(d,c)$ & the constants of Proposition~\ref{prop:origin-rate-profile-d}, and that
+  of Lemma~\ref{prop:origin-rate-d}. Elsewhere $A_\beta$ is the constant of
+  Proposition~\ref{prop:origin-upper-bound-d}, $Q$ an orthogonal matrix
+  (Definition~\ref{def:isotropic-operator-family}, Proposition~\ref{prop:radial-dictionary}), $B$
+  a Borel set (Theorem~\ref{thm:origin-boundedness-d}(4) and C2), $R_Q$ the action of $Q$, and
+  $R$ a random radius (Proposition~\ref{prop:radial-dictionary}) \\
+$L$; $\mathcal{L}$ & the slowly varying factor of a transform, $\widehat\mu = |\xi|^{-c}L(|\xi|)$;
+  the function $\int_s^1 K(y)\,dy/y$ of Proposition~\ref{prop:origin-rate-profile-d}(3) \\
+$e$ & a unit vector of $\RR^d$, as in $\widehat\mu(e/s)$; in $e^{-C_k}$ and the like, the base of
+  the exponential \\
+$\Omega_d$, $\phi$, $X$ & in \S\ref{sec:isotropic-filtration}, the characteristic function of the
+  uniform law on the unit sphere along a ray; that of a rotation-invariant random vector $X$
+  (in \S\ref{sec:line-origin} $\phi_1$ is a density, and in
+  Proposition~\ref{prop:isotropic-exponent-profile} $X$ is a real variable) \\
+$\mathcal{A}_d$, $\mathcal{A}_\infty$, $\mathcal{S}$ & the classes of
+  Proposition~\ref{prop:line-filtration}; their intersection; the subordinated slice \\
+$b\,\Cin(\tau|\omega|)$; $\tau_a$ & a member of a $\Cin$ ray, of folded profile
+  $b\,\mathbf{1}_{(0,\tau)}$; the translation by $a$ \\
+$\gamma$, $\theta$; $\alpha$; $\vartheta$ & the \Matern{} index and range; the stable kernels, of
+  index $2\alpha$; the shape of the Student-t kernels \\
+$W$, $Z$; $T_1$ & a random delay and a standard normal vector; the scaled inverse-gamma delay \\
+$w$, $w_d$, $M_d$, $m$ & the parameter of the separating family, its critical values,
+  $m = (d+1)/2$ (Definition~\ref{def:filtration-thresholds}) \\
+$\tau$ & the cut-off of a $\Cin$ ray and of a step datum; in \S\ref{sec:isotropic-sources},
+  the time of a \Levy{} process, the kernel being its law at $\tau = 1$; a constant of
+  Proposition~\ref{prop:origin-lower-bound-d} \\
+$s$ & in Proposition~\ref{prop:origin-rate-profile-d} and in Lemma~\ref{prop:origin-rate-d} of
+  \suppl, a distance from the centre of the kernel, not a scale \\
+$g_t$, $g^{(d)}_u$ & the heat kernel at variance $t$ (here $t$ is not a scale); the centred
+  Gaussian law of covariance $uI$ \\
+\end{longtable}
+}
+
+% Q-0428, the fixes round: the one home of the attributions (sources.tex). It stands here and not
+% at the end of section 3 because of the length.
+\input{sources}
+
+\subsection{The proofs of the classification}\label{app:classification-proofs}
+
+The necessity half of Theorem~\ref{thm:isotropic-classification} is proved in
+\S\ref{sec:isotropic-reduction}. This subsection has the other proofs of the classification:
+those of Lemma~\ref{lem:radial-marginal}, of the sufficiency and uniqueness halves of the
+theorem, of Corollary~\ref{cor:isotropic-classification-operators}, of
+Lemma~\ref{lem:isotropic-realisation}, of Proposition~\ref{prop:isotropic-polar-reading} and of
+Corollary~\ref{cor:isotropic-scale-zero-kernels}.
+The proofs of Lemmas~\ref{lem:operators-to-kernels} and~\ref{lem:isotropic-marginal-family},
+which carry arguments of the line paper from the line to $\RR^d$, are in \suppl.
+
+\begin{proof}[Proof of Lemma~\ref{lem:radial-marginal}]
+\emph{(1).} $\pi_*\mu$ is a probability measure because $\pi$ is measurable, and for $\omega \in \RR$
+\[
+  \widehat\kappa(\omega) = \int_{\RR} e^{i\omega y}\,\kappa(dy)
+   = \int e^{i\omega\langle e, x\rangle}\,\mu(dx) = \widehat\mu(\omega e) .
+\]
+A rotation-invariant law has a radial transform: if $|\eta| = |\eta'|$, let $Q$ be the identity when
+$\eta = \eta'$ and otherwise the reflection in the hyperplane orthogonal to $\eta - \eta'$, an
+element of $\Orth(d)$ with $Q^{\tp} = Q$ and $Q\eta = \eta'$; then
+$\widehat\mu(\eta) = \widehat{Q_*\mu}(\eta) = \widehat\mu(Q^{\tp}\eta) = \widehat\mu(\eta')$.
+Since $|\,|\xi|e\,| = |\xi|$, this gives $\widehat\mu(\xi) = \widehat\mu(|\xi|e) =
+\widehat\kappa(|\xi|)$ for every $\xi \in \RR^d$. Since $-I \in \Orth(d)$ and $\pi(-x) = -\pi(x)$,
+the image of $\kappa$ under $\omega \mapsto -\omega$ is $\pi_*((-I)_*\mu) = \kappa$, so $\kappa$ is
+symmetric and $\widehat\kappa$ is real; hence so is $\widehat\mu$. For another unit vector $e'$ with
+marginal $\kappa'$, $|\omega e'| = |\omega e|$ gives $\widehat{\kappa'}(\omega) = \widehat\mu(\omega e')
+= \widehat\mu(\omega e) = \widehat\kappa(\omega)$ for every $\omega \in \RR$, so $\kappa' = \kappa$
+by uniqueness of the transform on $\RR$.
+
+\emph{(2).} If $\mu = \delta_0$ then $\pi_*\mu = \delta_0$. Conversely, if $\kappa = \delta_0$ then
+$\widehat\kappa \equiv 1$, so $\widehat\mu \equiv 1 = \widehat{\delta_0}$ by (1), and
+$\mu = \delta_0$ by uniqueness of the transform on $\RR^d$.
+
+\emph{(3).} $\mu * \mu'$ is the image of $\mu \otimes \mu'$ under $(x,y) \mapsto x + y$, and
+$\pi(x+y) = \pi(x) + \pi(y)$, so $\pi_*(\mu * \mu')$ is the image of $\pi_*\mu \otimes \pi_*\mu'$
+under addition on $\RR$, which is $\pi_*\mu * \pi_*\mu'$. The other two identities are
+$\pi(\lambda x) = \lambda\pi(x)$ and $\pi(0) = 0$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:isotropic-classification}, sufficiency and uniqueness]
+\emph{Sufficiency.} Let $\chi$ be a gauge and $F \in \mathcal{A}_d$ with $F \not\equiv 0$, and let
+$(\mu_{s,t})$ be a family of probability measures on $\RR^d$ satisfying
+\ref{eq:isotropic-classification}. First, $F$ is
+continuous on $[0,\infty)$ with $F(0) = 0$: on $0 \le r \le \Omega$ the integrand of
+\ref{eq:admissible-line} is at most $\max\{2,\Omega^2/2\}\,(1 \wedge x^2)\,k(x)/x$, which is
+integrable by the two conditions on $k$, so dominated convergence applies. The axioms are read off
+the transform, a probability measure on $\RR^d$ being determined by its
+transform. (I1): the exponents of $\mu_{s,t}$ and $\mu_{r,s}$ add up to that of $\mu_{r,t}$, and
+the exponent of $\mu_{t,t}$ is $0$. (I2): $F$ is continuous, and so is $\chi$, an increasing
+bijection of $[0,\infty)$. (I3): $\widehat{Q_*\mu_{s,t}}(\xi) = \widehat\mu_{s,t}(Q^{\tp}\xi)$ and
+$|Q^{\tp}\xi| = |\xi|$. (I4): with $S_\lambda := \chi^{-1}(\lambda\,\chi(\cdot))$, an increasing
+bijection of $[0,\infty)$,
+$\widehat{(\lambda I)_*\mu_{s,t}}(\xi) = \widehat\mu_{s,t}(\lambda\xi)
+= \widehat\mu_{S_\lambda s,S_\lambda t}(\xi)$. (ND): let $s < t$ and suppose
+$\mu_{s,t} = \delta_0$, so that $F(\chi(t)r) = F(\chi(s)r)$ for every $r \ge 0$. If $s = 0$ this
+says $F(\chi(t)r) = 0$ for every $r$, and $\chi(t) > 0$ gives $F \equiv 0$. If $s > 0$ it says
+$F(r) = F(\varkappa r)$ for every $r$, with $\varkappa := \chi(s)/\chi(t) \in (0,1)$. Iterating,
+$F(r) = F(\varkappa^nr) \to F(0) = 0$, so again $F \equiv 0$ (\restated{V}{Lem.~6.3}{sec:line-facts}). Both contradict
+$F \not\equiv 0$.
+
+\emph{Uniqueness.} Let $(\chi',F')$ also satisfy \ref{eq:isotropic-classification}. Both exponents
+are real, so taking logarithms of the kernels from scale zero, $F(\chi(t)r) = F'(\chi'(t)r)$ for
+all $t, r \ge 0$, since $\chi(0) = \chi'(0) = 0$ and $F(0) = F'(0) = 0$. At $t' := \chi'^{-1}(1)$ this reads $F'(r) = F(c^{-1}r)$ with
+$c^{-1} := \chi(t') > 0$. Hence $F(\chi(t)r) = F(c^{-1}\chi'(t)r)$ for all $t$ and $r$. If
+$\chi(t) \ne c^{-1}\chi'(t)$ for some $t > 0$, then $F(r) = F(\varkappa r)$ for every $r$ with
+$\varkappa := c^{-1}\chi'(t)/\chi(t) \ne 1$, and $F \equiv 0$ as in the previous paragraph (with
+$\varkappa^{-1}$ in place of $\varkappa$ if $\varkappa > 1$), a contradiction. So
+$\chi' = c\,\chi$. When $\chi(1) = \chi'(1) = 1$ this gives $c = 1$.
+\end{proof}
+
+% Q-0414, round 2: the proof of Corollary cor:isotropic-classification-operators, moved here
+% from section 3.2 (records/affine/edits_q0414_round2_moves.py); the body is unchanged.
+\begin{proof}[Proof of Corollary~\ref{cor:isotropic-classification-operators}]
+\emph{Necessity.} Let $(\Phi_{s,t})$ be an isotropic cascade measurement family in dimension $d$.
+By Lemma~\ref{lem:operators-to-kernels}(1) each $\Phi_{s,t}$ is convolution by a probability measure
+$\mu_{s,t}$ on $\RR^d$, and by Lemma~\ref{lem:operators-to-kernels}(3) the family $(\mu_{s,t})$ is an
+isotropic cascade family in dimension $d$. The necessity direction of
+Theorem~\ref{thm:isotropic-classification} gives a gauge $\chi$ and an $F \in \mathcal{A}_d$ with
+$F \not\equiv 0$ satisfying \ref{eq:isotropic-classification}.
+
+\emph{Sufficiency.} Let $\chi$, $F$ and $(\mu_{s,t})$ be as in the statement. By the sufficiency
+direction of Theorem~\ref{thm:isotropic-classification} the family $(\mu_{s,t})$ is an isotropic cascade
+family in dimension $d$. By Lemma~\ref{lem:operators-to-kernels}(4) the operators
+$f \mapsto \mu_{s,t} * f$, which are the $\Phi_{s,t}$, form an isotropic cascade measurement family
+in dimension $d$.
+
+\emph{Uniqueness.} Let $\chi'$, $F'$ and $(\mu'_{s,t})$ be as in the last sentence of the
+statement. For $0 \le s \le t$ the probability measures $\mu_{s,t}$ and $\mu'_{s,t}$ give the same
+operator $\Phi_{s,t}$, so they are equal, by the uniqueness clause of
+Lemma~\ref{lem:operators-to-kernels}(1). Hence $(\chi', F')$ satisfies
+\ref{eq:isotropic-classification} for the family $(\mu_{s,t})$, and the uniqueness clause of
+Theorem~\ref{thm:isotropic-classification} gives $c$.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:isotropic-realisation}]
+Let $\mu$ be a self-decomposable probability measure on $\RR^d$ with
+$\widehat\mu(\xi) = e^{-F(|\xi|)}$, which the definition of $\mathcal{A}_d$ provides. For
+$c \in (0,1)$ let $\rho_c$ be a residual of $\mu$. As $\widehat\mu(c\,\xi) = e^{-F(c|\xi|)} \ne 0$,
+\ref{eq:self-decomposable} forces $\widehat\rho_c(\xi) = e^{-(F(|\xi|) - F(c|\xi|))}$; put
+$\rho_0 := \mu$ and $\rho_1 := \delta_0$, so that this formula holds for every $c \in [0,1]$, as
+$F(0) = 0$. For $0 \le s \le t$ put
+\[
+  \mu_{s,t} := \bigl(\chi(t)I\bigr)_*\,\rho_{\chi(s)/\chi(t)} ,
+\]
+with $\chi(s)/\chi(t) := 0$ when $\chi(t) = 0$, that is, when $s = t = 0$; then $\mu_{0,0}$ is
+the image of $\mu$ under the zero map, $\delta_0$. Since
+$0 \le \chi(s) \le \chi(t)$, the index lies in $[0,1]$, and
+\[
+  \widehat\mu_{s,t}(\xi) = \widehat\rho_{\chi(s)/\chi(t)}\bigl(\chi(t)\xi\bigr)
+  = \exp\bigl[-\bigl(F(\chi(t)|\xi|) - F(\chi(s)|\xi|)\bigr)\bigr] ,
+\]
+because $\chi(s)/\chi(t)\cdot\chi(t)|\xi| = \chi(s)|\xi|$, both sides being $0$ when
+$\chi(t) = 0$. Each $\mu_{s,t}$ is a probability measure, the image of one, so by the sufficiency
+direction of Theorem~\ref{thm:isotropic-classification} $(\mu_{s,t})$ is an isotropic cascade family, and
+it satisfies \ref{eq:isotropic-classification} with $(\chi, F)$ by construction.
+\end{proof}
+
+% Q-0414, round 2: Lemma lem:polar-decomposition, moved here from section 3.2 with its proof
+% (records/affine/edits_q0414_round2_moves.py). The lead sentence is paper prose.
+The proofs of this paper integrate against the \Levy{} measure of an isotropic origin datum in
+polar coordinates. The identity \ref{eq:polar-decomposition} of
+Definition~\ref{def:isotropic-origin-datum} is stated once, as a lemma.
+
+% shared with blueprint lem:polar-decomposition
+\begin{lemma}[the polar decomposition of an isotropic origin datum's \Levy{} measure]\label{lem:polar-decomposition}
+Let $d \ge 1$ and let $(a, k_d)$ be an isotropic origin datum in dimension $d$ with \Levy{} measure
+$\nu_d$. Then \ref{eq:polar-decomposition} holds for every nonnegative Borel $g$ on $\RR^d$
+vanishing at the origin, $\sigma_{d-1}$ being the surface measure of $S^{d-1}$ and $|S^{d-1}|$ its
+surface area.
+\end{lemma}
+
+\begin{proof}
+By definition $\nu_d$ has the density $f_d(|x|) = k_d(|x|)(|S^{d-1}||x|^d)^{-1}$ on
+$\RR^d \setminus \{0\}$. In polar coordinates $x = r\eta$, $dx = r^{d-1}dr\,\sigma_{d-1}(d\eta)$, so
+for $g \ge 0$ Borel and vanishing at the origin
+$\int g\,d\nu_d = \int_{S^{d-1}}\sigma_{d-1}(d\eta)\int_0^\infty g(r\eta)\,
+k_d(r)(|S^{d-1}|r^d)^{-1}r^{d-1}\,dr$, which is \ref{eq:polar-decomposition}.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:isotropic-polar-reading}]
+\emph{(1), forward.} Let $\mu$ be self-decomposable on $\RR^d$ with
+$\widehat\mu(\xi) = e^{-F(|\xi|)}$. By \ledger{A4} it is infinitely divisible, and by \ledger{A3}(i)
+it has a generating triplet $(A,\nu,\gamma)$. For $Q \in \Orth(d)$,
+$\widehat{Q_*\mu}(\xi) = \widehat\mu(Q^{\tp}\xi) = \widehat\mu(\xi)$, so $Q_*\mu = \mu$. The
+unit ball is $Q$-invariant, so substituting $x = Q^{\tp}y$ in the representation shows that
+$Q_*\mu$ has triplet $(QAQ^{\tp}, Q_*\nu, Q\gamma)$. By uniqueness, \ledger{A3}(ii),
+$QAQ^{\tp} = A$ and $Q_*\nu = \nu$ for every $Q$. For unit vectors $e, e'$ choose $Q$ with
+$Qe = e'$. Then $\langle e',Ae'\rangle = \langle e, Q^{\tp}AQ\,e\rangle = \langle e,Ae\rangle$, so
+$\langle\xi,A\xi\rangle = a|\xi|^2$ with $a := \langle e,Ae\rangle \ge 0$. The real part of
+$e^{i\theta} - 1 - i\theta\mathbf 1_D$ is $\cos\theta - 1$, so taking moduli in the representation,
+\[
+  F(|\xi|) = -\log\bigl|\widehat\mu(\xi)\bigr|
+   = \tfrac12 a|\xi|^2 + \int_{\RR^d}\bigl(1 - \cos\langle\xi,x\rangle\bigr)\,\nu(dx) .
+\]
+Since $\mu$ is self-decomposable, \ledger{A2} gives $\nu(B) = \int_{S}\lambda(d\eta)\int_0^\infty
+\mathbf 1_B(r\eta)\,k_\eta(r)\,dr/r$ with $\lambda$ a finite measure on $S = S^{d-1}$ and
+$k_\eta(r)$ measurable in $\eta$ and nonincreasing in $r$.
+A nonincreasing $k_\eta$ differs from its right limit
+$k_\eta(r+) = \sup\{k_\eta(q) : q \in \mathbb Q,\ q > r\}$ at countably many $r$ only, a
+Lebesgue-null set. Replacing $k_\eta(r)$ by $k_\eta(r+)$ therefore changes no integral in the
+display, and makes the kernel jointly measurable in $(\eta,r)$, as a countable supremum of
+measurable functions. Taking $B = \{x : |x| \in C\}$ for Borel $C \subset (0,\infty)$ and
+exchanging the integrals, the image of $\nu$ under $x \mapsto |x|$ is
+\[
+  \nu\bigl(\{x : |x| \in C\}\bigr) = \int_C \bar k(r)\,\frac{dr}{r} ,
+  \qquad \bar k(r) := \int_S k_\eta(r+)\,\lambda(d\eta) ,
+\]
+and $\bar k$ is nonincreasing with values in $[0,\infty]$. Integrating $|x|^2 \wedge 1$ against
+$\nu$ through this image gives
+$\int_0^\infty(r^2 \wedge 1)\bar k(r)\,dr/r = \int(|x|^2 \wedge 1)\,\nu(dx) < \infty$, which
+contains the pair of conditions of Definition~\ref{def:isotropic-origin-datum}. They force $\bar k < \infty$
+on $(0,\infty)$, because a nonincreasing function infinite at some $r_0$ is infinite on $(0,r_0]$.
+So $(a, \bar k)$ is an isotropic origin datum. Let $\nu_d$ be its \Levy{} measure, the right side
+of \ref{eq:polar-decomposition}. By Lemma~\ref{lem:polar-decomposition} the image of $\nu_d$ under
+$x \mapsto |x|$ is $\bar k(r)\,dr/r$ on $(0,\infty)$, the same as that of $\nu$.
+
+It remains to see that $\nu_d = \nu$. Both are invariant under every $Q \in \Orth(d)$ ($\nu$ by the
+first paragraph, $\nu_d$ by the invariance of $\sigma_{d-1}$), both vanish at the origin, and both
+are finite on each set $U_\varepsilon = \{x : |x| > \varepsilon\}$, $\varepsilon > 0$. A finite
+measure $m$ invariant under $\Orth(d)$ has a transform that depends only on its radial image:
+$\widehat m(Q\xi) = \widehat m(\xi)$ for every $Q$, a reflection carries $\xi$ to $|\xi|\theta$ for
+any unit $\theta$, and averaging over $\theta$ against $\sigma_{d-1}/|S^{d-1}|$ and exchanging the
+integrals gives
+\[
+  \widehat m(\xi) = \frac{1}{|S^{d-1}|}\int_{[0,\infty)}\Phi(|\xi|,r)\,(|\cdot|_*m)(dr) ,
+  \qquad
+  \Phi(s,r) := \int_S e^{i s r\langle e_1,\theta\rangle}\,\sigma_{d-1}(d\theta) ,
+\]
+the inner sphere integral $\int_S e^{i s\langle x,\theta\rangle}\sigma_{d-1}(d\theta)$ depending on
+$x$ only through $|x|$, again by the invariance of $\sigma_{d-1}$. Applied to the restrictions of
+$\nu$ and $\nu_d$ to $U_\varepsilon$, which are invariant and have the same radial image, this gives
+equal transforms, so the restrictions are equal. Letting $\varepsilon \downarrow 0$ along
+$1/(n+1)$ gives $\nu = \nu_d$ off the origin, hence everywhere. The display for $F$ is therefore
+$F(|\xi|) = \tfrac12 a|\xi|^2 + \int(1 - \cos\langle\xi,x\rangle)\,\nu_d(dx)$, the exponent of the
+datum $(a, \bar k)$.
+
+\emph{(1), converse.} Let $(a,k_d)$ be a datum with $F_d = F(|\cdot|)$. Its \Levy{} measure
+$\nu_d$ satisfies $\int(|x|^2 \wedge 1)\,d\nu_d < \infty$ by the two conditions, so by
+\ledger{A3}(iii) there is an infinitely divisible $\mu$ with triplet $(aI, \nu_d, 0)$. As $\nu_d$
+is symmetric, the odd part of the integrand integrates to $0$ and
+$\widehat\mu = e^{-F_d}$: $\mu$ is the datum's law. Its \Levy{} measure has the form of
+\ledger{A2} with $\lambda = \sigma_{d-1}$ and $k_\eta = k_d/|S^{d-1}|$ for every $\eta$,
+nonincreasing in $r$. So $\mu$ is self-decomposable by \ledger{A2}.
+
+\emph{(1), uniqueness.} Two data with the same exponent have the same law, hence by \ledger{A3}(ii)
+the same Gaussian matrix $aI$ and the same \Levy{} measure. The images of the two \Levy{}
+measures under $x \mapsto |x|$ are then equal; by Lemma~\ref{lem:polar-decomposition} they are
+$k_d(r)\,dr/r$ and $k_d'(r)\,dr/r$ on $(0,\infty)$, so $k_d = k_d'$ almost everywhere.
+
+\emph{(2).} Let $\mu$ be the law of clause (1), $e_1$ the first basis vector and $\pi(x) :=
+\langle e_1,x\rangle$. Then $\pi_*\mu$ is self-decomposable on $\RR$. If $\rho_\varkappa$ is a
+residual of $\mu$ for the ratio $\varkappa \in (0,1)$, then $\pi_*\rho_\varkappa$ is one of
+$\pi_*\mu$:
+\[
+  \widehat{\pi_*\mu}(\omega) = \widehat\mu(\omega e_1)
+   = \widehat\mu(\varkappa\omega e_1)\,\widehat\rho_\varkappa(\omega e_1)
+   = \widehat{\pi_*\mu}(\varkappa\omega)\,\widehat{\pi_*\rho_\varkappa}(\omega) .
+\]
+Its exponent is $F(|\omega|)$.
+Clause (1) at $d = 1$ gives a datum $(a',k_1)$ in dimension $1$ with, as $|S^0| = 2$ and the
+integrand is even,
+\[
+  F(|\omega|) = \tfrac12 a'\omega^2 + \int_{\RR}\bigl(1 - \cos\omega x\bigr)\frac{k_1(|x|)}{2|x|}\,dx
+   = \tfrac12 a'\omega^2 + \int_0^\infty\bigl(1 - \cos\omega x\bigr)\,k_1(x)\,\frac{dx}{x} ,
+\]
+which is \ref{eq:admissible-line} with $a_{\mathrm V} = \tfrac12 a'$ and $k = k_1$. The two
+integrability conditions are the same pair. With the definition of $\mathcal{A}_d$ in
+Proposition~\ref{prop:line-filtration} this is the description of the class.
+
+\emph{(3).} By Theorem~\ref{thm:isotropic-classification} and clause (2), the family is isotropic exactly
+when \ref{eq:isotropic-classification} holds for a gauge and an $F \not\equiv 0$ with $F(|\cdot|)$
+the exponent $F_d$ of a datum. The displayed $F(r)$ is $F_d(re_1)$, and $F_d$ is radial. Finally
+$F \equiv 0$ exactly when the datum is trivial. If $a = 0$ and $k_d = 0$ almost everywhere then
+$F_d \equiv 0$. Conversely $F_d \equiv 0$ makes the law $\delta_0$, whose triplet is $(0,0,0)$,
+so $a = 0$ and $k_d = 0$ almost everywhere by the uniqueness of clause (1).
+\end{proof}
+
+% Q-0448: the proof of record of cor:isotropic-scale-zero-kernels (Q-0434), written by
+% records/affine/transcribe-q0448-nodes.py and pinned. It stands after the proof of
+% Proposition prop:isotropic-polar-reading, which it cites.
+\begin{proof}[Proof of Corollary~\ref{cor:isotropic-scale-zero-kernels}]
+\emph{A kernel from scale zero satisfies (S).} Let $(\mu_{s,t})$ be an isotropic cascade family in
+dimension $d$ and let $t > 0$. Then $\mu_{0,t}$ is rotation invariant by (I3), and
+$\mu_{0,t} \ne \delta_0$ by (ND). By Theorem~\ref{thm:isotropic-classification} there are a gauge $\chi$
+and an $F \in \mathcal{A}_d$ with \ref{eq:isotropic-classification}, so that
+$\widehat\mu_{0,t}(\xi) = e^{-F(\chi(t)|\xi|)}$. By the definition of $\mathcal{A}_d$
+(Proposition~\ref{prop:line-filtration}) there is a self-decomposable probability measure $\mu'$ on
+$\RR^d$ with $\widehat{\mu'}(\xi) = e^{-F(|\xi|)}$. Put $\lambda := \chi(t) > 0$. Then
+$\widehat{(\lambda I)_*\mu'}(\xi) = \widehat{\mu'}(\lambda\xi) = e^{-F(\lambda|\xi|)}
+= \widehat\mu_{0,t}(\xi)$, so $\mu_{0,t} = (\lambda I)_*\mu'$, a probability measure on $\RR^d$
+being determined by its transform. The image of a self-decomposable law under $\lambda I$ is
+self-decomposable: if $\rho_c$ is a residual of $\mu'$ for the ratio $c \in (0,1)$, then
+$\widehat{\mu'}(\lambda\xi) = \widehat{\mu'}(c\lambda\xi)\,\widehat\rho_c(\lambda\xi)$ is
+\ref{eq:self-decomposable} for $(\lambda I)_*\mu'$ with the residual $(\lambda I)_*\rho_c$. So
+$\mu_{0,t}$ satisfies (S).
+
+\emph{The exponent of a law with (S).} Let $\mu$ satisfy (S). By Lemma~\ref{lem:radial-marginal}(1)
+its transform is real and radial. It has no zero: $\mu$ is infinitely divisible by \ledger{A4},
+so by \ledger{A3}(i) it has a generating triplet, and its transform is the exponential of a
+complex-valued function. A real continuous function on $\RR^d$ that has no zero and takes the
+value $1$ at the origin is positive. Fix a unit vector $e$ and put
+$F(r) := -\log\widehat\mu(re)$ for $r \ge 0$. Then $F(0) = 0$, $F \ge 0$ because
+$|\widehat\mu| \le 1$, and $\widehat\mu(\xi) = \widehat\mu(|\xi|e) = e^{-F(|\xi|)}$ for every
+$\xi$, the transform being radial. So $\xi \mapsto F(|\xi|)$ is the exponent of the
+self-decomposable law $\mu$, and $F$ is admissible by
+Proposition~\ref{prop:isotropic-polar-reading}(2). Hence $F \in \mathcal{A}_d$. If $F$ vanished on
+$[0,\infty)$ the transform of $\mu$ would be $1$ and $\mu$ would be $\delta_0$, so
+$F \not\equiv 0$. A function $F'$ with $\widehat\mu(\xi) = e^{-F'(|\xi|)}$ for every $\xi$ has
+$F'(r) = -\log\widehat\mu(re) = F(r)$ for every $r \ge 0$.
+
+\emph{Clause (3), the equivalence.} Let $\mu$ satisfy (S), let $F$ be its exponent, let
+$t_1 > 0$, and let $(\mu_{s,t})$ be a family of probability measures on $\RR^d$. Suppose first
+that it satisfies \ref{eq:isotropic-classification} with $F$ and a gauge $\chi$ with
+$\chi(t_1) = 1$. By the sufficiency direction of Theorem~\ref{thm:isotropic-classification}, $F$ being in
+$\mathcal{A}_d$ and not identically $0$, it is an
+isotropic cascade family, and
+$\widehat\mu_{0,t_1}(\xi) = e^{-F(\chi(t_1)|\xi|)} = e^{-F(|\xi|)} = \widehat\mu(\xi)$, because
+$\chi(0) = 0$ and $F(0) = 0$. So $\mu_{0,t_1} = \mu$. Conversely let $(\mu_{s,t})$ be an
+isotropic cascade family with $\mu_{0,t_1} = \mu$. By the necessity direction of
+Theorem~\ref{thm:isotropic-classification} there are a gauge $\chi'$ and an $F' \in \mathcal{A}_d$ with
+\ref{eq:isotropic-classification}. Put $c := \chi'(t_1) > 0$. The kernel from scale zero to
+scale $t_1$ gives $e^{-F'(c|\xi|)} = \widehat\mu(\xi) = e^{-F(|\xi|)}$, that is $F'(cr) = F(r)$
+for every $r \ge 0$. Then $\chi := c^{-1}\chi'$ is a gauge with $\chi(t_1) = 1$, and
+$F'(\chi'(t)|\xi|) = F'(c\,\chi(t)|\xi|) = F(\chi(t)|\xi|)$ for every $t \ge 0$. So the family
+satisfies \ref{eq:isotropic-classification} with $(\chi, F)$.
+
+\emph{Clause (3), the rest.} Let two gauges $\chi$ and $\chi''$ with
+$\chi(t_1) = \chi''(t_1) = 1$ both satisfy \ref{eq:isotropic-classification} with $F$ for one
+family. By the uniqueness clause of Theorem~\ref{thm:isotropic-classification}, applied with $F' = F$,
+which vanishes at $0$, there is $c > 0$ with $\chi'' = c\,\chi$, and at $t_1$ this reads $c = 1$.
+Let $\chi$ be any gauge with $\chi(t_1) = 1$. By Lemma~\ref{lem:isotropic-realisation} there is a
+family of probability measures that satisfies \ref{eq:isotropic-classification} with
+$(\chi, F)$, and by the equivalence it is an isotropic cascade family with $\mu_{0,t_1} = \mu$.
+It is the only one, because \ref{eq:isotropic-classification} gives the transform of every
+$\mu_{s,t}$. For $t > 0$,
+$\widehat{(\chi(t)I)_*\mu}(\xi) = \widehat\mu(\chi(t)\xi) = e^{-F(\chi(t)|\xi|)}
+= \widehat\mu_{0,t}(\xi)$, so $\mu_{0,t} = (\chi(t)I)_*\mu$.
+
+\emph{Clause (1).} One direction is the first paragraph. For the other let $\mu$ satisfy (S).
+Clause (3) with $t_1 = 1$ and the gauge $\chi = \mathrm{id}$ gives an isotropic cascade family
+with $\mu_{0,1} = \mu$.
+
+\emph{Clause (2).} Let $(\Phi_{s,t})$ be an isotropic cascade measurement family in dimension
+$d$ and let $t > 0$ with $\Phi_{0,t}f = \mu * f$ for every $f$. By
+Lemma~\ref{lem:operators-to-kernels}(1) each $\Phi_{s,t}$ is convolution by a probability measure
+$\mu_{s,t}$, which it determines, and by Lemma~\ref{lem:operators-to-kernels}(3) the family
+$(\mu_{s,t})$ is an isotropic cascade family in dimension $d$. As $\mu_{0,t}$ and $\mu$ give the
+same operator, $\mu_{0,t} = \mu$, and (S) holds by clause (1). Conversely let $\mu$ satisfy (S).
+By clause (1) there are an isotropic cascade family $(\mu_{s,t})$ and a $t > 0$ with
+$\mu_{0,t} = \mu$. By Lemma~\ref{lem:operators-to-kernels}(4) the operators
+$\Phi_{s,t}f := \mu_{s,t} * f$ form an isotropic cascade measurement family in dimension $d$,
+and $\Phi_{0,t}f = \mu * f$.
+
+\emph{Clause (4).} Let the two families be as in the clause and put $\mu := \mu_{0,t_1}$. By
+the first paragraph $\mu$ satisfies (S). Let $F$ be its exponent, and let $\chi$ and $\chi'$ be
+the gauges of the two families by clause (3), so that $\chi(t_1) = \chi'(t_1) = 1$. Then
+$\theta := \chi^{-1} \circ \chi'$ is an increasing bijection of $[0,\infty)$ with
+$\theta(t_1) = t_1$ and $\chi \circ \theta = \chi'$. Let $0 \le s \le t$, so that
+$0 \le \theta(s) \le \theta(t)$. By \ref{eq:isotropic-classification} the transforms of
+$\mu'_{s,t}$ and of $\mu_{\theta(s),\theta(t)}$ are both
+$\exp[-(F(\chi'(t)|\xi|) - F(\chi'(s)|\xi|))]$, so $\mu'_{s,t} = \mu_{\theta(s),\theta(t)}$.
+\end{proof}
+
+\subsection{Statements named in the main text}\label{app:further-statements}
+
+The five statements of this subsection are named in \S\ref{sec:isotropic} or used in the proofs
+of \S\ref{app:print-proofs}. Lean checked them, and their proofs are in \suppl. The first
+bounds the transform of a kernel with a finite $c$ from below.
+
+% shared with blueprint lem:isotropic-exponent-log
+\begin{lemma}[a profile bounded at the origin gives a logarithmic exponent]\label{lem:isotropic-exponent-log}
+Let $d \ge 1$, let $(0,k_d)$ be an isotropic origin datum in dimension $d$ with Gaussian
+coefficient $0$ and $c = k_d(0{+}) < \infty$, let $F_d$ be its exponent, and put
+$C_k := \int_1^\infty k_d(r)\,dr/r$.
+\begin{enumerate}
+\item \emph{(The exponent grows at most like $c\log|\xi|$.)} For every $\xi$ with $|\xi| \ge 1$,
+\[
+  F_d(\xi) \le c\log|\xi| + \tfrac{13}{4}\,c + 2C_k ,
+  \qquad\text{so}\qquad
+  e^{-F_d(\xi)} \ge e^{-13c/4 - 2C_k}\,|\xi|^{-c} .
+\]
+\item \emph{(The exponent is logarithmic.)} For every $a > 0$,
+$F_d(a\xi) - F_d(\xi) \to c\log a$ as $|\xi| \to \infty$. Equivalently, for a unit vector $e$ the
+function $g(u) := F_d(\sqrt u\,e)$, $u \ge 0$, satisfies $g(au) - g(u) \to \tfrac c2\log a$ as
+$u \to \infty$, for every $a > 0$.
+\end{enumerate}
+\end{lemma}
+
+Clause (1) is the lower bound on the transform quoted in \S\ref{sec:isotropic-origin}, and it
+is used in Theorem~\ref{thm:origin-boundedness-d}(4) and in
+Corollary~\ref{cor:origin-profile-exponent}(2). For a finite $c$, clause (2) says more than that
+corollary: $e^{-F_d(\xi)} = |\xi|^{-c}L(|\xi|)$ with $L$ slowly varying, and
+Proposition~\ref{prop:isotropic-exponent-profile} gives $L$ through the polar profile.
+
+Two bounds complement the rate of \S\ref{sec:isotropic-origin}. Each is for one kernel, with
+its constants. The first bounds the spike from below, for $d \ge 2$ and a finite $c$, and is
+stated for the kernel as a measure before it is stated for its density.
+
+% shared with blueprint prop:origin-lower-bound-d+69c7d8a91a64
+\begin{proposition}[a pointwise lower bound at the origin]\label{prop:origin-lower-bound-d}
+Let $d \ge 2$, let $(0, k_d)$ be an isotropic origin datum in dimension $d$ with Gaussian
+coefficient $0$, let $\mu$ be its law, and suppose that $c := k_d(0{+})$ is finite, $0 < c < \infty$.
+Then there are $\delta > 0$ and $c_1 > 0$ with
+\begin{equation}\label{eq:origin-lower-bound}
+  \mu(E) \ge c_1\int_E |x|^{c-d}\,dx \qquad\text{for every Borel set } E \subseteq \{|x| < \delta\} .
+\end{equation}
+In particular:
+\begin{enumerate}
+\item the density $q$ of the absolutely continuous part of $\mu$ satisfies
+$q(x) \ge c_1|x|^{c-d}$ for Lebesgue-almost every $x$ with $|x| < \delta$; so does every density of
+$\mu$ when $\mu$ has one, and every representative of $q$ is at least
+$c_1|x|^{c-d}$ almost everywhere near the origin, which tends to $\infty$ as $x \to 0$ when $c < d$;
+\item $\mu(\{|x| < r\}) \ge c_1|S^{d-1}|\,c^{-1}\,r^{c}$ for $0 < r \le \delta$.
+\end{enumerate}
+The constants can be taken as follows. Let $\varepsilon_0 \in (0,1]$ satisfy
+$k_d(\varepsilon_0) \ge c/2$, put $C_k := \int_1^\infty k_d(r)\,dr/r$, let $V_d$ be the volume of the
+unit ball, and put
+\[
+  \tau := \min\Bigl\{\tfrac12,\ \bigl(\tfrac{3}{4d^2c}\bigr)^{1/2}\Bigr\},\quad
+  \kappa_0 := \Bigl(\frac{c}{2|S^{d-1}|}\Bigr)^{2}\frac{V_d}{8^d},\quad
+  \delta := \frac{\varepsilon_0}{2},\quad
+  c_1 := \frac{\kappa_0}{4}\,\tau^{c}e^{-C_k}\min\{2^{c-d},4^{c-d}\} .
+\]
+\end{proposition}
+
+For $c \le d$ the power cannot be improved. A bound $c_1|x|^{\beta-d}$ with $\beta < c$ would give
+$\int g_t\,d\mu \ge C\,t^{-(d-\beta)/2}$, against the upper bound of
+Theorem~\ref{thm:origin-boundedness-d}(4) at a power between $\beta$ and $c$. For $c > d$ the
+bound tends to $0$ and says little, the density being continuous and positive at the centre.
+The proof uses $d \ge 2$ at one step, the choice of a nonzero vector orthogonal to a given
+point. On the line, where that step fails, the rate gives the bound near the centre for
+$c < 1$, without a radius.
+
+The second proposition bounds the spike from above, when $c \le d$, at every power below $c$.
+The upper bound of clause (4) of Theorem~\ref{thm:origin-boundedness-d} on the blurred kernel
+gives a bound on the mass of a ball, and a radially nonincreasing density is at most its
+average over a ball.
+
+% shared with blueprint prop:origin-upper-bound-d+0f6cbfb1cb1f
+\begin{proposition}[an upper bound at the origin, and the order of the density there]\label{prop:origin-upper-bound-d}
+Let $d \ge 1$, let $(0, k_d)$ be an isotropic origin datum in dimension $d$ with Gaussian
+coefficient $0$, let $\mu$ be its law, and suppose that $c := k_d(0{+})$ satisfies $0 < c \le d$.
+Let $V_d$ be the volume of the unit ball of $\RR^d$.
+\begin{enumerate}
+\item \emph{(The mass of a ball.)} For every $\beta$ with $0 < \beta < c$ there is
+$A_\beta < \infty$ with
+\[
+  \mu(\{|x| < r\}) \le A_\beta\,r^{\beta} \qquad\text{for every } r > 0 .
+\]
+One may take $A_\beta = (2\pi)^{d/2}e^{1/2}\,C'_\beta$, for every constant $C'_\beta$ with which
+the upper bound of Theorem~\ref{thm:origin-boundedness-d}(4) holds.
+\item \emph{(The density.)} The law $\mu$ has a density $p$ with $p(x) = q(|x|)$ for $x \ne 0$,
+where $q : (0,\infty) \to [0,\infty)$ is nonincreasing. For every such $q$, every $0 < \beta < c$, and
+$A_\beta = (2\pi)^{d/2}e^{1/2}\,C'_\beta$ with $C'_\beta$ as in clause (1),
+\[
+  q(r) \le \frac{A_\beta}{V_d}\,r^{\beta-d} \qquad\text{for every } r > 0 .
+\]
+\item \emph{(The order at the origin, for $d \ge 2$.)} Let $d \ge 2$, let $\delta$ and $c_1$ be
+the constants displayed at the end of Proposition~\ref{prop:origin-lower-bound-d}, and let $q$ be as in
+clause (2). Then
+$q(r) \ge c_1\,r^{c-d}$ for every $r$ with $0 < r < \delta$, with no exceptional set. With
+$p(x) = q(|x|)$,
+\[
+  \frac{\log p(x)}{\log(1/|x|)} \to d - c \quad (x \to 0), \qquad
+  \frac{\log \mu(\{|x| < r\})}{\log r} \to c \quad (r \downarrow 0) .
+\]
+\end{enumerate}
+\end{proposition}
+
+With the lower bound, clause (3) gives the logarithmic order of the density for $d \ge 2$. At
+$c = d$ its first limit is $0$, and how the density grows there is clause (3) of
+Proposition~\ref{prop:origin-rate-profile-d}. \suppl{} gives the constant $A_\beta$ in closed
+form, after the proof.
+
+Proposition~\ref{prop:profile-one-dimension-down} rests on the next lemma: the part of a
+rotation-invariant \Levy{} measure on $\RR^{d+1}$ that a projection sees in $\RR^d$, its
+\emph{shadow}, has a polar profile in closed form, and that profile is continuous.
+
+% shared with blueprint lem:shadow-polar-profile+1355442004bb
+\begin{lemma}[the polar profile of a shadow]\label{lem:shadow-polar-profile}
+Let $d \ge 1$, let $(a, k')$ be an isotropic origin datum in dimension $d + 1$, with \Levy{}
+measure $\nu'$ and exponent $F'$, and let $\Pi(x,y) := x$ be the projection of
+$\RR^{d+1} = \RR^d \times \RR$ on the first $d$ coordinates. Put
+\[
+  C_d := \frac{|S^{d-1}|}{|S^{d}|}, \qquad
+  \bar k(r) := C_d\int_{\RR} k'\bigl(r\sqrt{1+u^2}\bigr)\,(1+u^2)^{-(d+1)/2}\,du \quad (r > 0) .
+\]
+\begin{enumerate}
+\item $C_d\int_{\RR}(1+u^2)^{-(d+1)/2}\,du = 1$. So $\bar k(r)$ is a mean of the values of $k'$
+on $[r,\infty)$, and $0 \le \bar k(r) \le k'(r)$.
+\item $\bar k$ is nonincreasing and continuous on $(0,\infty)$, and $\bar k(0{+}) = k'(0{+})$ in
+$[0,\infty]$.
+\item $(a, \bar k)$ is an isotropic origin datum in dimension $d$. Its \Levy{} measure $\bar\nu$
+is the image of $\nu'$ under $\Pi$, restricted to $\RR^d \setminus \{0\}$: for every nonnegative
+Borel $g$ on $\RR^d$ vanishing at the origin, $\int g(\Pi z)\,\nu'(dz) = \int g\,d\bar\nu$. The
+restriction removes nothing: the image of $\nu'$ gives the origin of $\RR^d$ the mass
+$\nu'(\{z \ne 0 : \Pi z = 0\}) = 0$. The exponent of $(a,\bar k)$ is
+$\xi \mapsto F'\bigl((\xi,0)\bigr)$, $\xi \in \RR^d$.
+\end{enumerate}
+In particular, if $F'(\zeta) = F(|\zeta|)$ for a function $F$ on $[0,\infty)$, then $(a,\bar k)$
+is an isotropic origin datum in dimension $d$ with exponent $\xi \mapsto F(|\xi|)$.
+\end{lemma}
+
+Applied $n$ times, the lemma gives the shadow in dimension $d$ of a datum in dimension $d + n$.
+The last lemma says that the bridge formula and the polar profile \ref{eq:polar-profile-d} hold
+for a delay datum whose delay profile is not monotone, as that of the separating family is not.
+
+% Q-0406 (the author's review of section 3, item 5): the paper's copy says "a delay datum in the
+% sense of section 2.3, with exponent F_I" and drops the conditions and the formula that the
+% blueprint node restates from [B, Def. 4.11] after "restated:", which section 2.3 gives; it keeps
+% the one point the lemma turns on, that the delay profile need not be monotone. Deliberately
+% edited, and pinned.
+% shared with blueprint lem:delay-polar-profile@fa344f467980
+\begin{lemma}[the polar profile of a delay datum, without monotonicity]\label{lem:delay-polar-profile}
+Let $d \ge 1$ and let $(b_0, k_{\mathrm I})$ be a delay datum in the sense of \restated{B}{Def.~4.11}{sec:line-bridge},
+with exponent $F_{\mathrm I}$; its delay profile $k_{\mathrm I}$ is measurable and not necessarily
+monotone. Let $k_d$ be its polar profile \ref{eq:polar-profile-d}. Then $k_d$ is finite and measurable on
+$(0,\infty)$, with
+\[
+  \int_0^1 k_d(r)\,r\,dr < \infty
+  \qquad\text{and}\qquad
+  \int_1^\infty k_d(r)\,\frac{dr}{r} < \infty ,
+\]
+and
+\[
+  F_{\mathrm I}\bigl(\tfrac12|\xi|^2\bigr) = \tfrac12 b_0|\xi|^2
+   + \int_{\RR^d}\bigl(1 - \cos\langle\xi,x\rangle\bigr)\,\frac{k_d(|x|)}{|S^{d-1}|\,|x|^d}\,dx ,
+   \qquad \xi \in \RR^d .
+\]
+In particular, if $k_d$ is nonincreasing, then $(b_0,k_d)$ is an isotropic origin datum in
+dimension $d$ whose exponent is $\xi \mapsto F_{\mathrm I}(\tfrac12|\xi|^2)$.
+\end{lemma}
+
+The last clause of the lemma is also what makes the datum of the \Matern{} kernel in
+Example~\ref{ex:matern} a subordinated one.
+
+\subsection{The statements proved in print}\label{app:print-proofs}
+
+% Q-0448: the statements of the second list of section 1.1, each with its proof. A statement
+% that Lean comes to check leaves this subsection for supp-proofs.tex, and the list.
+This subsection has the proofs of the statements that are not machine-checked
+(\S\ref{sec:trust-base}). Three of them are stated in the main text,
+Lemma~\ref{lem:exponent-profile-constant} and Propositions~\ref{prop:radial-dictionary}
+and~\ref{prop:step-exponent-dimensions}, and two are stated here,
+Corollary~\ref{cor:dictionary-filtration} and
+Proposition~\ref{prop:separating-family-mixtures}. The proof of
+Proposition~\ref{prop:profile-one-dimension-down}, which Lean checked, is given with them,
+because the corollary reads that proposition in the dictionary.
+
+\begin{proof}[Proof of Lemma~\ref{lem:exponent-profile-constant}]
+\emph{Three facts about $\Gamma$.} For $a > 0$, $\Gamma(a) = \int_0^\infty t^{a-1}e^{-t}\,dt$. On
+a compact interval $[a_0,a_1] \subset (0,\infty)$ the derivative of the integrand in $a$,
+$t^{a-1}e^{-t}\log t$, is bounded in absolute value by
+$(t^{a_0-1} + t^{a_1-1})\,e^{-t}\,|\log t|$, which is integrable on $(0,\infty)$. So one may
+differentiate under the integral sign:
+\[
+  \Gamma'(a) = \int_0^\infty t^{a-1}e^{-t}\log t\,dt ,
+\]
+the integral converging absolutely. Consequently, if a random variable $T$ has the gamma law of
+shape $a$, with density $t^{a-1}e^{-t}/\Gamma(a)$ on $(0,\infty)$, then $\log T$ is integrable and
+$\mathbb{E}\log T = \psi(a)$. At $a = 1$ this reads
+$\gamma_{\mathrm E} = -\int_0^\infty e^{-v}\log v\,dv$. Next, $\Gamma(a+1) = a\,\Gamma(a)$ gives
+$\psi(a+1) = \psi(a) + 1/a$. Last, the duplication formula
+$\Gamma(a)\,\Gamma(a+\tfrac12) = 2^{1-2a}\sqrt\pi\,\Gamma(2a)$ gives, on taking logarithms and
+differentiating, $\psi(a) + \psi(a+\tfrac12) = 2\psi(2a) - 2\log 2$. At $a = \tfrac12$,
+\[
+  \psi(\tfrac12) = \psi(1) - 2\log 2 = -\gamma_{\mathrm E} - 2\log 2 .
+\]
+
+\emph{Clause (1).} Let $G(X) = \Cin(X) - \log^+ X$ be as in the proof of
+Proposition~\ref{prop:isotropic-exponent-profile}, so that $-3 \le G \le \tfrac{13}{4}$ and
+$G(X) \to g_\infty$ as $X \to \infty$. For $0 < \varepsilon < 1$ put
+\[
+  J(\varepsilon) := \int_0^\infty \bigl(1 - \cos u\bigr)\,e^{-\varepsilon u}\,\frac{du}{u} .
+\]
+\emph{(a)} $(1 - \cos u)/u = \int_0^1 \sin(tu)\,dt$, and
+$\int_0^\infty \sin(tu)\,e^{-\varepsilon u}\,du = t/(\varepsilon^2 + t^2)$. The function
+$|\sin(tu)|\,e^{-\varepsilon u}$ is integrable on $(0,1) \times (0,\infty)$, so Fubini's theorem
+gives
+\[
+  J(\varepsilon) = \int_0^1 \frac{t\,dt}{\varepsilon^2 + t^2}
+   = \tfrac12\log\bigl(1 + \varepsilon^{-2}\bigr)
+   = \log\frac1\varepsilon + \tfrac12\log\bigl(1 + \varepsilon^{2}\bigr) .
+\]
+\emph{(b)} $e^{-\varepsilon u} = \int_u^\infty \varepsilon e^{-\varepsilon x}\,dx$. The integrand
+$(1 - \cos u)\,u^{-1}\,\varepsilon e^{-\varepsilon x}\,\mathbf 1\{u < x\}$ is nonnegative, so
+Tonelli's theorem gives
+\[
+  J(\varepsilon) = \int_0^\infty \varepsilon e^{-\varepsilon x}\,\Cin(x)\,dx
+   = \int_0^\infty e^{-v}\,\Cin(v/\varepsilon)\,dv .
+\]
+\emph{(c)} For $v > 0$,
+\[
+  \Cin(v/\varepsilon) - \log\frac1\varepsilon
+   = G(v/\varepsilon) + \Bigl[\log^+\frac v\varepsilon - \log\frac1\varepsilon\Bigr] .
+\]
+The bracket equals $\log v$ when $v \ge \varepsilon$. When $v < \varepsilon$ it equals
+$\log\varepsilon$, which lies between $\log v$ and $0$. So the bracket is bounded by $|\log v|$ in
+absolute value and tends to $\log v$ as $\varepsilon \downarrow 0$. As $|G| \le \tfrac{13}{4}$ and
+$G(v/\varepsilon) \to g_\infty$, dominated convergence with the integrable function
+$e^{-v}(\tfrac{13}{4} + |\log v|)$ gives, by (b) and $\int_0^\infty e^{-v}dv = 1$,
+\[
+  J(\varepsilon) - \log\frac1\varepsilon \to g_\infty + \int_0^\infty e^{-v}\log v\,dv
+   = g_\infty - \gamma_{\mathrm E} \qquad (\varepsilon \downarrow 0) .
+\]
+\emph{(d)} By (a) the left side is $\tfrac12\log(1 + \varepsilon^2)$, which tends to $0$. Hence
+$g_\infty = \gamma_{\mathrm E}$.
+
+\emph{Clause (2).} Let $Z$ be a standard Gaussian vector of $\RR^d$, with density
+$(2\pi)^{-d/2}e^{-|x|^2/2}$, and $e$ a unit vector. In polar coordinates, for a Borel
+$h \ge 0$ on $S^{d-1}$ and a Borel $f \ge 0$ on $(0,\infty)$,
+\[
+  \mathbb{E}\bigl[h(Z/|Z|)\,f(|Z|)\bigr]
+   = \int_{S^{d-1}}h\,d\sigma_{d-1}\int_0^\infty f(r)\,(2\pi)^{-d/2}e^{-r^2/2}\,r^{d-1}\,dr .
+\]
+With $h = 1$ and the substitution $t = r^2/2$, using $|S^{d-1}| = 2\pi^{d/2}/\Gamma(d/2)$, this
+shows that $|Z|^2/2$ has the gamma law of shape $d/2$. With $f = 1$ it shows that $Z/|Z|$ has the
+law $\sigma_{d-1}/|S^{d-1}|$. The coordinate $\langle e,Z\rangle$ is a standard Gaussian variable,
+so $\langle e,Z\rangle^2/2$ has the gamma law of shape $\tfrac12$, by the case $d = 1$. By the
+first fact, $\log|Z|$ and $\log|\langle e,Z\rangle|$ are integrable, with
+\[
+  \mathbb{E}\log|Z| = \tfrac12\bigl[\log 2 + \psi(\tfrac d2)\bigr], \qquad
+  \mathbb{E}\log|\langle e,Z\rangle| = \tfrac12\bigl[\log 2 + \psi(\tfrac12)\bigr] .
+\]
+Since $\langle e,Z\rangle = |Z|\,\langle e, Z/|Z|\rangle$,
+\[
+  \lambda_d = \mathbb{E}\log\bigl|\langle e, Z/|Z|\rangle\bigr|
+   = \mathbb{E}\log|\langle e,Z\rangle| - \mathbb{E}\log|Z|
+   = \tfrac12\bigl[\psi(\tfrac12) - \psi(\tfrac d2)\bigr] .
+\]
+
+\emph{Clause (3).} The first expression is clauses (1) and (2). The second follows from
+$\psi(\tfrac12) = -\gamma_{\mathrm E} - 2\log 2$. At $d = 1$ the first expression is
+$\gamma_{\mathrm E}$. At $d = 2$ the second is
+$\tfrac12(\gamma_{\mathrm E} - \psi(1)) - \log 2 = \gamma_{\mathrm E} - \log 2$. By
+$\psi(a+1) = \psi(a) + 1/a$ at $a = d/2$,
+$\varkappa_{d+2} = \varkappa_d - \tfrac12\cdot\tfrac2d = \varkappa_d - 1/d$, and so
+$\varkappa_3 = \varkappa_1 - 1$.
+
+\emph{Clause (4).} By the second expression of clause (3),
+$-c\varkappa_d = c\log 2 - \tfrac c2(\gamma_{\mathrm E} - \psi(\tfrac d2))$, which is the first
+display. The second follows from
+$R(d,c) = \Gamma(\tfrac{d-c}{2})/(2^{c}\pi^{d/2}\Gamma(\tfrac c2))$. For the third take $c = d$
+in the first display and use $|S^{d-1}| = 2\pi^{d/2}/\Gamma(\tfrac d2)$:
+$(2\pi)^{-d}\cdot 2\pi^{d/2}\,\Gamma(\tfrac d2)^{-1}\cdot 2^{d} = 2/(\pi^{d/2}\Gamma(\tfrac d2))$.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:radial-dictionary}]
+\emph{The function $\Omega_d$.} For unit vectors $e, e'$ take $Q \in \Orth(d)$ with $Qe = e'$.
+Then $\langle e',\eta\rangle = \langle e,Q^{\tp}\eta\rangle$, and $\sigma_{d-1}$ is invariant
+under $Q^{\tp}$, so the integral defining $\Omega_d(t)$ is the same for $e'$ as for $e$. At
+$d = 1$ the sphere is $\{\pm1\}$ and $\Omega_1(t) = \cos t$. $\Omega_d$ is continuous, by
+dominated convergence, $|\Omega_d| \le 1$ and $\Omega_d(0) = 1$. For $x \in \RR^d$ and $t \ge 0$,
+\begin{equation}\label{eq:sphere-mean-cos}
+  \frac{1}{|S^{d-1}|}\int_{S^{d-1}}e^{it\langle x,\theta\rangle}\,\sigma_{d-1}(d\theta)
+   = \Omega_d\bigl(t|x|\bigr) .
+\end{equation}
+Indeed the imaginary part vanishes by the symmetry $\theta \mapsto -\theta$ of $\sigma_{d-1}$.
+The real part is the definition of $\Omega_d(t|x|)$ with $e = x/|x|$ when $x \ne 0$, and both
+sides are $1$ when $x = 0$.
+
+\emph{The preamble.} Let $X$ be rotation invariant. As $-I \in \Orth(d)$, $-X$ has the law of
+$X$, so the characteristic function is real:
+$\mathbb{E}\,e^{i\langle\xi,X\rangle} = \mathbb{E}\cos\langle\xi,X\rangle$. Let $\xi \in \RR^d$
+and let $\theta$ be a unit vector. There is $Q \in \Orth(d)$ with $Q\xi = |\xi|\theta$, and
+$Q^{\tp}X$ has the law of $X$, so
+\[
+  \mathbb{E}\cos\langle\xi,X\rangle = \mathbb{E}\cos\langle\xi,Q^{\tp}X\rangle
+   = \mathbb{E}\cos\bigl(|\xi|\langle\theta,X\rangle\bigr) .
+\]
+The left side does not depend on $\theta$. Averaging over $\theta$ against
+$\sigma_{d-1}/|S^{d-1}|$, exchanging the two integrals of a bounded continuous function, and using
+\ref{eq:sphere-mean-cos} gives
+$\mathbb{E}\,e^{i\langle\xi,X\rangle} = \mathbb{E}\,\Omega_d(|\xi||X|) = \phi(|\xi|)$. By the
+uniqueness theorem for characteristic functions, $\phi$ determines the law of $X$. Let $R$ have
+the law of $|X|$ and let $U$ be uniform on $S^{d-1}$, that is of law $\sigma_{d-1}/|S^{d-1}|$,
+and independent of $R$. By \ref{eq:sphere-mean-cos} and Fubini's theorem,
+$\mathbb{E}\,e^{i\langle\xi,RU\rangle} = \mathbb{E}\,\Omega_d(R|\xi|) = \phi(|\xi|)$. So $RU$ has
+the law of $X$, by the same theorem.
+
+\emph{Step A: the identity.} Let $R$ be a random variable with values in $(0,\infty)$, let
+$0 < c < \infty$, and put $k(r) := c\,\Pr(R > r)$ for $r > 0$ and
+$\phi(v) := \mathbb{E}\,\Omega_d(vR)$ for $v \ge 0$. Then for every $\rho > 0$,
+\begin{equation}\label{eq:dictionary-identity}
+  \int_0^\infty\bigl(1 - \Omega_d(\rho r)\bigr)\,k(r)\,\frac{dr}{r}
+   = c\int_0^\rho\bigl(1 - \phi(v)\bigr)\,\frac{dv}{v} ,
+\end{equation}
+both sides in $[0,\infty]$. Indeed, as $1 - \Omega_d \ge 0$, Tonelli's theorem applies twice, with
+the substitution $r = vR/\rho$ in between:
+\[
+\begin{aligned}
+  \int_0^\infty\bigl(1 - \Omega_d(\rho r)\bigr)\,c\,\Pr(R > r)\,\frac{dr}{r}
+   &= c\,\mathbb{E}\int_0^R\bigl(1 - \Omega_d(\rho r)\bigr)\frac{dr}{r}
+   = c\,\mathbb{E}\int_0^\rho\bigl(1 - \Omega_d(vR)\bigr)\frac{dv}{v} \\
+   &= c\int_0^\rho\bigl(1 - \phi(v)\bigr)\frac{dv}{v} .
+\end{aligned}
+\]
+Moreover, if $\nu$ is the measure on $\RR^d \setminus \{0\}$ with the density
+$k(|x|)\,(|S^{d-1}|\,|x|^d)^{-1}$, then for $\xi \ne 0$, by polar coordinates, Tonelli's theorem
+and \ref{eq:sphere-mean-cos},
+\begin{equation}\label{eq:dictionary-polar}
+  \int_{\RR^d}\bigl(1 - \cos\langle\xi,x\rangle\bigr)\,\nu(dx)
+   = \int_0^\infty\bigl(1 - \Omega_d(|\xi| r)\bigr)\,k(r)\,\frac{dr}{r} .
+\end{equation}
+The same holds for every nonnegative Borel $k$ in place of this one.
+
+\emph{Step B: the two integrability conditions.} With $R$, $c$ and $k$ as in Step~A, Tonelli's
+theorem gives
+\[
+  \int_1^\infty k(r)\,\frac{dr}{r} = c\,\mathbb{E}\int_1^{\max\{R,1\}}\frac{dr}{r}
+   = c\,\mathbb{E}\log^+R ,
+\]
+and $\int_0^1 k(r)\,r\,dr \le c/2$ because $k \le c$.
+
+\emph{Step C: the logarithmic moment read on $\phi$.} Put
+$H_d(s) := \int_0^s (1 - \Omega_d(v))\,dv/v$ for $s \ge 0$. It is nonnegative and nondecreasing.
+The pair $(0,\mathbf 1_{(0,1)})$ is an isotropic origin datum in dimension $d$, with profile at
+the origin $1$ and with $\int_1^\infty\mathbf 1_{(0,1)}(r)\,dr/r = 0$. By
+\ref{eq:dictionary-polar} and \ref{eq:dictionary-identity} with $R \equiv 1$ and $c = 1$, its
+exponent at a point of norm $s$ is $H_d(s)$. So Lemma~\ref{lem:isotropic-exponent-log}(1) gives
+$H_d(s) \le \log s + \tfrac{13}{4}$ for $s \ge 1$, and hence
+$H_d(s) \le \log^+ s + \tfrac{13}{4}$ for every $s \ge 0$, $H_d$ being nondecreasing. And
+Corollary~\ref{cor:origin-profile-exponent}(2) gives $H_d(s)/\log s \to 1$ as $s \to \infty$, so there is
+$s_0 > 1$ with $H_d(s) \ge \tfrac12\log s$ for $s \ge s_0$. Now let $R$ and $\phi$ be as in
+Step~A. By Tonelli's theorem and the substitution $v \mapsto vR$,
+\[
+  \int_0^1\bigl(1 - \phi(v)\bigr)\frac{dv}{v}
+   = \mathbb{E}\int_0^1\bigl(1 - \Omega_d(vR)\bigr)\frac{dv}{v} = \mathbb{E}\,H_d(R) .
+\]
+By the two bounds on $H_d$,
+$\tfrac12\,\mathbb{E}\log^+R - \tfrac12\log s_0 \le \mathbb{E}\,H_d(R) \le
+\mathbb{E}\log^+R + \tfrac{13}{4}$. So $\int_0^1(1 - \phi(v))\,dv/v$ is finite if and only if
+$\mathbb{E}\log^+R$ is.
+
+\emph{Clause (1).} Let $X$ be as in the clause and $R := |X|$, which is positive almost surely.
+By the preamble $\phi(v) = \mathbb{E}\,\Omega_d(vR)$, and the equivalence is Step~C. Suppose
+$\mathbb{E}\log^+|X| < \infty$ and put $k_d(r) := c\,\Pr(|X| > r)$. It is nonincreasing with
+values in $[0,c]$, and $k_d(0{+}) = c\,\Pr(|X| > 0) = c$. By Step~B it satisfies the two
+conditions of Definition~\ref{def:isotropic-origin-datum}. So $(0,k_d)$ is an isotropic origin datum in
+dimension $d$. By \ref{eq:dictionary-polar} and \ref{eq:dictionary-identity} its exponent at
+$\xi \ne 0$ is $c\int_0^{|\xi|}(1 - \phi(v))\,dv/v = F(|\xi|)$, and both vanish at $\xi = 0$. By
+Proposition~\ref{prop:isotropic-polar-reading}(2), $F \in \mathcal{A}_d$. By
+Corollary~\ref{cor:origin-profile-exponent}(2) for this datum, read along a ray, $F(r)/\log r \to c$.
+
+\emph{Clause (2), existence.} Let $F \in \mathcal{A}_d$ with $F(r)/\log r \to c \in (0,\infty)$.
+By Proposition~\ref{prop:isotropic-polar-reading}(2), $\xi \mapsto F(|\xi|)$ is the exponent of an
+isotropic origin datum $(a,k_d)$ in dimension $d$. By Corollary~\ref{cor:origin-profile-exponent}(1),
+$F(r)/r^2 \to \tfrac12 a$; as $F(r)/\log r$ has a finite limit, $F(r)/r^2 \to 0$, so $a = 0$.
+Then Corollary~\ref{cor:origin-profile-exponent}(2) gives $F(r)/\log r \to k_d(0{+})$, so $k_d(0{+}) = c$.
+As in the proof of Lemma~\ref{lem:isotropic-exponent-log}, $k_d(r) \to 0$ as $r \to \infty$. Put
+$G(r) := k_d(r{+})/c$ for $r > 0$. It is nonincreasing and right-continuous, it tends to $1$ as
+$r \downarrow 0$ and to $0$ as $r \to \infty$, and $c\,G = k_d$ off the countable set of the
+discontinuities of $k_d$. So there is a random variable $R$ with values in $(0,\infty)$ and
+$\Pr(R > r) = G(r)$ for every $r > 0$. Let $U$ be uniform on $S^{d-1}$ and independent of $R$,
+and $X := RU$. Then $X$ is rotation invariant, $|X| = R$, $\Pr(X = 0) = 0$, and by Step~B and
+$c\,G = k_d$ almost everywhere,
+$c\,\mathbb{E}\log^+|X| = \int_1^\infty k_d(r{+})\,dr/r = \int_1^\infty k_d(r)\,dr/r < \infty$.
+Its function $\phi$ is that of
+Step~A. Let $\rho > 0$ and let $e$ be a unit vector. By \ref{eq:dictionary-polar} for $k_d$, the
+equality $k_d = c\,\Pr(R > \cdot)$ almost everywhere, and \ref{eq:dictionary-identity},
+\[
+  F(\rho) = \int_0^\infty\bigl(1 - \Omega_d(\rho r)\bigr)\,k_d(r)\,\frac{dr}{r}
+   = c\int_0^\rho\bigl(1 - \phi(v)\bigr)\frac{dv}{v} .
+\]
+So $F$ is the function of clause (1) for $c$ and $X$. As $\phi$ is continuous, the integrand
+$(1 - \phi(v))/v$ is continuous on $(0,\infty)$, so $F$ is continuously differentiable there, with
+$rF'(r) = c\,(1 - \phi(r))$. The datum $(0,k_d)$ was any datum with exponent $F(|\cdot|)$, and
+$\Pr(|X| > r) = k_d(r{+})/c$ by construction.
+
+\emph{Clause (2), uniqueness.} Suppose $F$ is also the function of clause (1) for $c_1$ and
+$X_1$, with $\mathbb{E}\log^+|X_1| < \infty$ and radial function $\phi_1$. By clause (1),
+$F(r)/\log r \to c_1$, so $c_1 = c$. Both integrands being continuous, differentiation gives
+$c\,(1 - \phi_1(r)) = rF'(r) = c\,(1 - \phi(r))$ for every $r > 0$, and
+$\phi_1(0) = \phi(0) = 1$. So $\phi_1 = \phi$, and $X_1$ has the law of $X$ by the preamble. In
+particular $\Pr(|X| > r) = k_d(r{+})/c$ holds for the one law and every datum, since the
+construction above can start from any datum. \emph{The bijection.} By clause (1) the map sends a
+pair $(c, \text{law of } X)$ into the set named; by the existence part it is onto, and by the
+uniqueness part it is one to one. The set is that of the members of $\mathcal{A}_d$ with
+Gaussian coefficient $0$ and profile at the origin in $(0,\infty)$: one inclusion was shown at
+the start of the existence part, and the other is Corollary~\ref{cor:origin-profile-exponent}(2).
+
+\emph{Clause (3), if.} Let $X'$ be a random vector in $\RR^{d+1}$ with characteristic function
+$\zeta \mapsto \phi(|\zeta|)$. For $Q \in \Orth(d+1)$ the characteristic function of $QX'$ is
+$\zeta \mapsto \phi(|Q^{\tp}\zeta|) = \phi(|\zeta|)$, so $QX'$ has the law of $X'$: $X'$ is
+rotation invariant. Let $\Pi$ be the projection on the first $d$ coordinates. The characteristic
+function of $\Pi X'$ at $\xi \in \RR^d$ is that of $X'$ at $(\xi,0)$, that is $\phi(|\xi|)$. So
+$\Pi X'$ has the law of $X$, and $\Pr(X' = 0) \le \Pr(\Pi X' = 0) = \Pr(X = 0) = 0$. By the
+preamble in dimension $d + 1$, the radial function of $X'$ is $\phi$. As
+$\int_0^1(1 - \phi(u))\,du/u = F(1)/c < \infty$, clause (1) in dimension $d + 1$ gives
+$\mathbb{E}\log^+|X'| < \infty$ and $F \in \mathcal{A}_{d+1}$, with $F$ the function of that
+clause for $c$ and $X'$.
+
+\emph{Clause (3), only if.} Let $F \in \mathcal{A}_{d+1}$. By clause (1) in dimension $d$,
+$F(r)/\log r \to c$. So clause (2) applies in dimension $d + 1$: there is a rotation-invariant
+$X'$ in $\RR^{d+1}$ with $\Pr(X' = 0) = 0$ and $\mathbb{E}\log^+|X'| < \infty$ whose radial
+function is $r \mapsto 1 - rF'(r)/c$ on $(0,\infty)$. By clause (2) in dimension $d$ this
+function is $\phi$. Both radial functions equal $1$ at $0$. So the characteristic function of
+$X'$ is $\zeta \mapsto \phi(|\zeta|)$.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:profile-one-dimension-down}]
+\emph{Clause (1).} By Lemma~\ref{lem:shadow-polar-profile}, with $\bar k$ the function displayed in
+the clause, $(a',\bar k)$ is an isotropic origin datum in dimension $d$ with exponent
+$\xi \mapsto F(|\xi|)$. So $F \in \mathcal{A}_d$, by
+Proposition~\ref{prop:isotropic-polar-reading}(2). Let $(a,k_d)$ be any isotropic origin datum in
+dimension $d$ with that exponent. By the uniqueness in Proposition~\ref{prop:isotropic-polar-reading}(1),
+$a = a'$ and $k_d = \bar k$ almost everywhere on $(0,\infty)$. Let $r > 0$, and choose points
+$r_n \downarrow r$ and $s_n \uparrow r$ at which $k_d = \bar k$. As $k_d$ is nonincreasing,
+$\bar k(r_n) = k_d(r_n) \le k_d(r) \le k_d(s_n) = \bar k(s_n)$, and both ends tend to
+$\bar k(r)$, because $\bar k$ is continuous (Lemma~\ref{lem:shadow-polar-profile}(2)). So
+$k_d(r) = \bar k(r)$ for every $r > 0$, and $k_d$ is continuous. The next sentence of the clause
+is the contrapositive.
+
+\emph{Clause (2).} The function $k := b\,\mathbf 1_{(0,\tau)}$ is nonnegative and nonincreasing
+on $(0,\infty)$, with $\int_0^1 k(r)\,r\,dr \le b/2$ and
+$\int_1^\infty k(r)\,dr/r = b\log^+\tau$. So $(0,k)$ is an isotropic origin datum in dimension
+$d$ (Definition~\ref{def:isotropic-origin-datum}). Its exponent $F_d$ is finite and nonnegative, as that
+of every datum, and radial: for
+$Q \in \Orth(d)$ the substitution $x = Qy$ in \ref{eq:isotropic-exponent} gives
+$F_d(Q\xi) = F_d(\xi)$, because $Q$ preserves Lebesgue measure and the radial density of the
+\Levy{} measure. So $F_d(\xi) = G(|\xi|)$ with $G(r) := F_d(re_1)$ for $r \ge 0$, and
+$G \in \mathcal{A}_d$ by Proposition~\ref{prop:isotropic-polar-reading}(2). The profile $k$ has the
+left limit $b$ and the right limit $0$ at $\tau$. By clause (1), $G \notin \mathcal{A}_{d+1}$.
+So $\mathcal{A}_{d+1} \ne \mathcal{A}_d$. The inclusion
+$\mathcal{A}_{d+1} \subseteq \mathcal{A}_d$ follows from clause (1), since for every
+$F \in \mathcal{A}_{d+1}$, $\zeta \mapsto F(|\zeta|)$ is the exponent of an isotropic origin datum
+in dimension $d + 1$, by Proposition~\ref{prop:isotropic-polar-reading}(2).
+
+\emph{Clause (3).} At $d = 1$ the sphere is $S^0 = \{\pm1\}$, with $\sigma_0$ the counting
+measure. By \ref{eq:polar-decomposition} the exponent of the datum
+$(0, b\,\mathbf 1_{(0,\tau)})$ at $\omega \in \RR$ is
+$b\int_0^\tau(1 - \cos\omega r)\,dr/r$, which is $b\,\Cin(\tau|\omega|)$: for $\omega \ne 0$ by
+the substitution $v = |\omega| r$, and both vanish at $\omega = 0$. So
+$G(r) = b\,\Cin(\tau r)$.
+This is the $\Cin$ ray of Proposition~\ref{prop:line-extreme-rays}, the admissible exponent with
+Gaussian coefficient $0$ and profile $b\,\mathbf 1_{(0,\tau)}$. By clause (2) it is not in
+$\mathcal{A}_2$. By clause (1), with the datum that
+Proposition~\ref{prop:isotropic-polar-reading}(2) supplies,
+$\mathcal{A}_{D+1} \subseteq \mathcal{A}_D$ for every $D \ge 1$, so
+$\mathcal{A}_D \subseteq \mathcal{A}_2$ for $D \ge 2$, and the ray is in none of them.
+\end{proof}
+
+The corollary reads the first two clauses of
+Proposition~\ref{prop:profile-one-dimension-down} in the dictionary of
+Proposition~\ref{prop:radial-dictionary}.
+
+% shared with blueprint cor:dictionary-filtration+60d4f00473ee
+\begin{corollary}[the test and the step datum, read in the dictionary]\label{cor:dictionary-filtration}
+Let $d \ge 1$, and let $\Omega_d$ be the function of Proposition~\ref{prop:radial-dictionary}.
+\begin{enumerate}
+\item \emph{(The jump size has no atom.)} In the terms of
+Proposition~\ref{prop:radial-dictionary}: if $F$ and $X$ are as in its clause (1), with
+$\mathbb{E}\log^+|X| < \infty$, and $F \in \mathcal{A}_{d+1}$, then $\Pr(|X| = r) = 0$ for every
+$r > 0$.
+\item \emph{(The step datum.)} Let $b > 0$ and $\tau > 0$, and put
+\[
+  G(r) := b\int_0^r \bigl(1 - \Omega_d(\tau u)\bigr)\,\frac{du}{u} \qquad (r \ge 0) .
+\]
+Then $\xi \mapsto G(|\xi|)$ is the exponent of the datum $(0, b\,\mathbf 1_{(0,\tau)})$ in
+dimension $d$, so that $G$ is the function of Proposition~\ref{prop:profile-one-dimension-down}(2), and in
+Proposition~\ref{prop:radial-dictionary} it is the function of $c = b$ and of $X$ uniformly distributed on
+the sphere of radius $\tau$. Hence $\zeta \mapsto \Omega_d(\tau|\zeta|)$ is not a characteristic
+function on $\RR^{d+1}$.
+\end{enumerate}
+\end{corollary}
+
+% A sentence of paper prose stands between the statement and its proof: `linkage check` reads a
+% proof that directly follows a statement as that statement's proof, heading included.
+Both clauses are read off the proposition through clause (1) of the dictionary.
+
+\begin{proof}[Proof of Corollary~\ref{cor:dictionary-filtration}]
+\emph{Clause (1).} Let $F$ and $X$ be as in
+Proposition~\ref{prop:radial-dictionary}(1), with $\mathbb{E}\log^+|X| < \infty$, and
+$F \in \mathcal{A}_{d+1}$. By that clause
+$(0, c\,\Pr(|X| > \cdot))$ is a datum in dimension $d$ with exponent $F(|\cdot|)$, so its profile
+is continuous, by Proposition~\ref{prop:profile-one-dimension-down}(1), and
+$\Pr(|X| = r) = \Pr(|X| \ge r) - \Pr(|X| > r)$ is $1/c$ times the jump of
+that profile at $r$, which is $0$.
+
+\emph{Clause (2).} Let $U$ be uniformly distributed on $S^{d-1}$ and $X := \tau U$. It is
+rotation invariant, $\Pr(X = 0) = 0$, $\mathbb{E}\log^+|X| = \log^+\tau < \infty$, and its radial
+function is $\phi(r) = \Omega_d(\tau r)$. By Proposition~\ref{prop:radial-dictionary}(1) with $c = b$, the
+function $G$ belongs to $\mathcal{A}_d$, and $\xi \mapsto G(|\xi|)$ is the exponent of the datum
+$(0,k_d)$ with $k_d(r) = b\,\Pr(\tau > r) = b\,\mathbf 1_{(0,\tau)}(r)$. So $G$ is the function
+of Proposition~\ref{prop:profile-one-dimension-down}(2), and $G \notin \mathcal{A}_{d+1}$ by that clause. By
+Proposition~\ref{prop:radial-dictionary}(3), $G \notin \mathcal{A}_{d+1}$ says that
+$\zeta \mapsto \phi(|\zeta|) = \Omega_d(\tau|\zeta|)$ is not a characteristic function on
+$\RR^{d+1}$.
+\end{proof}
+
+% Q-0448: the proof of record of prop:step-exponent-dimensions (Q-0434), written by
+% records/affine/transcribe-q0448-nodes.py and pinned. Its identity eq:shadow-identity is in
+% the proof of Lemma lem:shadow-polar-profile, in the supplement.
+\begin{proof}[Proof of Proposition~\ref{prop:step-exponent-dimensions}]
+\emph{Four facts.} (a) For $n \ge 1$ and $\zeta \in \RR^n$, \ref{eq:sphere-mean-cos} with
+$t = \tau$ and $x = \zeta$ says that $\zeta \mapsto \Omega_n(\tau|\zeta|)$ is the characteristic
+function of the uniform probability measure on the sphere of radius $\tau$ of $\RR^n$, the image
+of $\sigma_{n-1}/|S^{n-1}|$ under $\theta \mapsto \tau\theta$. (b) $\Omega_n$ is continuous and
+$0 \le 1 - \Omega_n(t) \le t^2/2$, because $1 - \cos u \le u^2/2$ and
+$|\langle e,\eta\rangle| \le 1$ on the sphere. (c) Let $(0,k)$ be an isotropic origin datum in
+dimension $n$. By \ref{eq:polar-decomposition} with $g(x) = 1 - \cos\langle\xi,x\rangle$, by
+Tonelli's theorem for a nonnegative integrand, and by the definition of $\Omega_n$ with
+$e = \xi/|\xi|$, its exponent at $\xi \ne 0$ is
+\[
+  \frac{1}{|S^{n-1}|}\int_{S^{n-1}}\sigma_{n-1}(d\eta)\int_0^\infty
+     \bigl(1 - \cos(r\langle\xi,\eta\rangle)\bigr)\,k(r)\,\frac{dr}{r}
+   = \int_0^\infty \bigl(1 - \Omega_n(r|\xi|)\bigr)\,k(r)\,\frac{dr}{r} ,
+\]
+and both sides vanish at $\xi = 0$. For $k = b\,\mathbf 1_{(0,\tau)}$ this is $G_n(|\xi|)$, which
+is finite by (b). (d) Let $\nu$ be a symmetric \Levy{} measure on $\RR^n$ and $v \ge 0$. The
+infinitely divisible law with triplet $(vI, \nu, 0)$ that \ledger{A3}(iii) supplies has the
+transform $\exp[-\tfrac12 v|\zeta|^2 - \int(1 - \cos\langle\zeta,z\rangle)\,\nu(dz)]$. Indeed
+the integrand $e^{i\langle\zeta,z\rangle} - 1 - i\langle\zeta,z\rangle\mathbf 1_D(z)$ of the
+representation has the real part $\cos\langle\zeta,z\rangle - 1$, and its imaginary part is odd
+in $z$ and integrable against $\nu$, being at most $|\zeta|^2|z|^2/2$ in modulus on $D$ (as
+$|\sin u - u| \le u^2/2$ for every real $u$) and at most $1$ off $D$; so the integral of the
+imaginary part against the symmetric measure $\nu$ is $0$.
+
+\emph{The shadow of the step two dimensions down.} The step datum
+$(0, b\,\mathbf 1_{(0,\tau)})$ of dimension $d + 2$ has the exponent
+$\zeta \mapsto G_{d+2}(|\zeta|)$, by (c). By Lemma~\ref{lem:shadow-polar-profile} with $d + 1$ in place
+of $d$, its shadow $(0,k_1)$ is an isotropic origin datum in dimension $d + 1$ with exponent
+$\zeta \mapsto G_{d+2}(|\zeta|)$, $\zeta \in \RR^{d+1}$, and
+\[
+  k_1(s) = C_{d+1}\int_{\RR} b\,\mathbf 1_{\{s\sqrt{1+w^2} < \tau\}}\,(1+w^2)^{-(d+2)/2}\,dw
+         = 2b\,C_{d+1}\,J_{d+2}\Bigl(\frac{\tau}{s}\Bigr) \quad (0 < s < \tau),
+\]
+by the substitution $v = \sqrt{1+w^2}$ on $w > 0$, for which $dw = v\,(v^2-1)^{-1/2}dv$; and
+$k_1(s) = 0$ for $s \ge \tau$. By the same lemma, the shadow $(0,k_2)$ of $(0,k_1)$ is an
+isotropic origin datum in dimension $d$ with exponent $\xi \mapsto G_{d+2}(|\xi|)$,
+$\xi \in \RR^d$, and
+\[
+  k_2(r) = C_d\,C_{d+1}\,b\int_{\RR}\int_{\RR}
+     \mathbf 1_{\{r\sqrt{(1+u^2)(1+w^2)} < \tau\}}\,(1+w^2)^{-(d+2)/2}\,(1+u^2)^{-(d+1)/2}\,dw\,du .
+\]
+Substitute $w = y/\sqrt{1+u^2}$ in the inner integral. Then $(1+u^2)(1+w^2) = 1 + u^2 + y^2$ and
+$(1+w^2)^{-(d+2)/2}(1+u^2)^{-(d+1)/2}\,dw = (1+u^2+y^2)^{-(d+2)/2}\,dy$, so with $q = (u,y)$
+\[
+  k_2(r) = C_d\,C_{d+1}\,b\int_{\RR^2}\mathbf 1_{\{r\sqrt{1+|q|^2} < \tau\}}\,
+     (1+|q|^2)^{-(d+2)/2}\,dq .
+\]
+The same computation with the indicator replaced by $1$, and the normalisation of
+Lemma~\ref{lem:shadow-polar-profile}(1) in the dimensions $d$ and $d + 1$, give
+$C_d\,C_{d+1}\int_{\RR^2}(1+|q|^2)^{-(d+2)/2}\,dq = 1$. In polar coordinates of the plane, with
+$v = \sqrt{1+|q|^2}$, the integral of $\mathbf 1_{\{v < x\}}(1+|q|^2)^{-(d+2)/2}$ is
+$2\pi\int_1^x v^{-d-1}\,dv = (2\pi/d)(1 - x^{-d})$ for $x \ge 1$, and $0$ for $x < 1$. At
+$x = \infty$ this gives
+\begin{equation}\label{eq:shadow-constants}
+  2\pi\,C_d\,C_{d+1} = d ,
+\end{equation}
+and at $x = \tau/r$ it gives
+\[
+  k_2(r) = b\Bigl(1 - \Bigl(\frac{r}{\tau}\Bigr)^{d}\Bigr) \quad (0 < r < \tau), \qquad
+  k_2(r) = 0 \quad (r \ge \tau) .
+\]
+
+\emph{Clause (2), the identity.} Fix $\rho \ge 0$ and put $h(r) := 1 - \Omega_d(r\rho)$ and
+$h_2(r) := 1 - \Omega_{d+2}(r\rho)$. By (c) for the datum $(0,k_2)$, whose exponent is
+$G_{d+2}(|\cdot|)$, and by the definition of $G_{d+2}$,
+\begin{equation}\label{eq:step-two-forms}
+  \int_0^\tau h_2(r)\,\frac{dr}{r} = \frac{G_{d+2}(\rho)}{b}
+   = \int_0^\tau h(r)\,\frac{dr}{r} - \tau^{-d}\int_0^\tau h(r)\,r^{d-1}\,dr .
+\end{equation}
+This holds for every $\tau > 0$, the parameter $\tau$ having been arbitrary. By (b) the
+functions $h$ and $h_2$ are continuous with $0 \le h(r), h_2(r) \le r^2\rho^2/2$, so the three
+integrals are continuously differentiable functions of $\tau > 0$. Differentiating
+\ref{eq:step-two-forms} in $\tau$,
+\[
+  \frac{h_2(\tau)}{\tau} = \frac{h(\tau)}{\tau} + d\,\tau^{-d-1}\int_0^\tau h(r)\,r^{d-1}\,dr
+     - \frac{h(\tau)}{\tau} ,
+\]
+that is
+\[
+  \tau^{-d}\int_0^\tau h(r)\,r^{d-1}\,dr = \frac{1}{d}\bigl(1 - \Omega_{d+2}(\tau\rho)\bigr) .
+\]
+By the definition of $G_d$ and \ref{eq:step-two-forms},
+$G_d(\rho) - G_{d+2}(\rho) = b\,\tau^{-d}\int_0^\tau h(r)\,r^{d-1}\,dr$, which is
+\ref{eq:step-exponent-two-up}.
+
+\emph{Clause (2), the law.} Let $\mu^{\mathrm{step}}$ be the law of the step datum of dimension
+$d + 2$, the infinitely divisible law with triplet $(0,\nu^{\mathrm{step}}_{d+2},0)$ that
+\ledger{A3}(iii) supplies; its transform is $e^{-G_{d+2}(|\zeta|)}$, by (c) and (d). Let
+$\pi := e^{-b/d}\sum_{n \ge 0}(b/d)^n\sigma_\tau^{*n}/n!$. It is a probability measure, and by
+(a) its transform is
+$e^{-b/d}\sum_n\bigl((b/d)\,\Omega_{d+2}(\tau|\zeta|)\bigr)^n/n!
+= \exp\bigl[-\tfrac{b}{d}(1 - \Omega_{d+2}(\tau|\zeta|))\bigr]$. It is infinitely divisible: for
+$m \ge 1$ the law defined in the same way with $b/(dm)$ in place of $b/d$ has the transform
+$\widehat\pi^{1/m}$, so its $m$-fold convolution is $\pi$. The convolution of two infinitely
+divisible laws is infinitely divisible, the convolution of their roots being a root. So
+$\mu^{\mathrm{step}} * \pi$ is infinitely divisible, and by \ref{eq:step-exponent-two-up} its
+transform is $e^{-G_d(|\zeta|)}$. Put
+$\nu^{(d+2)} := \nu^{\mathrm{step}}_{d+2} + \tfrac{b}{d}\,\sigma_\tau$. It is the sum of a
+\Levy{} measure and a finite measure that gives the origin no mass, so it is a \Levy{} measure,
+and it is symmetric. By (a) and (c),
+$\int(1 - \cos\langle\zeta,z\rangle)\,\nu^{(d+2)}(dz) = G_{d+2}(|\zeta|)
++ \tfrac{b}{d}(1 - \Omega_{d+2}(\tau|\zeta|)) = G_d(|\zeta|)$. The infinitely divisible law with
+triplet $(0,\nu^{(d+2)},0)$, which \ledger{A3}(iii) supplies, therefore has the transform
+$e^{-G_d(|\zeta|)}$, by (d). So it is $\mu^{\mathrm{step}} * \pi$, and the triplet of a law is
+unique (\ledger{A3}(ii)).
+
+\emph{Clause (3).} Write $k' = k_1 + k_2'$ on $(0,\infty)$, with $k_1$ as above and
+\[
+  k_2'(s) := (2b\,C_{d+1}/d)\,(s/\tau)^d\,s\,(\tau^2 - s^2)^{-1/2} \quad (0 < s < \tau), \qquad
+  k_2'(s) := 0 \quad (s \ge \tau) .
+\]
+Both are nonnegative and Borel. The identity
+\ref{eq:shadow-identity} holds for every nonnegative Borel profile $h$, monotone or not. For
+$h = k_1$ its function $\bar h$ is $k_2$. For $h = k_2'$ and $0 < r < \tau$ put
+$A := \sqrt{\tau^2 - r^2}$. The integrand of $\bar h(r)$ vanishes unless $|u| < A/r$, and there
+$k_2'(r\sqrt{1+u^2})\,(1+u^2)^{-(d+1)/2} = (2b\,C_{d+1}/d)\,r^{d+1}\tau^{-d}\,(A^2 - r^2u^2)^{-1/2}$.
+Since $\int_{-A/r}^{A/r}(A^2 - r^2u^2)^{-1/2}\,du = \pi/r$, and by \ref{eq:shadow-constants},
+\[
+  \bar h(r) = C_d\cdot\frac{2b\,C_{d+1}}{d}\cdot\frac{r^{d+1}}{\tau^{d}}\cdot\frac{\pi}{r}
+            = b\Bigl(\frac{r}{\tau}\Bigr)^{d} \quad (0 < r < \tau), \qquad
+  \bar h(r) = 0 \quad (r \ge \tau) .
+\]
+Adding the two, \ref{eq:shadow-identity} for $h = k'$ has $\bar h = k_2 + b\,(r/\tau)^d
+\mathbf 1_{(0,\tau)} = b\,\mathbf 1_{(0,\tau)}$: for every nonnegative Borel $g$ on $\RR^d$
+vanishing at the origin,
+\begin{equation}\label{eq:step-one-up-image}
+  \int_{\RR^{d+1}} g(\Pi z)\,\nu'(dz) = \int_{\RR^d} g\,d\nu^{\mathrm{step}}_d ,
+\end{equation}
+with $\Pi$ the projection on the first $d$ coordinates and $\nu^{\mathrm{step}}_d$ the \Levy{}
+measure of the step datum of dimension $d$. The measure $\nu'$ is rotation invariant, having a
+radial density, and gives the origin no mass. It is a \Levy{} measure: in polar coordinates of
+$\RR^{d+1}$, $\int(|z|^2 \wedge 1)\,\nu'(dz) \le \int_0^\tau k'(s)\,s\,ds$, and $k'$ is bounded
+on $(0,\tau/2]$ and at most a constant times $(\tau - s)^{-1/2}$ on $[\tau/2,\tau)$. Put
+$\psi(\zeta) := \int(1 - \cos\langle\zeta,z\rangle)\,\nu'(dz)$ for $\zeta \in \RR^{d+1}$, which
+is finite. It depends on $|\zeta|$ only, by the invariance of $\nu'$. For $\xi \in \RR^d$,
+\ref{eq:step-one-up-image} with $g(x) = 1 - \cos\langle\xi,x\rangle$ gives
+$\psi((\xi,0)) = G_d(|\xi|)$, by (c). So $\psi(\zeta) = G_d(|\zeta|)$ for every
+$\zeta \in \RR^{d+1}$. The infinitely divisible law with triplet $(0,\nu',0)$, which
+\ledger{A3}(iii) supplies, has the transform $e^{-\psi}$, by (d), and its triplet is unique (\ledger{A3}(ii)). The properties of $k'$: both terms are
+positive on $(0,\tau)$, since $J_{d+2}(x) > 0$ for $x > 1$. As $s \downarrow 0$ the second term
+tends to $0$, and $2C_{d+1}J_{d+2}(\tau/s) \to 2C_{d+1}J_{d+2}(\infty)
+= C_{d+1}\int_{\RR}(1+w^2)^{-(d+2)/2}\,dw = 1$, by Lemma~\ref{lem:shadow-polar-profile}(1) in dimension
+$d + 1$. As $s \uparrow \tau$ the first term tends to $0$ and the second to $\infty$. The closed
+forms. By Lemma~\ref{lem:shadow-polar-profile}(1), $C_2 = (\int_{\RR}(1+u^2)^{-3/2}du)^{-1} = \tfrac12$
+and $C_3 = (\int_{\RR}(1+u^2)^{-2}du)^{-1} = 2/\pi$. Differentiation shows
+$J_3(x) = \sqrt{x^2-1}/x$ and $J_4(x) = \tfrac12\bigl[\sqrt{x^2-1}/x^2 + \arccos(1/x)\bigr]$,
+both sides vanishing at $x = 1$. For $d = 1$ this gives
+$k'(s) = b\bigl[\sqrt{\tau^2-s^2}/\tau + s^2/(\tau\sqrt{\tau^2-s^2})\bigr]
+= b\,\tau/\sqrt{\tau^2-s^2}$, and for $d = 2$,
+$k'(s) = (2b/\pi)\bigl[s\sqrt{\tau^2-s^2}/\tau^2 + \arccos(s/\tau)
++ s^3/(\tau^2\sqrt{\tau^2-s^2})\bigr] = (2b/\pi)\bigl[\arccos(s/\tau) + s/\sqrt{\tau^2-s^2}\bigr]$.
+
+\emph{Clause (1), ``if''.} Let $D \le d + 2$, let $\mu$ be the law of clause (2), and let $P$ be
+the projection of $\RR^{d+2}$ on its first $D$ coordinates. The image $P_*\mu$ has the transform
+$\zeta \mapsto \widehat\mu((\zeta,0)) = e^{-G_d(|\zeta|)}$, $\zeta \in \RR^D$. It is infinitely
+divisible: the image of a convolution under a linear map is the convolution of the images, so
+the image of an $m$-th convolution root of $\mu$ is one of $P_*\mu$.
+
+\emph{Clause (1), ``only if''.} Let $D \ge d + 3$ and suppose that an infinitely divisible law on
+$\RR^D$ has the transform $e^{-G_d(|\zeta|)}$. Its image under the projection on the first
+$d + 3$ coordinates is infinitely divisible with the transform $e^{-G_d(|\zeta|)}$ on
+$\RR^{d+3}$, as in the previous paragraph. So let $D = d + 3$, and let $\mu'$ be such a law. By
+\ledger{A3}(i) it has a triplet $(A,\nu',\gamma)$. Its transform is invariant under $\Orth(D)$,
+so, as in the first paragraph of the proof of Proposition~\ref{prop:isotropic-polar-reading} from its
+third sentence on, which reads of
+the law only that it is infinitely divisible with a radial transform, \ledger{A3}(ii) gives
+$\langle\zeta,A\zeta\rangle = \alpha|\zeta|^2$ with $\alpha \ge 0$ and $Q_*\nu' = \nu'$ for every
+$Q \in \Orth(D)$, and
+\[
+  G_d(|\zeta|) = \tfrac12\alpha|\zeta|^2
+     + \int_{\RR^{d+3}}\bigl(1 - \cos\langle\zeta,z\rangle\bigr)\,\nu'(dz), \qquad \zeta \in \RR^{d+3} .
+\]
+Only the modulus of the representation is used for this display: $\mu'$ is not assumed
+symmetric, and $-\log|\widehat{\mu'}(\zeta)| = G_d(|\zeta|)$ because $e^{-G_d}$ is real and
+positive.
+Let $\Pi$ be the projection of $\RR^{d+3}$ on its first $d + 2$ coordinates, and let $\bar\nu$ be
+the image of $\nu'$ under $\Pi$, restricted to $\RR^{d+2} \setminus \{0\}$. It is symmetric, and
+it is a \Levy{} measure, because $|\Pi z| \le |z|$ gives
+$\int(|y|^2 \wedge 1)\,\bar\nu(dy) \le \int(|z|^2 \wedge 1)\,\nu'(dz) < \infty$. For
+$\eta \in \RR^{d+2}$, $\langle(\eta,0),z\rangle = \langle\eta,\Pi z\rangle$, and the integrand
+vanishes where $\Pi z = 0$, so
+$G_d(|\eta|) = \tfrac12\alpha|\eta|^2 + \int(1 - \cos\langle\eta,y\rangle)\,\bar\nu(dy)$. By
+\ledger{A3}(iii) there is an infinitely divisible law on $\RR^{d+2}$ with triplet
+$(\alpha I,\bar\nu,0)$, and by (d) its transform is $e^{-G_d(|\eta|)}$. The law of clause (2) has the
+same transform and the triplet $(0,\nu^{(d+2)},0)$. The two laws are equal, and by
+\ledger{A3}(ii) $\alpha = 0$ and $\bar\nu = \nu^{(d+2)}$. Let
+$E := \{y \in \RR^{d+2} : |y| = \tau\}$. Then
+$\bar\nu(E) = \nu^{(d+2)}(E) \ge \tfrac{b}{d}\,\sigma_\tau(E) = \tfrac{b}{d} > 0$.
+
+On the other hand $\bar\nu(E) = \nu'(\Pi^{-1}E)$, and
+$\Pi^{-1}E = \{z \in \RR^{d+3} : |\Pi z| = \tau\}$ lies in $\{|z| \ge \tau\}$. Let $m$ be the
+restriction of $\nu'$ to $\{|z| \ge \tau\}$. It is a finite measure, because
+$\int(|z|^2 \wedge 1)\,d\nu' < \infty$, it is invariant under $\Orth(d+3)$, and
+$m(\Pi^{-1}E) = \bar\nu(E) > 0$, so $m \ne 0$. Let $Z$ be a random vector in $\RR^{d+3}$ with the
+law $m/m(\RR^{d+3})$. It is rotation invariant, so by the preamble of
+Proposition~\ref{prop:radial-dictionary} it has the law of $R\,U$, with $R$ of the law of $|Z|$, so that
+$R \ge \tau$, and $U$ uniformly distributed on $S^{d+2}$ and independent of $R$. Hence
+\[
+  \frac{m(\Pi^{-1}E)}{m(\RR^{d+3})} = \Pr\bigl(R\,|\Pi U| = \tau\bigr)
+   = \int \Pr\bigl(|\Pi U| = \tau/r\bigr)\,\Pr(R \in dr) .
+\]
+For every $w \in [0,1]$, $\Pr(|\Pi U| = w) = 0$. Indeed $|\Pi u|^2 = 1 - u_{d+3}^2$ on the
+sphere, so the event is $\{U \in K\}$ with $K := \{z \in \RR^{d+3} : z_{d+3}^2 = (1-w^2)|z|^2\}$,
+a cone. The cone is Lebesgue-null: if $w > 0$ it is the set
+$\{w^2z_{d+3}^2 = (1-w^2)|\Pi z|^2\}$, which meets every line parallel to the last axis in at
+most two points, and if $w = 0$ it is the last axis. In polar coordinates the Lebesgue measure
+of $K \cap \{1 < |z| < 2\}$ is $\sigma_{d+2}(K \cap S^{d+2})\int_1^2 r^{d+2}\,dr$, so
+$\sigma_{d+2}(K \cap S^{d+2}) = 0$. Therefore $m(\Pi^{-1}E) = 0$, a contradiction.
+
+\emph{The last sentence.} For $d = 1$, $G(r) = b\,\Cin(\tau r)$ and the ray is in no
+$\mathcal{A}_D$ with $D \ge 2$, by Proposition~\ref{prop:profile-one-dimension-down}(3). The rest is clause
+(1) with $d + 2 = 3$.
+\end{proof}
+
+The last proposition says what the members of the separating family of
+Definition~\ref{def:filtration-thresholds} are as laws.
+
+% shared with blueprint prop:separating-family-mixtures+5fd15a56009e
+\begin{proposition}[the separating family as laws]\label{prop:separating-family-mixtures}
+Let $w > 0$, and let $F^{(w)}_{\mathrm I}$, $F^{(w)}$ and the critical values $w_D$ be as in
+Definition~\ref{def:filtration-thresholds}.
+\begin{enumerate}
+\item \emph{(Closed form.)} For $\sigma \ge 0$ and $r \ge 0$,
+\[
+  F^{(w)}_{\mathrm I}(\sigma) = 2\sqrt{\pi\sigma} + w\int_1^2\bigl(1 - e^{-\sigma u}\bigr)\frac{du}{u},
+  \qquad
+  F^{(w)}(r) = \sqrt{2\pi}\,r + w\int_1^2\bigl(1 - e^{-u r^2/2}\bigr)\frac{du}{u} .
+\]
+\item \emph{(A Gaussian variance mixture in every dimension.)} Let $Z_0$ be a standard Gaussian
+real variable, $N$ a Poisson variable of mean $w\log 2$, and $U_1, U_2, \dots$ variables with the
+density $(u\log 2)^{-1}$ on $[1,2]$, all independent, and put
+\[
+  W := \frac{2\pi}{Z_0^2} + \sum_{j=1}^{N}U_j .
+\]
+Then $W > 0$ almost surely and $\mathbb{E}\,e^{-\sigma W} = e^{-F^{(w)}_{\mathrm I}(\sigma)}$ for
+every $\sigma \ge 0$. For every integer $D \ge 1$, if $Z$ is a standard Gaussian vector of
+$\RR^D$ independent of $W$, then $\sqrt W\,Z$ has the characteristic function
+$\xi \mapsto e^{-F^{(w)}(|\xi|)}$ on $\RR^D$. Its law $\mu^{(w)}_D$ is rotation invariant and
+infinitely divisible. It is the convolution of the law with characteristic function
+$e^{-\sqrt{2\pi}|\xi|}$, a rotation-invariant Cauchy law, and of a compound Poisson law, with
+characteristic function $\exp\bigl[-w\int_1^2(1 - e^{-u|\xi|^2/2})\,du/u\bigr]$.
+\item \emph{(Self-decomposable up to the critical dimension.)} For every integer $D \ge 1$,
+$\mu^{(w)}_D$ is self-decomposable if and only if $F^{(w)} \in \mathcal{A}_D$, that is, by
+Theorem~\ref{thm:separating-family-critical-values}(1), if and only if $w \le w_D$. Consequently, if
+$w \in (w_{d+1}, w_d\,]$ for an integer
+$d \ge 1$, then $\mu^{(w)}_D$ is self-decomposable exactly for $D \le d$, and if $w > w_1$ it is
+self-decomposable in no dimension.
+\end{enumerate}
+\end{proposition}
+
+% A sentence of paper prose stands between the statement and its proof.
+In clause (2) the two summands of $W$ are a one-sided stable variable of index $\tfrac12$ and a
+compound Poisson sum.
+
+\begin{proof}[Proof of Proposition~\ref{prop:separating-family-mixtures}]
+\emph{Clause (1).} By Definition~\ref{def:filtration-thresholds} the delay datum $D^{(w)}$ has drift $0$
+and profile $k^{(w)}_{\mathrm I}(u) = u^{-1/2} + w\,\mathbf 1_{[1,2]}(u)$, so
+$F^{(w)}_{\mathrm I}(\sigma) = \int_0^\infty(1 - e^{-\sigma u})\,u^{-3/2}\,du +
+w\int_1^2(1 - e^{-\sigma u})\,du/u$. Integrating by parts, for $\sigma > 0$,
+\[
+\begin{aligned}
+  \int_0^\infty\bigl(1 - e^{-\sigma u}\bigr)\,u^{-3/2}\,du
+   &= \Bigl[-2u^{-1/2}\bigl(1 - e^{-\sigma u}\bigr)\Bigr]_0^\infty
+     + 2\sigma\int_0^\infty u^{-1/2}e^{-\sigma u}\,du \\
+   &= 2\sigma\cdot\Gamma(\tfrac12)\,\sigma^{-1/2} = 2\sqrt{\pi\sigma} ,
+\end{aligned}
+\]
+the bracket vanishing at both ends. At $\sigma = 0$ both sides are $0$. The second formula is the
+first at $\sigma = r^2/2$.
+
+\emph{Clause (2), a Gaussian integral.} For $\beta \ge 0$,
+\begin{equation}\label{eq:gaussian-inverse-square}
+  \int_0^\infty e^{-x^2 - \beta^2/x^2}\,dx = \frac{\sqrt\pi}{2}\,e^{-2\beta} .
+\end{equation}
+For $\beta = 0$ this is the Gaussian integral. Let $\beta > 0$. Then
+$x^2 + \beta^2/x^2 = (x - \beta/x)^2 + 2\beta$. Put
+$J := \int_0^\infty e^{-(x - \beta/x)^2}dx$. The substitution $x = \beta/y$ gives
+$J = \int_0^\infty e^{-(y - \beta/y)^2}\,\beta y^{-2}\,dy$. Adding the two expressions,
+$2J = \int_0^\infty e^{-(x - \beta/x)^2}(1 + \beta/x^2)\,dx = \int_{\RR}e^{-t^2}dt = \sqrt\pi$,
+by the substitution $t = x - \beta/x$, an increasing bijection of $(0,\infty)$ onto $\RR$ with
+$dt = (1 + \beta/x^2)\,dx$.
+
+\emph{Clause (2), the Laplace transform of $W$.} Let $\varkappa > 0$ and $\sigma \ge 0$. With
+$z = \sqrt2\,x$ and \ref{eq:gaussian-inverse-square} at $\beta^2 = \sigma\varkappa/2$,
+\[
+  \mathbb{E}\,e^{-\sigma\varkappa/Z_0^2}
+   = \frac{2}{\sqrt{2\pi}}\int_0^\infty e^{-z^2/2 - \sigma\varkappa/z^2}\,dz
+   = \frac{2}{\sqrt\pi}\int_0^\infty e^{-x^2 - \sigma\varkappa/(2x^2)}\,dx
+   = e^{-\sqrt{2\sigma\varkappa}} .
+\]
+At $\varkappa = 2\pi$ this is $e^{-2\sqrt{\pi\sigma}}$. For the sum, conditioning on $N$,
+\[
+\begin{aligned}
+  \mathbb{E}\,e^{-\sigma\sum_{j \le N}U_j}
+   &= \sum_{n \ge 0}e^{-w\log 2}\frac{(w\log 2)^n}{n!}\bigl(\mathbb{E}\,e^{-\sigma U_1}\bigr)^n
+   = \exp\bigl[-w\log 2\,\bigl(1 - \mathbb{E}\,e^{-\sigma U_1}\bigr)\bigr] \\
+   &= \exp\Bigl[-w\int_1^2\bigl(1 - e^{-\sigma u}\bigr)\frac{du}{u}\Bigr] ,
+\end{aligned}
+\]
+because $\log 2\,(1 - \mathbb{E}\,e^{-\sigma U_1}) = \int_1^2(1 - e^{-\sigma u})\,du/u$. By
+independence and clause (1), $\mathbb{E}\,e^{-\sigma W} = e^{-F^{(w)}_{\mathrm I}(\sigma)}$. And
+$W \ge 2\pi/Z_0^2 > 0$ almost surely.
+
+\emph{Clause (2), the mixture.} Let $D \ge 1$ and let $Z$ be a standard Gaussian vector of
+$\RR^D$ independent of $W$. Conditioning on $W$, and using that $\sqrt u\,Z$ has the
+characteristic function $e^{-u|\xi|^2/2}$,
+\[
+  \mathbb{E}\,e^{i\langle\xi,\sqrt W Z\rangle} = \mathbb{E}\,e^{-W|\xi|^2/2}
+   = e^{-F^{(w)}_{\mathrm I}(|\xi|^2/2)} = e^{-F^{(w)}(|\xi|)} .
+\]
+The characteristic function is radial, so the law $\mu^{(w)}_D$ of $\sqrt W\,Z$ is invariant
+under $\Orth(D)$, by the uniqueness theorem for characteristic functions. By clause (1) it
+factors as $e^{-\sqrt{2\pi}|\xi|}$ times
+$\exp[-w\int_1^2(1 - e^{-u|\xi|^2/2})\,du/u]$. The same computation with $W$ replaced by each
+of its two summands shows that the first factor is the characteristic function of
+$\sqrt{2\pi}\,Z/|Z_0|$ and the second that of $\sqrt{\sum_{j\le N}U_j}\,Z$. The second is also
+the characteristic function of the compound Poisson sum $\sum_{j \le N}\sqrt{U_j}\,Z_j$, with
+$Z_1, Z_2, \dots$ independent standard Gaussian vectors independent of the rest, by the
+computation made above for the Laplace transform. So $\mu^{(w)}_D$ is the convolution of the
+two laws.
+
+\emph{Clause (2), infinite divisibility.} Let $n \ge 1$, let $N_n$ be a Poisson variable of mean
+$(w\log 2)/n$, independent of the rest, and put
+$W_n := 2\pi/(n^2Z_0^2) + \sum_{j \le N_n}U_j$. The two computations above, at
+$\varkappa = 2\pi/n^2$ and with $w/n$ in place of $w$, give
+$\mathbb{E}\,e^{-\sigma W_n} = e^{-F^{(w)}_{\mathrm I}(\sigma)/n}$. So the law $\mu_n$ of
+$\sqrt{W_n}\,Z$ has the characteristic function $e^{-F^{(w)}(|\xi|)/n}$, and its $n$-fold
+convolution has the characteristic function of $\mu^{(w)}_D$. Hence
+$\mu^{(w)}_D = \mu_n^{\ast n}$ for every $n$: it is infinitely divisible.
+
+\emph{Clause (3), the reading in laws.} $F^{(w)} \in \mathcal{A}_D$ means that $F^{(w)}$ is
+admissible and that $\xi \mapsto F^{(w)}(|\xi|)$ is the exponent of a self-decomposable law on
+$\RR^D$. A law with the characteristic function $e^{-F^{(w)}(|\xi|)}$ is $\mu^{(w)}_D$, by
+clause (2) and the uniqueness theorem. And if $\mu^{(w)}_D$ is self-decomposable, $F^{(w)}$ is
+admissible, by Proposition~\ref{prop:isotropic-polar-reading}(2). So $F^{(w)} \in \mathcal{A}_D$
+exactly when $\mu^{(w)}_D$ is self-decomposable.
+
+\emph{Clause (3), the criterion and the windows.} By
+Theorem~\ref{thm:separating-family-critical-values}(1), $F^{(w)} \in \mathcal{A}_D$ exactly when
+$w \le w_D$. By its clause (4) this holds exactly for $D \le d$ when $w \in (w_{d+1}, w_d\,]$,
+and for no $D$ when $w > w_1$. With the reading in laws these are the assertions of the clause.
+\end{proof}
+

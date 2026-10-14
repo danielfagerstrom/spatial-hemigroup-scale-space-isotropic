@@ -1,0 +1,290 @@
+% Q-0448: section S4 of the supplement and Appendix F of the full document: the declarations of
+% the formal development statement by statement, Lean's report, the guard, the formal examples.
+% The paragraphs stood in Appendix B of the paper (appendix-verification.tex) until the split
+% and are cut from it whole (records/affine/split_q0448_roots.py); Appendix B keeps where the
+% development is, its versions, the names of the cited facts, the table of the cited facts per
+% statement and the account of the statements of section 2. The region is read by `linkage
+% check` (LINKAGE.md rule 13): the items of the list are its status rows, the cited facts are
+% named in the opening, and the block is compared with the #guard_msgs pins of
+% Formalization/CIAxiomGuard.lean. The list is written by
+% records/affine/gen-verification-table.py and the block by
+% records/affine/edits_q0417_axioms_block.py, which read this file since the split.
+\section{The formal development}\label{supp:verification}
+% trust base: begin
+
+Appendix~\ref{app:verification} of the paper says where the formal development is, in which
+versions, and under which names it holds the cited facts \ledger{A1}, \ledger{A2}, \ledger{A3},
+\ledger{A4}, \ledger{A8}, \ledger{A10} and \ledger{A11}. This section has the declarations
+statement by statement, Lean's report on them, and the formal examples.
+
+% Q-0428: the list is generated from the blueprint's \lean tags
+% (records/affine/gen-verification-table.py). At the merge of the Lean of Q-0429 it was
+% regenerated in the order of the paper as that item rewrote it, with an item for each of the
+% six statements formalized in Q-0427 and Q-0429: 32 items, one for every statement of the first
+% list of section 1.1. The paragraph says what the list covers and what it does not; the two
+% TODO(integration) that stood here are done. The sentence "that had a formal counterpart at the
+% first review build, iso-review-1, twenty-six statements" and the apology for the place of the
+% two bounds are gone with the old list.
+\paragraph{The statements covered.} The list below gives the declarations of the formal
+development that state and prove each statement of the paper and of this supplement that has
+a formal counterpart: those of \S\ref{sec:isotropic}, of Appendix~\ref{app:isotropic-proofs}
+and of \S\ref{supp:proofs}, in that order. They are the first list of \S\ref{sec:trust-base}.
+In the blueprint the declarations are the
+names in the \texttt{\char`\\lean} tag of the statement. They are in the namespace
+\texttt{AffineHemigroup} unless another is written. For a definition the status means that the
+formal statements are written in its terms. The item of Lemma~\ref{lem:operators-to-kernels}
+holds the tags of two blueprint statements, and with them three declarations,
+\texttt{operators\_to\_kernels\_gw}, \texttt{operators\_to\_kernels\_affine} and
+\texttt{kernels\_to\_operators\_gw}, for clauses that this paper does not print. The formal
+development also has two statements of the blueprint that this paper prints in another form.
+The strictness of the filtration between consecutive critical values, with the bound
+$6 + 4\sqrt2$ of the cone paper, is \texttt{filtration\_strict}, \texttt{filtration\_witness}
+and \texttt{filtration\_witness\_exists}; here it is
+Theorem~\ref{thm:separating-family-critical-values}(4) and
+Proposition~\ref{prop:profile-one-dimension-down}(2). And clause (3) of that proposition, as a
+statement of its own with the proof by one projection, is
+\texttt{no\_cin\_ray\_in\_the\_plane} with \texttt{cin\_ray\_scaled}.
+% Q-0424 (records/affine/reviews/VERIFY-round1-claims-and-trust-base.md, item 6(b), "A note on
+% the list"): the row is over-inclusive, and the list says so. It is not filtered: the three
+% declarations depend on the logical axioms only, the list stays the blueprint's \lean tags as
+% gen-verification-table.py reads them, and Lean's report of every declaration covers them.
+{\footnotesize\raggedright
+\begin{itemize}
+\setlength{\itemsep}{1pt}\setlength{\parskip}{0pt}
+% verification table: begin
+\item Def.~\ref{def:isotropic-operator-family}, formalised in Lean:
+  \texttt{IsIsotropicOperatorFamily}, \texttt{IsSingleOperator}.
+\item Def.~\ref{def:isotropic-kernel-family}, formalised in Lean:
+  \texttt{IsIsotropicCascadeFamily}, \texttt{IsIncreasingBijection}, \texttt{IsGauge}, \texttt{ScaleSpace.IsSelfDecomposable}, \texttt{ScaleSpace.isSelfDecomposable\_iff\_charFun}, \texttt{push}, \texttt{charFun\_push}, \texttt{isGauge\_iff\_isIncreasingBijection}.
+\item Lemma~\ref{lem:operators-to-kernels}, machine-checked:
+  \texttt{operators\_to\_kernels\_repr}, \texttt{operators\_to\_kernels\_unique}, \texttt{operators\_to\_kernels\_converse}, \texttt{operators\_to\_kernels\_transport}, \texttt{operators\_to\_kernels\_transport\_iff}, \texttt{operators\_to\_kernels\_continuity}, \texttt{operators\_to\_kernels\_gw}, \texttt{operators\_to\_kernels\_affine}, \texttt{operators\_to\_kernels\_isotropic}, \texttt{gaussDensity}, \texttt{gaussL1}, \texttt{kernels\_to\_operators\_continuity}, \texttt{kernels\_to\_operators\_gw}, \texttt{kernels\_operators\_correspondence}, \texttt{kernels\_to\_operators\_isotropic}.
+\item Lemma~\ref{lem:radial-marginal}, machine-checked:
+  \texttt{radial\_marginal}, \texttt{radial\_marginal\_eq\_dirac}, \texttt{radial\_marginal\_ops}, \texttt{marginal}.
+\item Lemma~\ref{lem:isotropic-marginal-family}, machine-checked:
+  \texttt{isotropic\_marginal\_family}, \texttt{isotropic\_marginal\_cascadeData}, \texttt{ScaleSpace.CascadeFamily}, \texttt{ScaleSpace.CascadeData}.
+\item Thm.~\ref{thm:isotropic-classification}, machine-checked:
+  \texttt{isotropic\_classification}, \texttt{isotropic\_classification\_origin}, \texttt{isotropic\_classification\_unique}.
+\item Cor.~\ref{cor:isotropic-classification-operators}, machine-checked:
+  \texttt{isotropic\_classification\_operators}, \texttt{isotropic\_classification\_operators\_unique}.
+\item Lemma~\ref{lem:isotropic-realisation}, machine-checked:
+  \texttt{isotropic\_realisation}.
+\item Cor.~\ref{cor:isotropic-scale-zero-kernels}, machine-checked:
+  \texttt{scale\_zero\_kernels}, \texttt{scale\_zero\_operators}, \texttt{scale\_zero\_families}, \texttt{scale\_zero\_relabelling}.
+\item Def.~\ref{def:isotropic-origin-datum}, formalised in Lean:
+  \texttt{OriginDatum}, \texttt{OriginDatum.levyMeasure}, \texttt{OriginDatum.exponentL}, \texttt{OriginDatum.exponent}, \texttt{OriginDatum.profileAtOrigin}, \texttt{OriginDatum.IsSubordinated}, \texttt{IsLawOf}, \texttt{sphereArea}, \texttt{polarProfileOf}, \texttt{sphereArea\_eq\_toSphere}, \texttt{OriginDatum.tendsto\_profileAtOrigin}, \texttt{OriginDatum.polar\_decomposition}.
+\item Prop.~\ref{prop:isotropic-polar-reading}, machine-checked:
+  \texttt{polar\_reading}, \texttt{polar\_reading\_unique}, \texttt{polar\_reading\_admissible}, \texttt{classA\_iff\_originDatum}, \texttt{polar\_classification}.
+\item Prop.~\ref{prop:isotropic-bridge}, machine-checked:
+  \texttt{isotropic\_bridge\_family}, \texttt{isotropic\_bridge\_matern}, \texttt{isotropic\_bridge\_stable}, \texttt{isotropic\_bridge\_student\_transform}, \texttt{isotropic\_bridge\_student\_family}, \texttt{IsCausalKernels}, \texttt{bridgeFamily}, \texttt{gaussVar}, \texttt{measurable\_gaussVar}.
+\item Thm.~\ref{thm:origin-boundedness-d}, machine-checked:
+  \texttt{origin\_decay\_exponent}, \texttt{origin\_density\_smooth}, \texttt{origin\_density\_bounded\_smooth}, \texttt{subordinated\_profileAtOrigin}, \texttt{subordinated\_law}, \texttt{delayLaw\_zero}, \texttt{subordinated\_density\_limit}, \texttt{subordinated\_unbounded}, \texttt{origin\_unbounded}, \texttt{origin\_unbounded\_rate}, \texttt{origin\_dichotomy}, \texttt{measurable\_gaussVar}.
+\item Cor.~\ref{cor:origin-profile-exponent}, machine-checked:
+  \texttt{exponent\_gaussian\_limit}, \texttt{exponent\_profile\_limit}, \texttt{transform\_profile\_limit}, \texttt{origin\_profile\_dimension\_free}.
+\item Prop.~\ref{prop:isotropic-radial-monotone}, machine-checked:
+  \texttt{radial\_monotone\_family}, \texttt{radial\_monotone\_law}.
+\item Prop.~\ref{prop:isotropic-exponent-profile}, machine-checked:
+  \texttt{slowFactor\_basic}, \texttt{slowFactor\_ratio}, \texttt{slowFactor\_tendsto\_of\_integrable}, \texttt{slowFactor\_tendsto\_atTop}, \texttt{cin\_sub\_log\_limit}, \texttt{sphere\_log\_mean}, \texttt{sphereLogMean\_one}, \texttt{exponent\_profile\_asymptotic}, \texttt{exponent\_profile\_bounds}, \texttt{transform\_power\_comparison}, \texttt{transform\_power\_bounded\_iff}, \texttt{transform\_power\_limit}, \texttt{OriginDatum.slowFactor}, \texttt{OriginDatum.slowFactorZero}, \texttt{sphereLogMean}, \texttt{exponentConst}.
+\item Prop.~\ref{prop:origin-rate-profile-d}, machine-checked:
+  \texttt{origin\_rate\_profile}, \texttt{origin\_rate\_profile\_critical}, \texttt{origin\_density\_rate\_profile}, \texttt{origin\_ball\_rate\_profile}, \texttt{origin\_density\_power\_of\_integrable}, \texttt{origin\_density\_power\_of\_not\_integrable}, \texttt{origin\_density\_rate\_profile\_critical}, \texttt{origin\_ball\_rate\_profile\_critical}, \texttt{slowLog\_bounds}, \texttt{slowLog\_div\_log}, \texttt{origin\_density\_log\_of\_integrable}, \texttt{origin\_density\_log\_of\_not\_integrable}, \texttt{OriginDatum.profileConst}, \texttt{OriginDatum.slowLog}.
+\item Prop.~\ref{prop:isotropic-stages}, machine-checked:
+  \texttt{OriginDatum.stageProfile}, \texttt{OriginDatum.stageMeasure}, \texttt{OriginDatum.stageProfile\_nonneg}, \texttt{OriginDatum.stageMeasure\_zero}, \texttt{OriginDatum.stageMeasure\_absolutelyContinuous}, \texttt{OriginDatum.stageMeasure\_rotation}, \texttt{OriginDatum.stageMeasure\_integrable}, \texttt{OriginDatum.exponent\_smul\_sub\_smul}, \texttt{OriginDatum.stageMeasure\_univ}, \texttt{OriginDatum.stageMeasure\_univ\_ne\_top\_iff}, \texttt{isotropic\_stage\_transform}, \texttt{isotropic\_stage\_mass}, \texttt{isotropic\_stage\_compoundPoisson}, \texttt{isotropic\_stage\_exp\_neg\_mass}, \texttt{profileAtOrigin\_pos}, \texttt{isotropic\_stage\_atom}, \texttt{isotropic\_stage\_operator}, \texttt{isotropic\_stage\_not\_selfDecomposable}, \texttt{isotropic\_stage\_triplet}, \texttt{isotropic\_stage\_absolutelyContinuous}, \texttt{isotropic\_stage\_no\_point\_mass}, \texttt{isotropic\_stage\_smooth\_density}, \texttt{isotropic\_stage\_dichotomy}.
+\item Prop.~\ref{prop:profile-one-dimension-down}, machine-checked:
+  \texttt{profile\_one\_dimension\_down}, \texttt{profile\_one\_dimension\_down\_of\_classA}, \texttt{not\_classA\_succ\_of\_profile\_discontinuous}, \texttt{step\_datum\_separates}, \texttt{cin\_ray\_not\_classA}, \texttt{stepOriginDatum}.
+\item Def.~\ref{def:filtration-thresholds}, formalised in Lean:
+  \texttt{classS}, \texttt{classA}, \texttt{classAInf}, \texttt{DelayDatum}, \texttt{delayExponentL}, \texttt{witnessProfile}, \texttt{witnessExponent}, \texttt{witnessF}, \texttt{polarProfileOf}, \texttt{thresholdFun}, \texttt{thresholdSup}, \texttt{threshold}, \texttt{witness\_isDelayDatum}.
+\item Thm.~\ref{thm:separating-family-critical-values}, machine-checked:
+  \texttt{separating\_family\_critical\_values}, \texttt{witness\_classA\_iff}, \texttt{criticalValues\_strictAnti}, \texttt{criticalValues\_tendsto}, \texttt{witness\_classA\_iff\_le}, \texttt{witness\_not\_classA\_of\_gt}, \texttt{criticalValues\_existsUnique\_window}, \texttt{separating\_family\_strict}.
+\item Lemma~\ref{lem:polar-decomposition}, machine-checked:
+  \texttt{OriginDatum.polar\_decomposition}.
+\item Lemma~\ref{lem:isotropic-exponent-log}, machine-checked:
+  \texttt{isotropic\_exponent\_log\_bound}, \texttt{isotropic\_exponent\_log\_limit}, \texttt{OriginDatum.tailConst}.
+\item Prop.~\ref{prop:origin-lower-bound-d}, machine-checked:
+  \texttt{origin\_lower\_bound}, \texttt{origin\_lower\_bound\_density}, \texttt{origin\_lower\_bound\_ball}, \texttt{lowerBoundConst}, \texttt{lowerBoundTau}, \texttt{lowerBoundKappa}.
+\item Prop.~\ref{prop:origin-upper-bound-d}, machine-checked:
+  \texttt{origin\_upper\_bound}, \texttt{origin\_upper\_bound\_of\_heat}, \texttt{origin\_density\_upper}, \texttt{origin\_density\_lower}, \texttt{origin\_density\_log\_order}, \texttt{origin\_ball\_log\_order}, \texttt{origin\_density\_order}.
+\item Lemma~\ref{lem:shadow-polar-profile}, machine-checked:
+  \texttt{shadow\_profile\_mean}, \texttt{shadow\_profile\_regular}, \texttt{shadow\_datum}, \texttt{lintegral\_shadow}, \texttt{OriginDatum.shadow}, \texttt{shadowProfile}.
+\item Lemma~\ref{lem:delay-polar-profile}, machine-checked:
+  \texttt{delay\_polar\_profile}, \texttt{delay\_polar\_profile\_datum}.
+\item Lemma~\ref{lem:positive-transform-origin}, machine-checked:
+  \texttt{positive\_transform\_heat}, \texttt{positive\_transform\_bound}, \texttt{density\_bound\_ball}, \texttt{heatKernel}.
+\item Lemma~\ref{prop:origin-rate-d}, machine-checked:
+  \texttt{origin\_ball\_rate}, \texttt{origin\_density\_rate}, \texttt{origin\_ball\_rate\_critical}, \texttt{origin\_density\_rate\_critical}, \texttt{origin\_transform\_ball\_log}, \texttt{origin\_density\_log\_lower}, \texttt{origin\_rate}, \texttt{origin\_rate\_critical}.
+\item Lemma~\ref{lem:threshold-monotone}, machine-checked:
+  \texttt{thresholdSup\_spec}, \texttt{threshold\_pos}, \texttt{thresholdSup\_succ}, \texttt{threshold\_strictAnti}, \texttt{witness\_polar\_closed\_form}, \texttt{witness\_threshold\_criterion}, \texttt{witness\_antitone\_iff}.
+\item Lemma~\ref{lem:threshold-limit}, machine-checked:
+  \texttt{threshold\_limit\_bounds}, \texttt{threshold\_limit}, \texttt{thresholdEps}, \texttt{stirlingK}.
+\item Lemma~\ref{lem:threshold-asymptotic}, machine-checked:
+  \texttt{tendsto\_stirlingRatio}, \texttt{threshold\_asymptotic\_bounds}, \texttt{threshold\_asymptotic}, \texttt{stirlingRatio}.
+\item Lemma~\ref{lem:filtration-top}, machine-checked:
+  \texttt{classAInf\_of\_classS}, \texttt{classS\_of\_classAInf}, \texttt{filtration\_top}.
+% verification table: end
+\end{itemize}
+}
+
+% Q-0428, at the merge of the Lean of Q-0429: the report regenerated for the list as it now is
+% (`axioms-iso-all-declarations.py table`: 32 rows, 198 names, 195 distinct,
+% 144 on the logical axioms only, 51 naming a cited fact, none on no axiom at all).
+% The counts of the sentence below are those; the TODO(integration) that stood here is done.
+
+% Q-0448, the joining step (the Lean of Q-0447 merged; a build was run): the report is
+% reprinted for the list as it is, with the item of the stages (33 items) and the two
+% inclusions of Lemma lem:filtration-top, which the file lacked. The counts are those of
+% count-q0448-declarations.py for the list (222 names, 219 distinct, 160 on the logical axioms
+% only, 59 naming a cited fact) and agree with `axioms-iso-all-declarations.py table`, which
+% counts the five further declarations of the two statements printed in another form as well
+% (224 distinct, 162 and 62). The sentences on the two missing declarations are gone.
+\paragraph{The report for every declaration.} The list above has 222 names, of which
+219 are distinct, three of them standing under two statements. Lean's report for these
+219 declarations is the file
+\nolinkurl{records/affine/axioms-iso-all-declarations-output.txt} of the repository. Every one
+of them depends on the three logical axioms, 160 depend on nothing else, 59 depend also
+on one or more of the nine, and none depends on any other axiom. The file also has the report
+for the declarations of the two statements of the blueprint that this paper prints in another
+form. For each statement the cited facts that its declarations name are those of
+Table~\ref{tab:trust-base}. The script
+\nolinkurl{records/affine/axioms-iso-all-declarations.py} writes the file of requests from which
+Lean prints the report, one request for each declaration, and compares the report with the
+table.
+
+\paragraph{The guard of the repository.} The development repository, from which this one is
+taken, also holds the formal development of the companion paper on affine covariance, and its
+guard serves both papers. The guard is the file
+\texttt{Formalization/CIAxiomGuard.lean}, run by \texttt{lake env lean CIAxiomGuard.lean}. It
+admits the twelve axioms listed in \texttt{blueprint/trust-boundary.txt}: the nine, and three
+cited facts of the companion paper, on which no declaration of this paper depends. In the
+development repository the guard holds for the main
+declarations a copy of Lean's report and fails when a report differs from its copy, so
+that none of them gains or loses an axiom unnoticed, and for these it is silent as long as the
+copy holds. In the public repository the guard is the part of that list that names
+declarations of this repository, without the
+copies: it prints Lean's report for each, and the file \texttt{axioms.txt} at the root of the
+repository is what it printed when the repository was built.
+% The release iso-v0.1 (records/affine/freeze_iso_release.py): `linkage release export` writes the
+% export's guard as the `#print axioms` lines of the development's guard that name a
+% declaration of the export, without the #guard_msgs pins. The draft form of the first sentence
+% and of the last two is in git.
+
+\paragraph{Two standard steps proved in the development.} Besides Karamata's theorem (C7), the
+literature takes two steps of the proof of Lemma~\ref{prop:origin-rate-d} from the theory
+of regular variation: a bound on the ratios of a regularly varying function, and the passage from
+a distribution function to a monotone density. The formal development proves both, for the
+functions at hand, so the rate cites C7 alone from that theory.
+
+\paragraph{Formal examples.} The review of the formal statements
+(\S\ref{supp:trust}) asked that the hypotheses of the main statements can be met. For the
+classification, the threshold, the rate, the strict filtration and the $\Cin$ rays, the
+development holds a formal example that rests on no cited fact. They are in the file
+\texttt{Formalization/AffineHemigroup/Witnesses.lean}, under names that begin with
+\texttt{witness\_}: the declarations
+{\raggedright \texttt{witness\_isotropic\_classification},
+\texttt{witness\_origin\_boundedness}, \texttt{witness\_origin\_rate},
+\texttt{witness\_origin\_rate\_critical}, \texttt{witness\_filtration} and
+\texttt{witness\_no\_cin\_ray}.\par}
+The build checks the six, and the guard of the repository holds Lean's report for
+\texttt{witness\_origin\_rate} and \texttt{witness\_origin\_rate\_critical}.
+% Q-0428, at the merge of the Lean of Q-0429: the two declarations behind the sentence of
+% section 1.1 on the example w = 4 ("Outside the formal verification"). They are probes, not declarations of a
+% statement, so the list above, the report and the two guard files do not have them; the build
+% checks them. Lean's report for the two, printed for this item after the build (`#print axioms`
+% on a scratch file importing AffineHemigroup.Probes): threshold_three_lt on the three logical
+% axioms only; probe_witness_four on them and on C2, C3(i) to (iii) and C4, through
+% witness_classA_iff (fidelity card T1.21).
+The example $w = 4$ of \S\ref{sec:isotropic-filtration} is in the development as far as
+\S\ref{supp:trust} says. The file \texttt{Probes.lean} of the same directory has two
+declarations for it. The first, \texttt{threshold\_three\_lt}, is the inequality $w_3 < 4$ and
+rests on no cited fact. The second, \texttt{probe\_witness\_four}, says that $F^{(4)}$ belongs
+to no $\mathcal{A}_D$ with $D \ge 3$, and rests on C2, C3 and C4. The build checks the two. The
+other inequality of the example,
+$4 \le w_2$, is proved in print in the cone paper: the proof of \prog{B}{Lem.~4.12(2)} shows
+the criterion \ref{eq:threshold-criterion} at $w = 4$ and $d = 2$ for every $z$.
+
+% Q-0428, at the merge of the Lean of Q-0429: the selection of the block is unchanged, eight
+% declarations, none of the three statements of Q-0429 (their sets are C2, C3, C4, as that of
+% filtration_strict, which the block has). "That file" was the report's file when this paragraph
+% followed "The report for every declaration"; it is named.
+\paragraph{Lean's report.} The block below is Lean's report for eight of the declarations, as it
+stands in the file of the report named above: those of the classification, on kernels and on operators, of the threshold (its
+clause (5)), of the rate through the transform, Lemma~\ref{prop:origin-rate-d}
+(\texttt{origin\_rate} for its clause (1) and
+\texttt{origin\_rate\_critical} for its clause (2), the only two of the block that name C7), of the
+dimension filtration (\texttt{filtration\_strict}, the strictness of every step, and
+\texttt{filtration\_top}, which is Lemma~\ref{lem:filtration-top}, the only one that names C6),
+and of the $\Cin$ rays (\texttt{no\_cin\_ray\_in\_the\_plane}, the second proof of
+Proposition~\ref{prop:profile-one-dimension-down}(3)). On each of the eight Lean prints its three
+logical axioms and names of the cited facts, and nothing else:
+% Q-0417 (the freeze): the lines of the rate (origin_rate and origin_rate_critical: C2, C3(iii),
+% C5 and C7) are in the block, and the sentence above counts eight declarations. The block is
+% pasted from Lean's output by
+% records/affine/edits_q0417_axioms_block.py (`lean`, `write`, `check`), never typed.
+% Q-0407: the block is set in \small, because the first line of the new declaration, which
+% carries the name isotropic_classification_operators, is 13pt wider than the measure at the text
+% size, and Lean's output is printed as Lean prints it, unbroken.
+\begingroup\makeatletter\def\verbatim@font{\normalfont\ttfamily\small}\makeatother
+% printed at 365ab51 (2026-10-11)
+% Q-0327 (2026-10-12) then changed docstrings in fifteen Lean files and no declaration. After a full
+% lake build at 026f520, linkage check --fresh-axioms found the block equal to what Lean prints.
+% Q-0417: printed after a full `lake build` (3467 jobs) of the Lean sources of 365ab51, which are
+% those of the branch queue/q-0417 (the item changes no Lean file), by `lake env lean` on a
+% scratch file holding one `#print axioms` line per declaration; the saved output is
+% records/affine/axioms-block-q0417-output.txt, and `linkage check --fresh-axioms` then found the
+% block equal to what Lean prints. The six declarations printed before (stamped at 91f39d8 by
+% Q-0382, first printed at dfafe99, 2026-10-08) came out byte for byte as they stood. The guard
+% file CIAxiomGuard.lean no longer prints these lines itself: it pins them under #guard_msgs.
+\begin{verbatim}
+'AffineHemigroup.isotropic_classification' depends on axioms: [propext,
+ AffineHemigroup.levy_khintchine_converse,
+ AffineHemigroup.levy_khintchine_unique,
+ Classical.choice,
+ Quot.sound]
+'AffineHemigroup.isotropic_classification_operators' depends on axioms: [propext,
+ AffineHemigroup.levy_khintchine_converse,
+ AffineHemigroup.levy_khintchine_unique,
+ Classical.choice,
+ Quot.sound]
+'AffineHemigroup.origin_dichotomy' depends on axioms: [propext,
+ AffineHemigroup.density_of_integrable_charFun,
+ Classical.choice,
+ Quot.sound]
+'AffineHemigroup.origin_rate' depends on axioms: [propext,
+ AffineHemigroup.karamata_tauberian_zero,
+ AffineHemigroup.levy_khintchine_converse,
+ AffineHemigroup.sato_polar_criterion,
+ AffineHemigroup.wolfe_symmetric_unimodal,
+ Classical.choice,
+ Quot.sound]
+'AffineHemigroup.origin_rate_critical' depends on axioms: [propext,
+ AffineHemigroup.karamata_tauberian_zero,
+ AffineHemigroup.levy_khintchine_converse,
+ AffineHemigroup.sato_polar_criterion,
+ AffineHemigroup.wolfe_symmetric_unimodal,
+ Classical.choice,
+ Quot.sound]
+'AffineHemigroup.filtration_strict' depends on axioms: [propext,
+ AffineHemigroup.levy_khintchine_converse,
+ AffineHemigroup.levy_khintchine_exists,
+ AffineHemigroup.levy_khintchine_unique,
+ AffineHemigroup.sato_polar_criterion,
+ AffineHemigroup.selfDecomposable_infinitelyDivisible,
+ Classical.choice,
+ Quot.sound]
+'AffineHemigroup.filtration_top' depends on axioms: [propext,
+ AffineHemigroup.levy_khintchine_converse,
+ AffineHemigroup.levy_khintchine_exists,
+ AffineHemigroup.levy_khintchine_unique,
+ AffineHemigroup.sato_polar_criterion,
+ AffineHemigroup.schoenberg_radial_bernstein,
+ AffineHemigroup.selfDecomposable_infinitelyDivisible,
+ Classical.choice,
+ Quot.sound]
+'AffineHemigroup.no_cin_ray_in_the_plane' depends on axioms: [propext,
+ AffineHemigroup.levy_khintchine_converse,
+ AffineHemigroup.levy_khintchine_exists,
+ AffineHemigroup.levy_khintchine_unique,
+ AffineHemigroup.sato_polar_criterion,
+ AffineHemigroup.selfDecomposable_infinitelyDivisible,
+ Classical.choice,
+ Quot.sound]
+\end{verbatim}
+\endgroup
+% trust base: end

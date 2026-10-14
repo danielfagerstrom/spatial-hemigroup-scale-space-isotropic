@@ -1,0 +1,50 @@
+% Q-0448: the preamble of the three roots of the isotropic paper (main.tex, supplement.tex,
+% full.tex), cut unchanged from main.tex by records/affine/split_q0448_roots.py, with the
+% loading of xr-hyper added. The comments are those of main.tex.
+\usepackage[a4paper,margin=1in]{geometry}
+\setlength{\emergencystretch}{1.5em}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{array}      % the ragged-right column R of Table tab:in-print
+\newcolumntype{R}[1]{>{\raggedright\arraybackslash}p{#1}}
+% Q-0430: Table tab:in-print is longer than a page since its cells carry the primary sources. It
+% is a longtable, which breaks between rows; S is its column, R in the size of the table's text
+% (the caption stays in the size of the other captions).
+\usepackage{longtable}
+\newcolumntype{S}[1]{>{\footnotesize\raggedright\arraybackslash}p{#1}}
+% N: the column of Table tab:notation, a longtable too so that the two tables print in order.
+\newcolumntype{N}[1]{>{\small}p{#1}}
+\setlength{\LTcapwidth}{\textwidth}
+% Q-0414, round 3: a float may fill most of a page with text below it. LaTeX's defaults send a
+% table taller than 0.7 of the page to a page of its own, which Table tab:in-print would leave
+% a quarter empty.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.85}
+\usepackage{graphicx}   % the figure is a PNG from a script in records/ (*.pdf is git-ignored)
+% Q-0448: the paper and the supplement refer to each other. A root that defines \isoexternal
+% as the name of the other document gets its labels through xr-hyper, which has to be loaded
+% before hyperref. The full document defines no \isoexternal. The option nocite keeps the other
+% document's bibliography numbers out: each document has its own list of references, and
+% without the option every citekey that both cite is reported as a label defined twice.
+\ifdefined\isoexternal\usepackage{xr-hyper}\fi
+\usepackage[hidelinks]{hyperref}
+\ifdefined\isoexternal\externaldocument[][nocite]{\isoexternal}\fi
+\hypersetup{
+  pdftitle={Spatial Scale Space from Hemigroup Axioms: Rotation-Invariant Self-Decomposable Kernels in Dimension d},
+  pdfauthor={Daniel Fagerstr\"om},
+}
+
+\input{macros}
+\numberwithin{equation}{section}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}

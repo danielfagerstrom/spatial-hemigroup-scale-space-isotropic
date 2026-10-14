@@ -1,0 +1,54 @@
+% Declarations (article-kit docs/PUBLICATION-TEMPLATE.md § A, "Mandatory declarations": author
+% contributions, competing interests, data availability, funding; § B.10). Author contributions are
+% the section before (ai-statement.tex, "Author contribution and use of AI"). Drafted by the Q-0311
+% session (2026-10-04); made final by Q-0313 from the author's declarations of 2026-10-04: the
+% research is independent, done on the author's own time and at the author's own expense, with no
+% funder, employer or institution involved, so competing interests are none and the funding is one
+% sentence; there are no acknowledgements, so there is no acknowledgements heading (none of the
+% programme's papers has had one). TODO(release): the concept DOI of module iso and the public export
+% the code availability names, as Paper V names its export.
+
+\section*{Declarations}
+
+\paragraph{Competing interests.} The author declares no competing interests.
+
+\paragraph{Funding.} This work was carried out independently and received no funding.
+
+\paragraph{Data and code availability.} No data were generated or analysed. The scripts that draw
+Figure~\ref{fig:matern-centre} from the closed form of the \Matern{} kernel's density and
+Figure~\ref{fig:thresholds} from the closed forms of the polar profiles of the separating family
+and from its critical values, computed numerically, the script that computes
+Table~\ref{tab:matern}, the
+LaTeX sources in which the statements and their proofs were developed, and the formal development
+in Lean~4 that machine-checks formal counterparts of the statements listed as such in
+\S\ref{sec:trust-base}, with its ledger of the cited facts (Appendix~\ref{app:verification}),
+are in the repository
+accompanying this paper, \url{https://github.com/danielfagerstrom/spatial-hemigroup-scale-space-isotropic},
+at its tag \texttt{v0.1}. It is the public verification export of this version, taken from the
+development repository, which is private, and it is
+deposited with this version of the paper under the DOI printed on its first page.
+% The release iso-v0.1 (records/affine/freeze_iso_release.py). The draft form, for the first edit
+% after the release: the development repository by name (\nolinkurl, since it is private), the
+% tag of the review build, "The repository is private until the paper is released", and "With
+% each released version a public verification export, which holds the formal development, the
+% ledger, the blueprint sources and the scripts of the figures and of Table tab:matern, is
+% deposited under the concept DOI of the paper" (git has the sentences as they stood).
+% Q-0450 (the scope audit of 2026-10-13, mismatch 17): the caption of Table tab:matern says
+% "Computed by a script deposited with the paper", as those of the two figures do, so the script
+% of the table is named with theirs, here and in Appendix B: the release's export has to hold
+% records/affine/check-q0448-matern-table.py as well.
+% Q-0417 (the freeze for external review): the repository by name, the tag of the frozen text
+% (set by the dispatching session on the merge commit of this item), that the repository is
+% private, and what is deposited at a release. The scripts of the figures stay in the list of
+% what is deposited, as before this item, because the captions of Figures 1 and 2 say "a script
+% deposited with the paper": the release's export has to hold records/affine/fig-thresholds.py
+% and records/affine/fig-matern-centre.py.
+% Q-0414: "every result of the paper" narrowed to what section 1.1 states (the scope audit of
+% 2026-10-11, finding 2; register flag 17); "witness" and "trust boundary" replaced by words the
+% paper uses.
+% Q-0377: the formal development is complete (125 of 125 nodes \leanok), so it is named as what
+% machine-checks the paper; the repository is private, so the deposit is a public verification
+% export made at the release, as Paper V's is (article-kit RELEASE.md).
+% TODO(release): the concept DOI of module iso (tag iso-v0.1) and the URL of the public export,
+% once they exist; the figures' scripts are records/affine/fig-thresholds.py and
+% records/affine/fig-matern-centre.py (Q-0313).

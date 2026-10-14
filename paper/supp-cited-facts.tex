@@ -1,0 +1,179 @@
+% Q-0448: section S2 of the supplement and Appendix D of the full document: the seven cited
+% facts as the formal development assumes them, each a shared statement of the blueprint under
+% its marker, with the departures from the sources. The text stood as section 2.6 of the paper
+% (02-line-papers.tex) until the split and is cut from it whole
+% (records/affine/split_q0448_roots.py); section 2.6 keeps a list that names the seven.
+\section{The cited facts}\label{supp:cited-facts}
+
+% Q-0377: C6 added (ledger A10, admitted 2026-10-07), the interface node thm:cited-A10 transcribed
+% verbatim with its anchor; the machine-checked clause (3) of thm:filtration-strict rests on it.
+% Q-0381: the sixth's use said as the proof of record now says it (rewritten to the Lean route):
+% the identification A_infty = S only, cited from the cone paper and derived from C6 by the
+% route the printed proof outlines and the formal proof (filtration_top) carries out.
+% Q-0416: C7 added (ledger A11, the author's decision of 2026-10-11), the interface node
+% thm:cited-A11 transcribed verbatim with its anchor: Karamata's Tauberian theorem at the origin,
+% used in the proof of prop:origin-rate-d and nowhere else.
+Seven theorems of the literature are used and not proved. Each is stated as it is used, with its
+page. They are named C1--C7, C for cited, to keep them apart from the axioms (A1)--(A8) of the line.
+From here on a cited fact is referred to by its name alone, and Table~\ref{tab:trust-base} says
+which of them each statement rests on. C2 and C3 keep the letters of their source, because the proofs that use
+them quote them. Inside C2 and C3, $A$ is a matrix, $\nu$ a \Levy{} measure and $\gamma$ a drift
+vector, and $\lambda$ and $k_\eta$ are the measure and the profile of the polar criterion. Elsewhere
+in the paper these letters have the meanings given where they are introduced
+(Table~\ref{tab:notation}).
+
+% shared with blueprint thm:cited-A1@4fb642395671
+\begin{theorem}[C1: Fourier integrability, {\sscite{sato1999levy}, Prop.~28.1, p.~190}]\label{thm:cited-A1}
+If a probability measure $\mu$ on $\RR^d$ satisfies
+$\int_{\RR^d}|\widehat\mu(z)|\,|z|^n\,dz < \infty$ for some integer $n \ge 0$, then $\mu$ has a
+density of class $C^n$ on $\RR^d$, and the partial derivatives of the density of orders
+$0, \dots, n$ tend to $0$ as $|x| \to \infty$.
+\end{theorem}
+
+The \emph{generating triplet} of an infinitely divisible law is the triple of its
+\Levy--Khintchine representation, written out in C3 below: a Gaussian covariance matrix $A$, a
+\Levy{} measure $\nu$ and a drift $\gamma$.
+
+% shared with blueprint thm:cited-A2@089e72789214
+\begin{theorem}[C2: the polar criterion, {\sscite{sato1999levy}, Thm.~15.10, p.~95}]\label{thm:cited-A2}
+An infinitely divisible law $\mu$ on $\RR^d$ with generating triplet $(A, \nu, \gamma)$ is
+self-decomposable if and only if
+\[
+  \nu(B) = \int_{S^{d-1}}\lambda(d\eta)\int_0^\infty \mathbf{1}_B(r\eta)\,k_\eta(r)\,\frac{dr}{r}
+\]
+for every Borel set $B$, for a finite measure $\lambda$ on $S^{d-1}$ and a function
+$k_\eta(r) \ge 0$, measurable in $\eta$ and nonincreasing in $r > 0$.
+\end{theorem}
+
+The criterion puts no restriction on $A$ or $\gamma$. For a symmetric law on the line it is
+the folded-profile form of \prog{V}{Prop.~2.13}. Sato attributes it to \Levy{} on the line and to
+Wolfe and to Sato in $\RR^d$ (\sscite{sato1999levy}, p.~117).
+
+% shared with blueprint thm:cited-A3@27418ee4f07a
+\begin{theorem}[C3: the \Levy--Khintchine representation, {\sscite{sato1999levy}, Thm.~8.1, pp.~37--38}]\label{thm:cited-A3}
+On $\RR^d$:
+\begin{enumerate}
+\item[(i)] An infinitely divisible law $\mu$ on $\RR^d$ has
+\[
+  \widehat\mu(z) = \exp\Bigl[-\tfrac12\langle z, Az\rangle + i\langle\gamma, z\rangle
+   + \int_{\RR^d}\bigl(e^{i\langle z,x\rangle} - 1 - i\langle z,x\rangle\mathbf{1}_{\{|x| \le 1\}}\bigr)\,
+     \nu(dx)\Bigr]
+\]
+for a symmetric nonnegative definite $A$, a $\gamma \in \RR^d$ and a measure $\nu$ with
+$\nu(\{0\}) = 0$ and $\int(|x|^2 \wedge 1)\,\nu(dx) < \infty$.
+\item[(ii)] The triplet $(A, \nu, \gamma)$ is unique.
+\item[(iii)] Conversely, every such triplet is the generating triplet of an infinitely divisible
+law.
+\end{enumerate}
+\end{theorem}
+
+% shared with blueprint thm:cited-A4
+\begin{theorem}[C4, {\sscite{sato1999levy}, Prop.~15.5, p.~93}]\label{thm:cited-A4}
+If a probability measure $\mu$ on $\RR^d$ is self-decomposable, that is if for every $b > 1$ there
+is a probability measure $\rho_b$ on $\RR^d$ with
+$\widehat\mu(z) = \widehat\mu(b^{-1}z)\,\widehat\rho_b(z)$ for every $z$, then $\mu$ is
+infinitely divisible.
+\end{theorem}
+
+C5 needs one definition. For a nonempty compact convex set $K \subset \RR^d$ with $K = -K$,
+let $V$ be its linear span, of some dimension $k \le d$, and let $u_K$ be the \emph{uniform law} on
+$K$ for the $k$-dimensional Lebesgue measure of $V$. A segment, a disc in a plane and the origin
+itself are such sets, and $u_{\{0\}} = \delta_0$. A law is \emph{symmetric unimodal in Kanter's
+sense} if it is a mixture of these uniform laws (\sscite{kanter1977unimodality}, Def.~1.2, p.~66,
+and Def.~3.1, p.~70). Wolfe states his theorem for the symmetric laws of class~L, which are the
+symmetric self-decomposable laws (\sscite{sato1999levy}, Def.~15.1, p.~90, and Thm.~15.3, p.~91).
+
+% shared with blueprint thm:cited-A8@1faeacc23c05
+\begin{theorem}[C5: Wolfe's unimodality theorem, {\sscite{wolfe1978unimodality}, Thm.~2, p.~144}]\label{thm:cited-A8}
+Let $\mu$ be a symmetric self-decomposable law on $\RR^d$. Then there is a probability measure
+$\Lambda$ on the uniform laws $u_K$ of the nonempty compact convex symmetric sets $K \subset \RR^d$ with
+\[
+  \mu(A) = \int u_K(A)\,\Lambda(du_K) \qquad \text{for every Borel set } A \subseteq \RR^d .
+\]
+\end{theorem}
+
+% Q-0424 (the author's decision D5, route (A); records/affine/reviews/
+% VERIFY-round1-mathematics.md, item 6(b)): the Gaussian case of C5, from Kanter's Lemma 3.1
+% (p. 70, with Lemma 2.1, p. 68, and Definition 2.2, p. 69, for a density that is log-concave) and
+% Theorem 3.2 (p. 74), read at the page image; the argument in full is in ledger A8. The source
+% puts the mixing measure on the set of the uniform laws; C5's form is proved from it in the
+% appendix (item 6(a)).
+C5 says nothing about densities: a uniform law on a lower-dimensional set has none. Its formal
+statement has the mixing measure on all the probability measures, almost every one a uniform law.
+The source has it on the set of the uniform laws, which is measurable
+(the end of the proof of
+Proposition~\ref{prop:isotropic-radial-monotone}, \S\ref{supp:proofs-origin}). Wolfe's printed proof covers the laws with no
+Gaussian part: it ends with a
+theorem of Kanter that is stated for them (\sscite{kanter1977unimodality}, Thm.~4.1, p.~78, with
+the convention of p.~77). The others are convolutions of such a law with a centred Gaussian law
+(C2 to C4), and two results of the same paper cover them: a symmetric law with a log-concave
+density on a subspace is symmetric unimodal (Lemma~3.1, p.~70), and so is the convolution of two
+symmetric unimodal laws (Thm.~3.2, p.~74).
+
+C6 is Schoenberg's theorem on the radial functions that are negative definite in
+every dimension, read with the representation of a Bernstein function. The two are Theorems~13.14
+and~3.2 of one book, and C6 composes them: the first makes such a function a Bernstein function,
+the second writes a Bernstein function in the form displayed below. Inside C6 the letters $f$, $a$,
+$b$, $c_j$, $m$ and $t$ are the source's.
+
+% shared with blueprint thm:cited-A10
+\begin{theorem}[C6: Schoenberg's radial theorem, with the representation of a Bernstein function, {\sscite{schilling2012bernstein}, Thm.~13.14, p.~212, and Thm.~3.2, p.~21}]\label{thm:cited-A10}
+Let $f$ be a real function on $[0,\infty)$ with $f \ge 0$ on $(0,\infty)$. Suppose that for every
+integer $d \ge 0$ the function $\xi \mapsto f(|\xi|^2)$ on $\RR^d$ is continuous and negative
+definite:
+\[
+  \sum_{j,k=1}^n \bigl(f(|\xi_j|^2) + f(|\xi_k|^2) - f(|\xi_j - \xi_k|^2)\bigr)\,c_j\,\overline{c_k}
+  \ge 0
+\]
+for every $n$, all $\xi_1, \dots, \xi_n \in \RR^d$ and all $c_1, \dots, c_n \in \CC$. Then there
+are $a, b \ge 0$ and a measure $m$ on $(0,\infty)$ with $\int_{(0,\infty)}(1 \wedge t)\,m(dt) <
+\infty$ such that
+\[
+  f(\sigma) = a + b\sigma + \int_{(0,\infty)} \bigl(1 - e^{-\sigma t}\bigr)\,m(dt)
+  \qquad \text{for every } \sigma > 0 .
+\]
+\end{theorem}
+
+% Q-0424 (records/affine/reviews/VERIFY-round1-mathematics.md, item 4): C6 does not assume more
+% than its source; the hypothesis at d = 0 follows from the one at d = 1.
+The book states the hypothesis for every $d \ge 1$. C6 writes it for $d \ge 0$, which adds
+nothing: at $d = 0$ it says only $f(0) \ge 0$, which is the hypothesis at $d = 1$ with $n = 1$,
+$\xi_1 = 0$ and $c_1 = 1$. C6 leaves out the uniqueness of $(a, b, m)$, which the book states
+with the representation (\sscite{schilling2012bernstein}, Thm.~3.2, p.~21). The value $f(0)$ is
+the right limit $f(0{+})$,
+which the continuity of the hypothesis forces and which is the book's convention wherever it
+fixes the value. The definition of a negative definite function is the book's Definition~4.3,
+p.~36, in its form (4.8) on $\RR^d$, pp.~45--46, written out in the display.
+
+The last cited fact is Karamata's Tauberian theorem, in its form at the origin. A positive
+measurable function $\ell$ on $(0,\infty)$ is \emph{slowly varying} if
+$\ell(\lambda x)/\ell(x) \to 1$ as $x \to \infty$ for every $\lambda > 0$
+(\sscite{bingham1987regular}, p.~6). The logarithm is slowly varying on $(1,\infty)$, and so is
+every positive function with a positive limit at infinity. The theorem
+concerns a measure on the half-line. It passes from the behaviour of its Laplace transform at
+infinity to the mass that the measure gives to small intervals $[0,x]$. A passage in this
+direction, from a transform back to the measure, needs a condition and is called Tauberian. Here
+it turns the transform of a kernel into the mass of the small balls round its centre
+(Lemma~\ref{prop:origin-rate-d}). Inside C7 the letters
+$\nu$, $\ell$, $c$, $\rho$, $s$ and $x$ are local: $c$ and $\rho$ are two positive constants, and
+$c$ is not the profile at the origin.
+
+% shared with blueprint thm:cited-A11
+\begin{theorem}[C7: Karamata's Tauberian theorem at the origin, {\sscite{bingham1987regular}, Thm.~1.7.1$'$, p.~38}]\label{thm:cited-A11}
+Let $\nu$ be a finite measure on $[0,\infty)$, let $\ell$ be a positive measurable function on
+$(0,\infty)$ with $\ell(\lambda x)/\ell(x) \to 1$ as $x \to \infty$ for every $\lambda > 0$, and
+let $c > 0$ and $\rho > 0$. If
+\[
+  \frac{\int_{[0,\infty)} e^{-sx}\,\nu(dx)}{c\,s^{-\rho}\,\ell(s)} \to 1 \quad (s \to \infty),
+  \qquad\text{then}\qquad
+  \frac{\nu([0,x])}{c\,x^{\rho}\,\ell(1/x)/\Gamma(1+\rho)} \to 1 \quad (x \downarrow 0) .
+\]
+\end{theorem}
+
+The book states the theorem as an equivalence, for every nondecreasing function on the line that
+vanishes on the negative half-line and whose Laplace--Stieltjes transform is finite for large $s$,
+and for $c \ge 0$ and $\rho \ge 0$. It attributes it to Feller. C7 is one direction, from the
+transform to the measure, for the distribution function $x \mapsto \nu([0,x])$ of a finite
+measure, for positive $c$ and $\rho$, and for a slowly varying function defined on all of
+$(0,\infty)$, where the book requires it near infinity only. So C7 assumes more than its source and
+concludes less.

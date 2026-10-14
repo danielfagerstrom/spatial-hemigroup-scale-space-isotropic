@@ -1,0 +1,46 @@
+{
+  "title": "Spatial scale space from hemigroup axioms: rotation-invariant self-decomposable kernels in dimension d",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "description": "<p>Scale-space axioms usually require the cascade to be a semigroup, which with rotation and scale invariance leads to Gaussian and stable kernels. The axioms studied here require only that the stages compose, a hemigroup indexed by two scales, and that rescaling the signal relabels the scales. This paper derives the rotation-invariant families they allow in ℝ^d. The kernels that take the signal to each scale are the dilations of one rotation-invariant law that is self-decomposable: the convolution of each contracted copy of itself with another law. Every such law but the point mass occurs. Suitably labelled, the kernel at scale t has Fourier transform e^{-F(t|ξ|)}, for one function F. Its density is bounded near the centre exactly when c &gt; d, where c ≤ ∞ is the power at which the transform falls off. Otherwise a point source is recorded as a spike, whose growth and constant are given. For finite c a stage between positive scales passes a fixed fraction of the record unchanged. Since c depends on F alone, a kernel bounded on the line can have a spike in the plane: the Matérn kernels of the Bessel scale space, with transform (1 + |ξ|^2/2)^{-γ}, do for 1/2 &lt; γ ≤ 1. Each higher dimension allows strictly fewer F. An allowed F(r) ∼ c log r determines a radial characteristic function, the Fourier transform of a law, and is allowed in ℝ^{d+1} exactly when that function is a characteristic function there. The statements are machine-checked in Lean 4, assuming seven theorems of the literature, except those that § 1.1 lists as proved in print.</p><p>This deposit is the article's verification export: the PDF, its LaTeX source, the Lean 4 modules its statements rest on, the trust boundary with the ledger of cited facts, the blueprint chapters, the process account and the external reviews.</p>",
+  "creators": [
+    {
+      "name": "Fagerström, Daniel",
+      "orcid": "0009-0001-0165-1978"
+    }
+  ],
+  "version": "0.1",
+  "publication_date": "2026-10-14",
+  "license": "cc-by-4.0",
+  "keywords": [
+    "scale space",
+    "hemigroup",
+    "self-decomposable laws",
+    "rotation invariance",
+    "Matérn kernel",
+    "Lean 4",
+    "formal verification"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.22761631",
+      "relation": "continues",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.22864169",
+      "relation": "continues",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.22259186",
+      "relation": "references",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "https://github.com/danielfagerstrom/spatial-hemigroup-scale-space-isotropic",
+      "relation": "isSupplementedBy",
+      "scheme": "url"
+    }
+  ]
+}

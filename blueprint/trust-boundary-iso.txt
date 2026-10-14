@@ -1,0 +1,25 @@
+# The trust boundary of the isotropic paper (paper-iso): the nine axioms that a declaration
+# behind a statement of that paper may depend on, beside Lean's three logical axioms.
+#
+# They are the paper's seven cited facts, C3 being three, and nine of the twelve names of
+# `blueprint/trust-boundary.txt`. The other three of that file are cited facts of the affine
+# paper (A5, A6, A9: operatorSelfDecomposable_infinitelyDivisible, khintchine_null_array,
+# gelfand_naimark_logMajorized), which no declaration of the isotropic paper may reach.
+#
+# Read by `records/affine/axioms-iso-all-declarations.py`, which writes
+# `Formalization/AffineHemigroup/IsoAxiomGuard.lean` from it: there the build fails when a
+# declaration of the isotropic paper depends on an axiom that is not on this list. `linkage` does
+# not read this file; `blueprint/trust-boundary.txt` remains the module's declared trust base.
+#
+# One name per line, then `#` and the paper's label of the cited fact (Table 1 of its
+# section 1.1). Adding a line widens what the isotropic paper assumes, and is a review decision.
+#
+AffineHemigroup.density_of_integrable_charFun        # C1
+AffineHemigroup.sato_polar_criterion                 # C2
+AffineHemigroup.levy_khintchine_exists               # C3(i)
+AffineHemigroup.levy_khintchine_unique               # C3(ii)
+AffineHemigroup.levy_khintchine_converse             # C3(iii)
+AffineHemigroup.selfDecomposable_infinitelyDivisible # C4
+AffineHemigroup.wolfe_symmetric_unimodal             # C5
+AffineHemigroup.schoenberg_radial_bernstein          # C6
+AffineHemigroup.karamata_tauberian_zero              # C7

@@ -1,0 +1,197 @@
+% Q-0448: the proof of Proposition prop:isotropic-stages, the three proofs of record of the
+% blueprint nodes lem:isotropic-stage-levy-measure, prop:isotropic-stage-atom and
+% prop:isotropic-stage-density in turn (records/affine/transcribe-q0448-nodes.py says what the
+% transcription changes; pinned). It is a file of its own so that it moves in one line: while
+% the proposition was proved in print only, appendix-isotropic.tex input it (section A.4); since
+% the Lean of queue item Q-0447 is merged (the joining step of Q-0448), supp-proofs.tex does.
+% The closing paragraph of each proof of record, which Q-0447 rewrote (what is machine-checked,
+% where the Lean takes another step), is not printed, as for every proof of the paper. One
+% sentence of the second node's closing paragraph is printed, after item (d) of clause (2), and
+% follows the blueprint: it says "on R^d, d >= 1" since Q-0447.
+% The first paragraph states the lemma as its node does, for a datum and two numbers.
+% proof of lem:isotropic-stage-levy-measure
+\begin{proof}[Proof of Proposition~\ref{prop:isotropic-stages}]
+\emph{Clause (1).} Write $F_d(\xi) := F(|\xi|)$ for the exponent of the datum. The clause is
+proved for two numbers $0 < \ell < L$ in the place of $\chi(s)$ and $\chi(t)$. Put
+$\kappa(r) := k_d(r/L) - k_d(r/\ell)$ for $r > 0$, and let $\nu$ be the measure on
+$\RR^d \setminus \{0\}$ with the density $\kappa(|x|)\,\bigl(|S^{d-1}|\,|x|^d\bigr)^{-1}$. Three
+assertions are proved: (i) $\kappa \ge 0$, the measure $\nu$ is rotation invariant, and
+$\int(|x|^2 \wedge 1)\,\nu(dx) < \infty$; (ii) for every $\xi \in \RR^d$,
+\[
+  F_d(L\xi) - F_d(\ell\xi) = \tfrac12 a\,(L^2 - \ell^2)\,|\xi|^2
+     + \int_{\RR^d}\bigl(1 - \cos\langle\xi,x\rangle\bigr)\,\nu(dx) ;
+\]
+(iii) $\nu(\RR^d \setminus \{0\}) = c\,\log(L/\ell)$, in $[0,\infty]$.
+
+\emph{The dilation of a datum.} For $\beta > 0$ put $k^{(\beta)}(r) := k_d(r/\beta)$. It is
+nonnegative and nonincreasing, and
+\[
+  \int_0^1 k^{(\beta)}(r)\,r\,dr = \beta^2\int_0^{1/\beta}k_d(u)\,u\,du < \infty, \qquad
+  \int_1^\infty k^{(\beta)}(r)\,\frac{dr}{r} = \int_{1/\beta}^\infty k_d(u)\,\frac{du}{u} < \infty ,
+\]
+by the two conditions on $k_d$ and because $k_d$ is bounded on the interval between $1$ and
+$1/\beta$. So $(a\beta^2, k^{(\beta)})$ is an isotropic origin datum in dimension $d$. Let
+$\nu^{(\beta)}$ be its \Levy{} measure, of density $k_d(|x|/\beta)\,(|S^{d-1}||x|^d)^{-1}$, and
+$\nu_d$ that of $(a,k_d)$. The substitution $y = \beta x$, $dy = \beta^d dx$, gives
+$\int g(\beta x)\,\nu_d(dx) = \int g\,d\nu^{(\beta)}$ for every nonnegative Borel $g$. With
+$g(y) = 1 - \cos\langle\xi,y\rangle$,
+\begin{equation}\label{eq:dilated-exponent}
+  F_d(\beta\xi) = \tfrac12 a\beta^2|\xi|^2
+     + \int_{\RR^d}\bigl(1 - \cos\langle\xi,y\rangle\bigr)\,\nu^{(\beta)}(dy) ,
+\end{equation}
+so the exponent of $(a\beta^2, k^{(\beta)})$ is $\xi \mapsto F_d(\beta\xi)$, and the integral is
+finite, as $\int(1 - \cos\langle\xi,y\rangle)\,d\nu^{(\beta)}
+\le \int(|\xi|^2|y|^2/2 \wedge 2)\,d\nu^{(\beta)} < \infty$ by \ref{eq:polar-decomposition} and
+the two conditions on $k^{(\beta)}$.
+
+\emph{Assertion (i).} For $r > 0$, $r/L < r/\ell$, and $k_d$ is nonincreasing, so
+$\kappa(r) = k^{(L)}(r) - k^{(\ell)}(r) \ge 0$. The density of $\nu$ is the difference of the
+densities of $\nu^{(L)}$ and $\nu^{(\ell)}$, so
+\begin{equation}\label{eq:stage-measure-sum}
+  \nu + \nu^{(\ell)} = \nu^{(L)}
+\end{equation}
+as measures on $\RR^d \setminus \{0\}$. In particular $\nu \le \nu^{(L)}$, and
+$\int(|x|^2 \wedge 1)\,d\nu \le \int(|x|^2 \wedge 1)\,d\nu^{(L)}$, which is finite: by
+\ref{eq:polar-decomposition} it is $\int_0^1 k^{(L)}(r)\,r\,dr + \int_1^\infty k^{(L)}(r)\,dr/r$.
+The density of $\nu$ is a function of $|x|$ and Lebesgue measure is invariant under
+$\Orth(d)$, so $\nu$ is.
+
+\emph{Assertion (ii).} Let $g(x) := 1 - \cos\langle\xi,x\rangle \ge 0$. By
+\ref{eq:dilated-exponent} the integrals of $g$ against $\nu^{(L)}$ and $\nu^{(\ell)}$ are finite,
+so \ref{eq:stage-measure-sum} gives
+$\int g\,d\nu = \int g\,d\nu^{(L)} - \int g\,d\nu^{(\ell)}$. By \ref{eq:dilated-exponent} at
+$\beta = L$ and at $\beta = \ell$ this is
+$F_d(L\xi) - F_d(\ell\xi) - \tfrac12 a(L^2 - \ell^2)|\xi|^2$.
+
+\emph{Assertion (iii).} Let $0 < \varepsilon < A$ with $\varepsilon/\ell \le A/L$, and
+$B := \{x : \varepsilon < |x| \le A\}$. By \ref{eq:polar-decomposition} for the datum
+$(a\beta^2, k^{(\beta)})$ and $g = \mathbf 1_B$, and the substitution $u = r/\beta$,
+$\nu^{(\beta)}(B) = \int_\varepsilon^A k_d(r/\beta)\,dr/r
+= \int_{\varepsilon/\beta}^{A/\beta}k_d(u)\,du/u$, which is finite. By
+\ref{eq:stage-measure-sum}, and since the intervals $[\varepsilon/L, A/L]$ and
+$[\varepsilon/\ell, A/\ell]$ overlap in $[\varepsilon/\ell, A/L]$,
+\[
+  \nu(B) = \int_{\varepsilon/L}^{A/L}k_d(u)\,\frac{du}{u} - \int_{\varepsilon/\ell}^{A/\ell}k_d(u)\,\frac{du}{u}
+         = \int_{\varepsilon/L}^{\varepsilon/\ell}k_d(u)\,\frac{du}{u}
+           - \int_{A/L}^{A/\ell}k_d(u)\,\frac{du}{u} .
+\]
+Each of the last two integrals is over an interval whose endpoints have the ratio $L/\ell$, so
+$\int du/u = \log(L/\ell)$ over it. As $k_d$ is nonincreasing, the first lies between
+$k_d(\varepsilon/\ell)\log(L/\ell)$ and $k_d(\varepsilon/L)\log(L/\ell)$, and both bounds tend
+to $c\log(L/\ell)$ as $\varepsilon \downarrow 0$, also when $c = \infty$. The second is at most
+$k_d(A/L)\log(L/\ell)$, which tends to $0$ as $A \to \infty$: a nonincreasing nonnegative
+function with $\int_1^\infty k_d(r)\,dr/r < \infty$ tends to $0$ at infinity. With
+$\varepsilon = 1/n$ and $A = n$ for $n \ge (L/\ell)^{1/2}$, so that
+$\varepsilon/\ell \le A/L$, the sets $B$ increase to $\RR^d \setminus \{0\}$, so
+$\nu(\RR^d \setminus \{0\}) = \lim_n\nu(B) = c\log(L/\ell)$. Since $\log(L/\ell) > 0$, this is
+finite exactly when $c$ is.
+
+\emph{The clause.} A gauge is increasing with $\chi(0) = 0$, so
+$0 < \chi(s) < \chi(t)$. By \ref{eq:isotropic-classification} and $F(|\zeta|) = F_d(\zeta)$,
+$-\log\widehat\mu_{s,t}(\xi) = F_d(\chi(t)\xi) - F_d(\chi(s)\xi)$, and assertions (i), (ii) and
+(iii) with $\ell = \chi(s)$, $L = \chi(t)$ are the clause.
+
+\emph{Clause (2).} Write $\nu := \nu_{s,t}$, $\ell := \chi(s)$ and $L := \chi(t)$. By
+clause (1), $\nu$ is a finite measure of mass
+$m = c\log(L/\ell)$, rotation invariant, hence symmetric, with a density, and by
+\ref{eq:stage-transform} with $a = 0$,
+$\widehat\mu_{s,t}(\xi) = \exp[-\int(1 - \cos\langle\xi,x\rangle)\,\nu(dx)]$. If $c$ were $0$,
+the nonincreasing nonnegative function $k_d$ would vanish on $(0,\infty)$, the exponent of the
+datum $(0,k_d)$ would be $0$, and $F$ would vanish on $[0,\infty)$. So $c > 0$, $m > 0$ and
+$0 < e^{-m} < 1$, and $e^{-m} = (\ell/L)^c = \lambda^c$.
+
+\emph{Item (a).} Put $\pi := e^{-m}\sum_{n \ge 0}\nu^{*n}/n!$. The measure $\nu^{*n}$ has the
+mass $m^n$, so $\pi$ is a probability measure. The transform of $\nu^{*n}$ is $\widehat\nu^{\,n}$
+and $|\widehat\nu| \le m$, so $\widehat\pi = e^{-m}\sum_n\widehat\nu^{\,n}/n!
+= \exp(\widehat\nu - m)$. As $\nu$ is symmetric, $\widehat\nu(\xi) = \int\cos\langle\xi,x\rangle
+\,\nu(dx)$, and $\widehat\nu(\xi) - m = -\int(1 - \cos\langle\xi,x\rangle)\,\nu(dx)$. So
+$\widehat\pi = \widehat\mu_{s,t}$, and $\mu_{s,t} = \pi$, a probability measure being determined
+by its transform.
+
+\emph{Item (b).} Let $M$ be a finite measure and $N$ a Lebesgue-null Borel set. Then
+$(\nu * M)(N) = \int\nu(N - y)\,M(dy) = 0$, because $N - y$ is Lebesgue-null and $\nu$ has a
+density. So $\nu^{*n} = \nu * \nu^{*(n-1)}$ is absolutely continuous for every $n \ge 1$, and so
+is $\eta_{s,t}$, a countable sum of such measures. Its mass is
+$e^{-m}\sum_{n \ge 1}m^n/n! = 1 - e^{-m}$. The term $n = 0$ of item (a) is $e^{-m}\delta_0$.
+So $\mu_{s,t} = \lambda^c\delta_0 + \eta_{s,t}$, and
+$\mu_{s,t}(\{0\}) = \lambda^c + \eta_{s,t}(\{0\}) = \lambda^c$, the origin being a Lebesgue-null
+set. A measure with a density gives the origin no mass, and $\lambda^c > 0$, so $\mu_{s,t}$ has
+no density.
+
+\emph{Item (c).} The convolution $\mu * f$ is additive in the measure $\mu$, and
+$\delta_0 * f = f$. With item (b),
+$\mu_{s,t} * f = \lambda^c f + \eta_{s,t} * f$, and $\eta_{s,t} * f = p_{s,t} * f$.
+
+\emph{Item (d).} Suppose that $\mu_{s,t}$ is self-decomposable, fix $q \in (0,1)$, and let
+$\rho$ be a residual: a probability measure with
+$\widehat\mu_{s,t}(\xi) = \widehat\mu_{s,t}(q\xi)\,\widehat\rho(\xi)$ for every $\xi$, that is
+$\mu_{s,t} = (qI)_*\mu_{s,t} * \rho$. By item (b),
+$(qI)_*\mu_{s,t} = \lambda^c\delta_0 + (qI)_*\eta_{s,t}$, and $(qI)_*\eta_{s,t}$ is absolutely
+continuous. As in item (b), $((qI)_*\eta_{s,t} * \rho)(\{0\}) = 0$. So the mass of the origin
+under the right side is $\lambda^c\rho(\{0\})$, and under the left side it is $\lambda^c$. As
+$\lambda^c > 0$, $\rho(\{0\}) = 1$, that is $\rho = \delta_0$. Then
+$\widehat\mu_{s,t}(\xi) = \widehat\mu_{s,t}(q\xi)$ for every $\xi$, and by iteration
+$\widehat\mu_{s,t}(\xi) = \widehat\mu_{s,t}(q^n\xi) \to \widehat\mu_{s,t}(0) = 1$, the transform
+being continuous. So $\mu_{s,t} = \delta_0$, which contradicts $\mu_{s,t}(\{0\}) = \lambda^c < 1$.
+The argument of item (d) shows more than the item: on $\RR^d$, $d \ge 1$, a probability measure that is the
+sum of a point mass of weight in $(0,1)$ at the origin and an absolutely continuous measure is
+not self-decomposable.
+
+\emph{Clause (3).} Write $\nu := \nu_{s,t}$, $\ell := \chi(s)$, $L := \chi(t)$ and $v := a(L^2 - \ell^2) \ge 0$. By
+clause (1), $\nu$ gives the origin no mass, is symmetric, and has
+$\int(|x|^2 \wedge 1)\,d\nu < \infty$: it is a symmetric \Levy{} measure.
+
+\emph{A symmetric triplet.} Let $\nu_0$ be a symmetric \Levy{} measure on $\RR^d$ and
+$v_0 \ge 0$. By \ledger{A3}(iii) there is an infinitely divisible law with the triplet
+$(v_0I, \nu_0, 0)$, and its transform is
+\begin{equation}\label{eq:symmetric-triplet}
+  \exp\Bigl[-\tfrac12 v_0|\xi|^2 - \int_{\RR^d}\bigl(1 - \cos\langle\xi,x\rangle\bigr)\,\nu_0(dx)\Bigr] .
+\end{equation}
+Indeed the integrand of the representation, $e^{i\langle\xi,x\rangle} - 1
+- i\langle\xi,x\rangle\mathbf 1_D(x)$, has the real part $\cos\langle\xi,x\rangle - 1$ and an
+imaginary part that is an odd function of $x$, integrable against $\nu_0$ because it is at most
+$|\xi|^2|x|^2/2$ in modulus on $D$ (as $|\sin u - u| \le u^2/2$ for every real $u$) and at most
+$1$ off $D$; its integral against the symmetric
+measure $\nu_0$ is $0$.
+
+\emph{Item (a).} By \ref{eq:symmetric-triplet} with $(v_0,\nu_0) = (v,\nu)$ and
+\ref{eq:stage-transform}, the infinitely divisible law with the triplet $(vI, \nu, 0)$ has the
+transform of $\mu_{s,t}$, so it is $\mu_{s,t}$. The polar profile and the mass of $\nu$ are
+those of clause (1).
+
+\emph{Item (b).} Let $a = 0$ and $c = \infty$, so that $\nu$ has infinite mass
+(clause (1)). For $\varepsilon > 0$ let $\nu^{>}_\varepsilon$ and
+$\nu^{\le}_\varepsilon$ be the restrictions of $\nu$ to $\{|x| > \varepsilon\}$ and to
+$\{0 < |x| \le \varepsilon\}$. The first is a finite measure, because
+$\int(|x|^2 \wedge 1)\,d\nu < \infty$; it is symmetric and has a density; and its mass
+$m_\varepsilon$ increases to $\nu(\RR^d \setminus \{0\}) = \infty$ as $\varepsilon \downarrow 0$.
+The second is a symmetric \Levy{} measure. Let $\mu^\varepsilon$ be the law of
+\ref{eq:symmetric-triplet} for $(0, \nu^{\le}_\varepsilon)$, and put
+$\pi_\varepsilon := e^{-m_\varepsilon}\sum_{n \ge 0}(\nu^{>}_\varepsilon)^{*n}/n!$. As in the
+proof of items (a) and (b) of clause (2), which uses of the measure only that it is
+finite, symmetric and has a density, $\pi_\varepsilon$ is a probability measure with the
+transform $\exp[-\int(1 - \cos\langle\xi,x\rangle)\,\nu^{>}_\varepsilon(dx)]$, and
+$\pi_\varepsilon = e^{-m_\varepsilon}\delta_0 + \eta_\varepsilon$ with $\eta_\varepsilon$
+absolutely continuous. The transforms of $\pi_\varepsilon$ and $\mu^\varepsilon$ multiply to
+\ref{eq:stage-transform} with $a = 0$, so $\mu_{s,t} = \pi_\varepsilon * \mu^\varepsilon$. Let
+$N$ be a Lebesgue-null Borel set. Then
+$(\eta_\varepsilon * \mu^\varepsilon)(N) = \int\eta_\varepsilon(N - y)\,\mu^\varepsilon(dy) = 0$,
+so
+\[
+  \mu_{s,t}(N) = e^{-m_\varepsilon}\mu^\varepsilon(N) \le e^{-m_\varepsilon} .
+\]
+Letting $\varepsilon \downarrow 0$ gives $\mu_{s,t}(N) = 0$. So $\mu_{s,t}$ is absolutely
+continuous, and the origin is a Lebesgue-null set.
+
+\emph{Item (c).} Let $a > 0$. A gauge is increasing, so $v = a(L^2 - \ell^2) > 0$. By
+\ref{eq:stage-transform}, $0 < \widehat\mu_{s,t}(\xi) \le e^{-v|\xi|^2/2}$, so
+$\int|\widehat\mu_{s,t}(\xi)|\,|\xi|^n\,d\xi < \infty$ for every integer $n \ge 0$. By \ledger{A1}
+at $n$, $\mu_{s,t}$ has a density $g_n$ of class $C^n$ whose partial derivatives of orders
+$0,\dots,n$ tend to $0$ at infinity. Two continuous densities of one measure are equal, so the
+$g_n$ are one function $p$. It is of class $C^n$ for every $n$, and each of its partial
+derivatives is continuous and tends to $0$ at infinity, hence is bounded.
+
+\emph{The last sentence.} If $a = 0$ and $c < \infty$, item (b) of clause (2) gives
+the point mass. If $a = 0$ and $c = \infty$, or $a > 0$, items (b) and (c) give a density,
+which excludes a point mass.
+\end{proof}

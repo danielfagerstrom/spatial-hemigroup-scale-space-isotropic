@@ -1,0 +1,54 @@
+% Q-0448: the supplement of the isotropic paper (the author's decision of 2026-10-13, option (b)
+% of records/affine/reviews/VERIFY-round2-length-and-exposition.md, section 3). It has what the
+% formal verification covers in full: the trust base (supp-trust.tex), the seven cited facts as
+% the formal development assumes them (supp-cited-facts.tex), the proofs that Lean checked
+% (supp-proofs.tex) and the inventory of the formal development (supp-verification.tex). The
+% same four files are Appendices C to F of the full document (full.tex).
+% Its statements, sections, equations and tables are numbered S.1, S.2, ...; a number of the
+% paper is read from main.aux through xr-hyper, and the paper reads this document's numbers
+% from supplement.aux, so each is built after the other (records/affine/build-paper-iso.py).
+% The \date line is a copy of that of main.tex; the build script fails when the two differ.
+\documentclass[11pt]{article}
+\newcommand{\isoexternal}{main}
+\input{preamble}
+\newcommand{\suppl}{this supplement}
+\newcommand{\supplnumbers}{}
+\renewcommand{\thesection}{S\arabic{section}}
+\counterwithout{theorem}{section}
+\renewcommand{\thetheorem}{S.\arabic{theorem}}
+\counterwithout{equation}{section}
+\renewcommand{\theequation}{S.\arabic{equation}}
+\renewcommand{\thetable}{S\arabic{table}}
+
+\title{Supplement to\\
+Spatial scale space from hemigroup axioms:\\
+rotation-invariant self-decomposable kernels in dimension $d$}
+\author{Daniel Fagerstr\"om}
+% The release iso-v0.1: the line of main.tex (records/affine/freeze_iso_release.py).
+\date{October 14, 2026 (v0.1)\\[3pt] {\normalsize \href{https://doi.org/10.5281/zenodo.23357468}{doi:10.5281/zenodo.23357468}}}
+
+\begin{document}
+\maketitle
+
+This supplement belongs to the paper of the same title. The paper prints the statements, the
+proofs of the classification and of Proposition~\ref{prop:profile-one-dimension-down}, and the
+proofs of the statements that are proved in print only.
+Six lemmas that Lean checked are stated in \S\ref{supp:proofs} and not in the paper, which
+cites them by their numbers here. The supplement has what the formal verification covers: the account of the trust base
+(\S\ref{supp:trust}), the seven cited facts as the formal development assumes them
+(\S\ref{supp:cited-facts}), the proofs of the statements that Lean checked
+(\S\ref{supp:proofs}), and the list of the declarations of the formal development with Lean's
+report (\S\ref{supp:verification}). The statements, sections, equations and tables of the
+supplement are numbered S.1, S.2, and so on. A number without an S, as in Theorem~3.6, \S3.3 or
+Appendix~A, is a number of the paper, and the notation is that of the paper
+(Table~\ref{tab:notation}).
+
+\input{supp-trust}
+\input{supp-cited-facts}
+\input{supp-proofs}
+\input{supp-verification}
+
+\bibliographystyle{plainurl}
+\bibliography{references}
+
+\end{document}

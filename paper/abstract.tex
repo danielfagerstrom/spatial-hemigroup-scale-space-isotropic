@@ -1,0 +1,177 @@
+% Q-0448: the abstract of the paper, cut unchanged from main.tex with the comments above it
+% (records/affine/split_q0448_roots.py); main.tex inputs it, and with it full.tex.
+% The abstract is new with the split (Q-0307), written for this paper alone: a probability paper on
+% the isotropic theory, its four results by name. Each sentence was compared with the statement it
+% restates (WRITING.md § 5): the classification with its sufficiency half
+% (thm:isotropic-classification), the threshold for kernels with no Gaussian part and the Matern
+% reading of its clause (3) (thm:origin-boundedness-d), the strict chain with A_infinity the
+% subordinated slice ([B, Prop. 4.9], thm:filtration-strict, lem:threshold-limit), the Cin rays
+% (thm:no-cin-ray-in-the-plane). Within 250 words.
+% Q-0310 (the whole-paper review's fixes for this paper): "kernels from scale zero" throughout, so
+% that "origin" means the centre of R^d only; the threshold sentence restricted to those kernels,
+% as thm:origin-boundedness-d is, and the polar profile's normalization named (review flag 4); the
+% strictness of Schoenberg's chain attributed to Gneiting (gneiting1999radial, p. 94), the
+% self-decomposable chain kept as new (records/affine/PRIOR-ART-novelty-claims.md); the Cin
+% sentence says A_2, which is what thm:no-cin-ray-in-the-plane proves.
+% Q-0311 (the blind review records/affine/REVIEW-paper-iso.md): framed as a classification of
+% kernel families (flag 8); the cascade named a hemigroup, the word of the title (flag 5); what is
+% classical (the line threshold, the classification read on laws) said, and the three new results
+% named as such (flags 1, 2); the Matern sentence says why the threshold is the Matern range: the
+% kernel's density is the Matern function of smoothness gamma - d/2 (flag 9;
+% READING-fischer2025variance.md); "the line's cone" defined before use (flag 32). Within 250 words.
+% Q-0313 (the scope audit, records/affine/SCOPE-AUDIT-paper-iso.md): the Matern sentence says the
+% density is a Matern function only for gamma > d/2, where the smoothness gamma - d/2 is positive (for
+% gamma <= d/2 the same formula is no Matern function), and says "bounded" as clause (3) does; "in a
+% suitable scale parametrization" dropped from the classification sentence, which holds in every
+% gauge (mu_{0,t} is the dilation by chi(t) of the law with exponent F(|xi|)), to stay within 250.
+% Q-0316 (pass 2, the blind register review REVIEW-register-paper-iso.md, section 4 flags 4, 5,
+% 13, 14): five cited theorems (Wolfe's is C5); Wolfe's radially nonincreasing density in one
+% sentence, not counted as new; the Matern sentence marked as a case of the threshold result, the
+% kernel named (the variance-gamma law, Fischer et al.) and "a constant times"; "witnesses" and the
+% second sense of "threshold" replaced. The title names the object (flag 10; the author's decision of
+% 2026-10-05, following the proposal in records/affine/REVIEW-register-paper-iso-fixes.md). Within 250 words.
+% Q-0328: the pointwise lower bound of prop:origin-lower-bound-d (d >= 2, c finite) in one sentence
+% under the first result; to stay within 250, "of this programme", "convex", "released" and "of
+% probability theory" dropped and "the classical semigroup in the scale" made "the one-parameter
+% semigroup". 250 words (records/affine/check-paper-iso-backmatter.py).
+% Q-0377 (the formalization closed, 125 of 125 nodes \leanok): the last sentence says the results
+% are machine-checked and rest on six cited theorems (section 1.1; C6, Schoenberg's radial theorem,
+% is new), as Paper V's abstract does in one clause; the line papers, which the formal proofs build
+% on without resting on any cited fact of theirs, leave the sentence. To stay within 250, "By a
+% theorem of Wolfe" became "By Wolfe's theorem". 249 words.
+% Q-0381 (the fidelity review's paper-facing point 6): the profile is defined on (0, infinity), so
+% "exceeds d at radius zero" and "a finite value c there" become "exceeds d near radius zero" (for
+% a nonincreasing profile, the same as its limit at zero exceeding d) and "a finite limit c there".
+% Word for word; still 249 words.
+% Q-0414 (the repositioning pass, round 1; records/affine/REPOSITIONING-paper-iso.md): rewritten
+% to lead with what section 1 and the conclusion lead with. The question (the axioms name no
+% dimension: which families do they allow in R^d, and what does the dimension change); the
+% answers in the reader's terms, with c as the power at which the transform falls off (Corollary
+% cor:origin-profile-exponent(2)) and no class symbol; why they matter for a measurement (a point
+% source recorded as a spike; a family of the line that gives none in the plane); what is new and
+% what is not, after the prior art read for this item (the threshold classical on the line and
+% assembled from known results in R^d; the radially nonincreasing density Watanabe's; the rate
+% for d >= 2, the strictness from A_3 on and the Cin rays "new as far as the author has found");
+% seven cited theorems, and "the statements of the main section" for what is machine-checked
+% (section 1.1; the Matern sentence is an example drawn in prose). Each sentence compared with
+% its statement: thm:isotropic-classification with lem:isotropic-realisation;
+% thm:origin-boundedness-d(5) for a kernel from scale zero with no Gaussian part;
+% prop:origin-rate-d; cor:origin-profile-exponent(3) ("in every dimension that admits the
+% exponent"); thm:origin-boundedness-d(3) with prop:isotropic-bridge(2) for 1/2 < gamma <= 1;
+% thm:filtration-strict; thm:no-cin-ray-in-the-plane with prop:line-extreme-rays.
+% Q-0414, round 3 (the register review of 2026-10-11b, flags 3, 9, 10, 11, 21, 38, 39; the
+% dispatching session's decision E): the family is named by its transform, with "Matern" as the
+% gloss (the standard Matern kernel is bounded); the filtration sentence names its objects (the
+% exponents allowed in dimension d + 1 are strictly fewer); no ordinals for the two ways the
+% dimension enters; the threshold "not found stated for the class", its ingredients known; the
+% subject first in the sentence on what is new.
+% Q-0428 (the rewrite after the external review, round 1; the author's direction of 2026-10-12,
+% records/affine/REVIEW-author-paper-iso.md, last section; records/affine/
+% REPOSITIONING-paper-iso-round2.md). The order: the class of cascades and why the semigroup law
+% is relaxed; the classification; the centre; the dimension; the verification. No sentence on
+% what is new or was not found stated. "From scale zero" is said as "the kernels that take the
+% signal to each scale" (the presentation review, item 5). The rate keeps its two forms apart:
+% an asymptotic equivalence for c < d, a lower bound of logarithmic growth for c = d (the
+% response record of batch R1, section 3; prop:origin-rate-profile-d(1) and (3)). Each sentence
+% compared with its statement: thm:isotropic-classification with lem:isotropic-realisation;
+% thm:origin-boundedness-d(5) for a kernel from scale zero with no Gaussian part;
+% cor:origin-profile-exponent(3) ("can have": in every dimension that admits the exponent);
+% thm:origin-boundedness-d(3) with prop:isotropic-bridge(2) for 1/2 < gamma <= 1;
+% prop:origin-rate-profile-d(1): q(s) ~ Q s^(c-d) K(s), Q and K from the polar profile, K slowly
+% varying (prop:isotropic-exponent-profile(1)); (3): q(s) ~ B L(s) with L(s) >= log(1/s);
+% thm:filtration-strict(3); prop:radial-dictionary(2) and (3), said as "correspond to radial
+% characteristic functions", without an article, because the abstract does not carry the two
+% conditions on the law (no atom at the origin, a finite logarithmic moment);
+% thm:filtration-strict(1) with lem:threshold-asymptotic(3). The last sentence is the trust base
+% of section 1.1 in short: the dictionary with what is drawn from it and the closed form of the
+% constant (lem:exponent-profile-constant) are not machine-checked; the description of the
+% separating family as laws, which is not machine-checked either, is not in the abstract.
+% 250 words (records/affine/check-paper-iso-backmatter.py).
+% (The Lean of Q-0427, for the rate through the Levy measure and the limit of the critical
+% values, is merged since.)
+% Q-0428, the fixes round (the register review of the front, flags 2, 5, 6, 9, 14, 18, 19; the
+% scope audit of 2026-10-12, rows 1, 8, 10, 14). What a hemigroup relaxes is said in the
+% sentence that names it (two scale indices; a stage need not be one of the kernels that take
+% the signal to a scale), with the axiom that makes the kernels dilations of one law. The word
+% "exponent" is not used: the function is F, and "power" is kept for c. One function F of the
+% radius gives the kernel on the line and in the plane. The rate is one clause; the constants,
+% the two conditions of the dictionary and the asymptote of the critical values are in the body.
+% Each sentence compared with its statement: thm:isotropic-classification with
+% lem:isotropic-realisation; prop:isotropic-bridge(3) for the Gaussian and the stable kernels;
+% thm:origin-boundedness-d(5) for a kernel from scale zero with no Gaussian part;
+% prop:origin-rate-profile-d(1) and (3) (a constant in both regimes);
+% cor:origin-profile-exponent(3) ("in each dimension that admits it, with the same c");
+% thm:origin-boundedness-d(3) with prop:isotropic-bridge(2) for 1/2 < gamma <= 1;
+% prop:profile-one-dimension-down(2) for "strictly fewer"; prop:radial-dictionary(2) and (3)
+% ("determines a radial characteristic function": the direction from F to the law, which needs
+% neither condition on the law to be stated); thm:separating-family-critical-values(4).
+% The last sentence was then the second list of section 1.1 in words that matched its four
+% items. Since Q-0448 it points to that list and names no count (below); the list has five.
+% Word count: records/affine/check-paper-iso-backmatter.py.
+% Q-0431 (the author's section review of 2026-10-12, records/affine/REVIEW-author-paper-iso.md).
+% His three phrases ("and that name no dimension", "again", "The dimension enters twice") were
+% in the abstract of the first review build and are not in this one, which Q-0428 rewrote. Read
+% for the same defect, a phrase that points at something the abstract does not have: "one
+% closed form" did not say of what, and is "a constant's closed form" (the closed form of the
+% constant of the spike, lem:exponent-profile-constant; "with its constant" is five sentences
+% up). The sentence "The kernels that take the signal to each scale are the dilations of one
+% rotation-invariant self-decomposable law ... and every such law but the point mass occurs" is
+% the main result of the contributions paragraph of section 1 and stands as it is, the first
+% result after "This paper derives". 250 words.
+% Q-0448 (the response to the second external round). Exposition item 1 of
+% records/affine/reviews/VERIFY-round2-length-and-exposition.md: "self-decomposable" is glossed
+% in a clause (Definition 15.1 of Sato, as section 1 has it: the law is the convolution of its
+% image under x -> lambda x with another law, for every 0 < lambda < 1); "admits" is "allows",
+% the word of the third sentence, and a sentence says that one F need not give a kernel in
+% every dimension, which is prop:profile-one-dimension-down(2); the last sentence points to the
+% list of section 1.1 and names no count, so that it stays true when a statement changes
+% status. Item 9 of VERIFY-round2-mathematics.md (reviews A, R9, and D, R5): the F that
+% determines a radial characteristic function is an allowed one (prop:radial-dictionary(2)
+% starts from F in A_d). "As an explicit one-parameter family shows" is gone, for the words.
+% Q-0448, the blind draft review after the split (records/affine/
+% REVIEW-draft-paper-iso-q0448.md, flags 8, 9 and 10, with the dispositions beside it). Flag 8:
+% e^{-F(t|xi|)} is the transform of the kernel at scale t in one labelling of the scales
+% (thm:isotropic-classification has chi(t)), not of the one law, and F is introduced. Flag 9:
+% "Gaussian part" is not used. The threshold is said for every kernel from scale zero, with
+% c <= infinity the power at which the transform falls off: for a datum (a, k_d),
+% -log mu-hat / log|xi| tends to k_d(0+) when a = 0 and to infinity when a > 0
+% (cor:origin-profile-exponent(1) and (2)), and a kernel with a Gaussian part is bounded (the
+% paragraph before thm:origin-boundedness-d), so "bounded exactly when c > d" holds for both,
+% by clause (5) of the theorem for a = 0. In the body c is k_d(0+), which for a > 0 can be
+% finite; the abstract's c is the power of the fall-off, and "finite c" there means a = 0 and
+% k_d(0+) finite, the hypothesis of prop:isotropic-stages(2). The rate "and constant are
+% given", with no Levy measure; "characteristic function" has its gloss, "the Fourier
+% transform of a law"; the kernels have one name, the Matern kernels of section 1 on, and the
+% Bessel scale space is named once. Flag 10: "One F need not give a kernel in every dimension"
+% is gone, since "Each higher dimension allows strictly fewer F" says it, and the words go to
+% the stages (prop:isotropic-stages(2), 0 < s < t). "c depends on F alone" is
+% cor:origin-profile-exponent(2) and (3). Each
+% sentence compared with its statement: cor:isotropic-scale-zero-kernels(1) and (3);
+% thm:origin-boundedness-d(5); prop:origin-rate-profile-d(1) and (3) with
+% lem:exponent-profile-constant(4); prop:isotropic-bridge(2) with
+% thm:origin-boundedness-d(3); prop:profile-one-dimension-down(2); prop:radial-dictionary(2)
+% and (3).
+% Word count: records/affine/check-paper-iso-backmatter.py.
+\begin{abstract}
+Scale-space axioms usually require the cascade to be a semigroup, which with
+rotation and scale invariance leads to Gaussian and stable kernels. The axioms studied here require
+only that the stages compose, a hemigroup indexed by two scales, and that rescaling the signal relabels the scales. This paper derives the
+rotation-invariant families they allow in $\RR^d$. The kernels that take the signal to each
+scale are the dilations of one rotation-invariant law that is self-decomposable: the convolution
+of each contracted copy of itself with another law. Every such law but the point mass occurs.
+Suitably labelled, the kernel at scale $t$ has Fourier transform $e^{-F(t|\xi|)}$, for one
+function $F$. Its density is bounded near the centre exactly when $c > d$, where
+$c \le \infty$ is the power at which the transform falls off. Otherwise a point source
+is recorded as a spike, whose growth and constant are given. For finite $c$ a
+stage between positive scales passes a fixed fraction of the record unchanged. Since $c$
+depends on $F$ alone, a kernel bounded on the
+line can have a spike in the plane: the \Matern{} kernels of the Bessel scale space,
+with transform $(1 + |\xi|^2/2)^{-\gamma}$, do for
+$\tfrac12 < \gamma \le 1$. Each higher
+dimension allows strictly fewer $F$. An allowed $F(r) \sim c\log r$ determines a radial
+characteristic function, the Fourier transform of a law, and is allowed in $\RR^{d+1}$
+exactly when that function is a characteristic function there. The statements are
+machine-checked in
+Lean~4, assuming seven theorems of the literature, except those that \S\ref{sec:trust-base}
+lists as proved in print.
+\end{abstract}
